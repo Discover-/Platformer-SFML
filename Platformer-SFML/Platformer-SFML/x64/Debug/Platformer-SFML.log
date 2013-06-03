@@ -1,4 +1,4 @@
-﻿Build started 3-6-2013 11:18:52.
+﻿Build started 3-6-2013 13:15:33.
      1>Project "C:\Development\Platformer-SFML\Platformer-SFML\Platformer-SFML\Platformer-SFML.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating "x64\Debug\Platformer-SFML.unsuccessfulbuild" because "AlwaysCreate" was specified.
@@ -24,4 +24,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.46
+Time Elapsed 00:00:01.66

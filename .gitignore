@@ -1,13 +1,27 @@
-# Compiled Object files
-*.slo
-*.lo
-*.o
 
-# Compiled Dynamic libraries
+*.slo
+
+*.lo
+
+*.o
 *.so
+
 *.dylib
 
-# Compiled Static libraries
 *.lai
+
 *.la
+
 *.a
+
+*.tlog
+*.exe
+*.ilk
+*.pdb
+*.obj
+*.ipch
+*.log
+*.filters
+*.vcxproj
+*.suo
+*.sdf
