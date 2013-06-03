@@ -1,0 +1,19 @@
+﻿Build started 3-6-2013 11:11:32.
+     1>Project "C:\Development\Platformer-SFML\Platformer-SFML\Platformer-SFML\Platformer-SFML.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Touching "Debug\Platformer-SFML.unsuccessfulbuild".
+       ClCompile:
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I"C:\Program Files\SFML-2.0\include" /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
+         main.cpp
+     1>c:\development\platformer-sfml\platformer-sfml\platformer-sfml\main.cpp(4): warning C4007: 'WinMain' : must be '__stdcall'
+       ManifestResourceCompile:
+         All outputs are up-to-date.
+       Link:
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Development\Platformer-SFML\Platformer-SFML\Debug\Platformer-SFML.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Program Files\SFML-2.0\lib" "sfml-graphics-d.lib" "sfml-audio-d.lib" "sfml-system-d.lib" "sfml-window-d.lib" "sfml-network-d.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\Platformer-SFML.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Development\Platformer-SFML\Platformer-SFML\Debug\Platformer-SFML.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Development\Platformer-SFML\Platformer-SFML\Debug\Platformer-SFML.lib" /MACHINE:X86 "Debug\Platformer-SFML.exe.embed.manifest.res"
+         Debug\main.obj
+     1>sfml-graphics-d.lib(sfml-graphics-d-2.dll) : fatal error LNK1112: module machine type 'x64' conflicts with target machine type 'X86'
+     1>Done Building Project "C:\Development\Platformer-SFML\Platformer-SFML\Platformer-SFML\Platformer-SFML.vcxproj" (build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:01.36

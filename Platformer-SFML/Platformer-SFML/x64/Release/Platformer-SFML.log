@@ -1,0 +1,22 @@
+﻿Build started 3-6-2013 11:13:24.
+     1>Project "C:\Development\Platformer-SFML\Platformer-SFML\Platformer-SFML\Platformer-SFML.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Touching "x64\Release\Platformer-SFML.unsuccessfulbuild".
+       ClCompile:
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\x86_amd64\CL.exe /c /I"C:\Program Files\SFML-2.0\include" /Zi /nologo /W3 /WX- /O2 /Oi /GL /D WIN32 /D NDEBUG /D _WINDOWS /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Release\\" /Fd"x64\Release\vc100.pdb" /Gd /TP /errorReport:prompt main.cpp
+         main.cpp
+       Link:
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Development\Platformer-SFML\Platformer-SFML\x64\Release\Platformer-SFML.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:"C:\Program Files\SFML-2.0\lib" "sfml-graphics-d.lib" "sfml-audio-d.lib" "sfml-system-d.lib" "sfml-window-d.lib" "sfml-network-d.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"x64\Release\Platformer-SFML.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Development\Platformer-SFML\Platformer-SFML\x64\Release\Platformer-SFML.pdb" /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Development\Platformer-SFML\Platformer-SFML\x64\Release\Platformer-SFML.lib" /MACHINE:X64 x64\Release\main.obj
+         Generating code
+         Finished generating code
+         Platformer-SFML.vcxproj -> C:\Development\Platformer-SFML\Platformer-SFML\x64\Release\Platformer-SFML.exe
+       Manifest:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"C:\Development\Platformer-SFML\Platformer-SFML\x64\Release\Platformer-SFML.exe;#1" /manifest "x64\Release\Platformer-SFML.exe.intermediate.manifest"
+       FinalizeBuildStatus:
+         Deleting file "x64\Release\Platformer-SFML.unsuccessfulbuild".
+         Touching "x64\Release\Platformer-SFML.lastbuildstate".
+     1>Done Building Project "C:\Development\Platformer-SFML\Platformer-SFML\Platformer-SFML\Platformer-SFML.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:01.46
