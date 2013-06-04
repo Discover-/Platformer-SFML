@@ -8,7 +8,7 @@
 #include <unordered_map>
 #include <set>
 #include <string>
-#include <SFML/Graphics.hpp>
+//#include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <SFML/Config.hpp>
 #include <SFML/Network.hpp>
@@ -17,6 +17,7 @@
 #include "Windows.h"
 #include "game.h"
 #include "player.h"
+#include "collision.h"
 
 Player::Player(Game* _game, sf::RenderWindow* _window, float x, float y, sf::Sprite _spriteCharacter)
 {
@@ -39,7 +40,7 @@ void Player::Update()
 {
     if (isJumping)
     {
-        if (jumpSpeed)
+        if (jumpSpeed && !CollidesWithGameobjects(posX, posY + fallSpeed))
         {
             SetPosY(posY - jumpSpeed);
             jumpSpeed--;
@@ -54,10 +55,12 @@ void Player::Update()
 
     if (isFalling)
     {
-        SetPosY(posY + fallSpeed);
-        fallSpeed++;
-
-        if (fallSpeed > 15)
+        if (!CollidesWithGameobjects(posX, posY + fallSpeed))
+        {
+            SetPosY(posY + fallSpeed);
+            fallSpeed++;
+        }
+        else
         {
             isFalling = false;
             fallSpeed = 0;
@@ -133,4 +136,19 @@ void Player::SetPosXY(float valX, float valY)
     posX = valX;
     posY = valY;
     spriteCharacter.setPosition(posX, posY);
+}
+
+bool Player::CollidesWithGameobjects(float newPosX /* = 0.0f */, float newPosY /* = 0.0f */)
+{
+    sf::Sprite charSprite = spriteCharacter;
+
+    if (newPosX != 0.0f && newPosY != 0.0f)
+        charSprite.setPosition(newPosX, newPosY);
+
+    std::vector<sf::Sprite> gameObjects = game->GetGameObjectsCollidable();
+    for (std::vector<sf::Sprite>::iterator itr = gameObjects.begin(); itr != gameObjects.end(); ++itr)
+        if (Collision::PixelPerfectTest(charSprite, (*itr)))
+            return true;
+
+    return false;
 }

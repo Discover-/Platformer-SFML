@@ -43,6 +43,8 @@ class Player
         bool IsJumping() { return isJumping; }
         bool IsFalling() { return isFalling; }
 
+        bool CollidesWithGameobjects(float newPosX = 0.0f, float newPosY = 0.0f);
+
     private:
         Game* game;
         float posX, posY;
