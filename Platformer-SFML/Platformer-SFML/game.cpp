@@ -46,7 +46,7 @@ int Game::Update()
     sf::Sprite spriteDirt[2];
     sf::Sprite spriteGrass[2];
     sf::Sprite spriteGround[2];
-    sf::Sprite spriteSky[4][20]; //! Layer and amount
+    sf::Sprite spriteSky[12][20]; //! Layer and amount
 
     for (int i = 0; i < 2; ++i)
     {
@@ -60,14 +60,11 @@ int Game::Update()
     }
 
     for (int i = 0; i < 4; ++i)
-    {
-        std::string numberInStr = std::to_string(long double(i));
-        imageSky[i].loadFromFile("sky_" + numberInStr + ".png");
-    }
+        imageSky[i].loadFromFile("sky_" + std::to_string(long double(i)) + ".png");
 
-    for (int i = 0; i < 3; ++i)
+    for (int i = 0; i < 12; ++i)
         for (int j = 0; j < 20; ++j)
-            spriteSky[i][j].setTexture(imageSky[urand(0, 3)]);
+            spriteSky[i][j].setTexture(imageSky[(i > 7 || urand(0, 20) < 16) ? 3 : urand(0, 2)]);
 
     spriteDirt[0].setPosition(0, 150);
     spriteDirt[1].setPosition(50, 150);
@@ -79,9 +76,9 @@ int Game::Update()
     //! Filling up skybox
     float skyX = 0.0f, skyY = 0.0f;
 
-    for (int i = 0; i < 3; ++i) //! Three layers
+    for (int i = 0; i < 12; ++i)
     {
-        for (int j = 0; j < 20; ++j) //! 12 blocks per layer
+        for (int j = 0; j < 20; ++j)
         {
             spriteSky[i][j].setPosition(skyX, skyY);
             skyX += 50.0f;
@@ -105,16 +102,16 @@ int Game::Update()
 
         window.clear();
 
+        for (int i = 0; i < 12; ++i)
+            for (int j = 0; j < 20; ++j)
+                window.draw(spriteSky[i][j]);
+
         for (int i = 0; i < 2; ++i)
         {
             window.draw(spriteDirt[i]);
             window.draw(spriteGrass[i]);
             window.draw(spriteGround[i]);
         }
-
-        for (int i = 0; i < 3; ++i)
-            for (int j = 0; j < 20; ++j)
-                window.draw(spriteSky[i][j]);
 
         sf::Vector2f pos = player->GetPosXY();
 
