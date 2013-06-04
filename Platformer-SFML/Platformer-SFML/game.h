@@ -1,4 +1,4 @@
-
+class Player;
 
 class Game
 {
@@ -11,9 +11,5 @@ class Game
 
     private:
         bool isRunning;
-
-        bool isJumping;
-        bool isFalling;
-        int fallSpeed;
-        int jumpSpeed;
+        Player* player;
 };

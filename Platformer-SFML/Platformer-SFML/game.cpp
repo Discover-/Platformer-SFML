@@ -16,14 +16,11 @@
 #include <SFML/Window.hpp>
 #include "Windows.h"
 #include "game.h"
+#include "player.h"
 
 Game::Game()
 {
     isRunning = true;
-    isJumping = false;
-    isFalling = false;
-    fallSpeed = 0;
-    jumpSpeed = 150;
 }
 
 Game::~Game()
@@ -31,12 +28,12 @@ Game::~Game()
 
 }
 
-
-
 int Game::Update()
 {
     isRunning = true;
     sf::RenderWindow window(sf::VideoMode(1000, 600), "Platformer C++ SFML");
+    player = new Player(this, window, 300, 600);
+
     sf::Texture imageCharacter;
     imageCharacter.loadFromFile("tux_frame_0.png");
     sf::Sprite spriteCharacter;
@@ -95,6 +92,9 @@ int Game::Update()
         skyY += 50.0f;
     }
 
+    player->SetSpriteBody(spriteCharacter);
+    window.setFramerateLimit(30);
+
     while (window.isOpen())
     {
         sf::Event _event;
@@ -118,43 +118,17 @@ int Game::Update()
             for (int j = 0; j < 20; ++j)
                 window.draw(spriteSky[i][j]);
 
-        sf::Vector2f pos = spriteCharacter.getPosition();
+        sf::Vector2f pos = player->GetPosXY();
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-            spriteCharacter.setPosition(pos.x -= 0.04, pos.y);
+            player->SetPosXY(pos.x -= 1.0f, pos.y);
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Space) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-            isJumping = true;
+            player->SetIsJumping(true);
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-            spriteCharacter.setPosition(pos.x += 0.04, pos.y);
+            player->SetPosXY(pos.x += 1.0f, pos.y);
 
-        if (isJumping)
-        {
-            if (jumpSpeed)
-            {
-                spriteCharacter.setPosition(pos.x, pos.y - 0.5f);
-                jumpSpeed--;
-            }
-            else
-            {
-                isJumping = false;
-                //isFalling = true;
-                jumpSpeed = 15;
-            }
-        }
-
-        if (isFalling)
-        {
-            spriteCharacter.setPosition(pos.x, pos.y + fallSpeed);
-            fallSpeed++;
-
-            if (!fallSpeed)
-            {
-                isFalling = false;
-                fallSpeed = 0;
-            }
-        }
-
-        window.draw(spriteCharacter);
+        player->Draw(&window, &spriteCharacter);
+        player->Update();
         window.display();
     }
 
