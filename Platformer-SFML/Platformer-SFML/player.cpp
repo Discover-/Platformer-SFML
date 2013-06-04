@@ -89,36 +89,39 @@ void Player::Update()
 
 void Player::Draw(sf::Sprite* _spriteCharacter /* = NULL */, bool updatePos /* = false */)
 {
-    if (updatePos)
-        _spriteCharacter ? _spriteCharacter->setPosition(posX, posY) : spriteCharacter.setPosition(posX, posY);
+    sf::Sprite* spriteToDraw = _spriteCharacter ? _spriteCharacter : &spriteCharacter;
 
-    window->draw(_spriteCharacter ? *_spriteCharacter : spriteCharacter);
+    if (updatePos)
+        spriteToDraw->setPosition(posX, posY);
+
+    window->draw(*spriteToDraw);
 }
 
 void Player::SetKeysDown(sf::Uint8 index, bool value)
 {
-    keysDown[index] = value;
+    return;
+    //keysDown[index] = value;
 
-    if (value)
-    {
-        switch (index)
-        {
-            case 0: //! A & >
-                keysDown[2] = false;
-                break;
-            case 2: //! v & A
-                keysDown[0] = false;
-                break;
-            case 1: //! < & A
-                keysDown[3] = false;
-                break;
-            case 3: //! > & D
-                keysDown[1] = false;
-                break;
-            default:
-                break;
-        }
-    }
+    //if (value)
+    //{
+    //    switch (index)
+    //    {
+    //        case 0: //! A & >
+    //            keysDown[2] = false;
+    //            break;
+    //        case 2: //! v & A
+    //            keysDown[0] = false;
+    //            break;
+    //        case 1: //! < & A
+    //            keysDown[3] = false;
+    //            break;
+    //        case 3: //! > & D
+    //            keysDown[1] = false;
+    //            break;
+    //        default:
+    //            break;
+    //    }
+    //}
 }
 
 void Player::SetPosX(float val)
@@ -171,14 +174,11 @@ void Player::Shoot()
 {
     shootCooldown = 400;
     canShoot = false;
+    //Bullet* bullet = new Bullet(game, window, posX + 50, posY + 20);
 
     sf::Texture imageBullet;
-
-    if (!imageBullet.loadFromFile("bullet.png"))
-        std::cout << "Error" << std::endl;
-
-    sf::Sprite spriteBullet;
-    spriteBullet.setTexture(imageBullet);
-    Bullet* bullet = new Bullet(game, window, posX + 50, posY + 20, spriteBullet);
+    imageBullet.loadFromFile("tux_frame_0.png");
+    sf::Sprite spriteBullet(imageBullet);
+    Bullet* bullet = new Bullet(game, window, posX + 150, posY + 20, spriteBullet);
     game->AddBullet(bullet);
 }

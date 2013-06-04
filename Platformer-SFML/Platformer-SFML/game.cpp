@@ -246,13 +246,13 @@ int Game::Update()
             {
                 (*itr)->Update();
 
-                sf::Texture imageBullet;
-                imageBullet.loadFromFile("bullet.png");
-                sf::Sprite spriteBullet;
-                spriteBullet.setTexture(imageBullet);
-                spriteBullet.setPosition((*itr)->GetPosXY());
-                (*itr)->SetSprite(spriteBullet);
-                window.draw((*itr)->GetSpriteBullet());
+                //sf::Texture imageBullet;
+                //imageBullet.loadFromFile("bullet.png");
+                //sf::Sprite spriteBullet;
+                //spriteBullet.setTexture(imageBullet);
+                //spriteBullet.setPosition((*itr)->GetPosXY());
+                //(*itr)->SetSprite(spriteBullet);
+                //window.draw((*itr)->GetSpriteBullet());
             }
         }
 

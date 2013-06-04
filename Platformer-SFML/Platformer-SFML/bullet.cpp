@@ -15,7 +15,17 @@ Bullet::Bullet(Game* _game, sf::RenderWindow* _window, float _x, float _y, sf::S
     posX = _x;
     posY = _y;
     window = _window;
+    _spriteBullet.setPosition(_x, _y);
     spriteBullet = _spriteBullet;
+    //spriteBullet.setTexture(_spriteBullet);
+    spriteBullet.setPosition(_x, _y);
+    //sf::Texture imageBullet;
+    //imageBullet.loadFromFile("tux_frame_0.png");
+    //spriteBullet.setTexture(imageBullet);
+    //spriteBullet.setPosition(posX, posY);
+    _spriteBullet.setPosition(_x - 200, _y);
+    window->draw(_spriteBullet);
+    window->draw(spriteBullet);
 }
 
 Bullet::~Bullet()
@@ -30,14 +40,14 @@ void Bullet::Update()
     if (isRemoved || !game || !game->IsRunning() || !player)
         return;
 
+    //SetPosXY(posX + velocity, posY);
     posX += velocity;
-    //posY -= float(sin(directionAngle * M_PI / 180.0) * yVelocity);
-    spriteBullet.setPosition(posX, posY);
+
     sf::Sprite spriteChar = player->GetSpriteBody();
 
     if (Collision::PixelPerfectTest(spriteBullet, spriteChar))
         Explode();
-    else
+    //else
     {
         //std::vector<sf::Sprite> gameObjects = game->GetGameObjectsCollidable();
 
@@ -59,8 +69,23 @@ void Bullet::Update()
         //}
     }
 
-    
-    window->draw(spriteBullet);
+    if (posX < 0)
+        SetPosX(0.0f);
+
+    if (posY < 0)
+        SetPosY(0.0f);
+
+    Draw(NULL, true);
+}
+
+void Bullet::Draw(sf::Sprite* _spriteBullet /* = NULL */, bool updatePos /* = false */)
+{
+    sf::Sprite* spriteToDraw = _spriteBullet ? _spriteBullet : &spriteBullet;
+
+    if (updatePos)
+        spriteToDraw->setPosition(posX, posY);
+
+    window->draw(*spriteToDraw);
 }
 
 void Bullet::Explode()

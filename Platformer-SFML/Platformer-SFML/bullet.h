@@ -38,6 +38,8 @@ class Bullet
         sf::Sprite GetSpriteBullet() { return spriteBullet; }
         void SetSprite(sf::Sprite sprite) { spriteBullet = sprite; }
 
+        void Draw(sf::Sprite* _spriteBullet = NULL, bool updatePos = false);
+
     private:
         Game* game;
         bool isRemoved;
