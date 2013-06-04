@@ -1,4 +1,3 @@
-#include "shareddefines.h"
 #include <iostream>
 #include <vector>
 //#include <cmath>
@@ -15,9 +14,12 @@
 #include <SFML/OpenGL.hpp>
 #include <SFML/Window.hpp>
 #include "Windows.h"
+
 #include "game.h"
 #include "player.h"
 #include "collision.h"
+#include "shareddefines.h"
+#include "bullet.h"
 
 Player::Player(Game* _game, sf::RenderWindow* _window, float x, float y, sf::Sprite _spriteCharacter)
 {
@@ -31,9 +33,10 @@ Player::Player(Game* _game, sf::RenderWindow* _window, float x, float y, sf::Spr
         keysDown[i] = false;
 
     isJumping = false;
-    isFalling = false;
+    isFalling = true;
     fallSpeed = 0;
     jumpSpeed = 15;
+    moveSpeed = 10.0f;
 }
 
 void Player::Update()
@@ -55,15 +58,17 @@ void Player::Update()
 
     if (isFalling)
     {
-        if (!CollidesWithGameobjects(posX, posY + fallSpeed))
+        if (!CollidesWithGameobjects(posX, posY + fallSpeed + 5.0f))
         {
             SetPosY(posY + fallSpeed);
             fallSpeed++;
         }
         else
         {
+            //SetPosY(posY + 5.0f);
             isFalling = false;
             fallSpeed = 0;
+            jumpSpeed = 15;
         }
     }
 
@@ -73,11 +78,11 @@ void Player::Update()
     if (posY < 0)
         SetPosY(0.0f);
 
-    if (posX > 900)
-        SetPosX(900.0f);
+    //if (posX > 900)
+     //   SetPosX(900.0f);
 
-    if (posY > 500)
-        SetPosY(500.0f);
+    //if (posY > 500)
+    //    SetPosY(500.0f);
 
     Draw(NULL, true);
 }
@@ -88,11 +93,6 @@ void Player::Draw(sf::Sprite* _spriteCharacter /* = NULL */, bool updatePos /* =
         _spriteCharacter ? _spriteCharacter->setPosition(posX, posY) : spriteCharacter.setPosition(posX, posY);
 
     window->draw(_spriteCharacter ? *_spriteCharacter : spriteCharacter);
-}
-
-void Player::HandleTimers(unsigned int diff_time)
-{
-    return;
 }
 
 void Player::SetKeysDown(sf::Uint8 index, bool value)
@@ -151,4 +151,34 @@ bool Player::CollidesWithGameobjects(float newPosX /* = 0.0f */, float newPosY /
             return true;
 
     return false;
+}
+
+void Player::HandleTimers(sf::Int32 diff_time)
+{
+    if (!canShoot)
+    {
+        if (diff_time >= shootCooldown)
+        {
+            shootCooldown = 0;
+            canShoot = true;
+        }
+        else
+            shootCooldown -= diff_time;
+    }
+}
+
+void Player::Shoot()
+{
+    shootCooldown = 400;
+    canShoot = false;
+
+    sf::Texture imageBullet;
+
+    if (!imageBullet.loadFromFile("bullet.png"))
+        std::cout << "Error" << std::endl;
+
+    sf::Sprite spriteBullet;
+    spriteBullet.setTexture(imageBullet);
+    Bullet* bullet = new Bullet(game, window, posX + 50, posY + 20, spriteBullet);
+    game->AddBullet(bullet);
 }

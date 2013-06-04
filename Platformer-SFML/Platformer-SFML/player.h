@@ -25,7 +25,7 @@ class Player
 
         void Update();
         void SetKeysDown(sf::Uint8 index, bool value);
-        void HandleTimers(unsigned int diff_time);
+        void HandleTimers(sf::Int32 diff_time);
         void Draw(sf::Sprite* _spriteCharacter = NULL, bool updatePos = false);
         void SetSpriteBody(sf::Sprite sprite) { spriteCharacter = sprite; }
         sf::Sprite GetSpriteBody() { return spriteCharacter; }
@@ -45,6 +45,15 @@ class Player
 
         bool CollidesWithGameobjects(float newPosX = 0.0f, float newPosY = 0.0f);
 
+        float GetMoveSpeed() { return moveSpeed; }
+        void SetMoveSpeed(float val) { moveSpeed = val; }
+
+        /* MECHANICS */
+        void Shoot();
+        bool CanShoot() { return canShoot; }
+        void SetCanShoot(bool val) { canShoot = val; }
+        void SetShootCooldown(sf::Int32 val) { shootCooldown = val; }
+
     private:
         Game* game;
         float posX, posY;
@@ -55,4 +64,9 @@ class Player
         /* MOVEMENT */
         bool isJumping, isFalling;
         int fallSpeed, jumpSpeed;
+        float moveSpeed;
+
+        /* MECHANICS */
+        bool canShoot;
+        sf::Int32 shootCooldown;
 };
