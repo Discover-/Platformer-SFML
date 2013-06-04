@@ -40,7 +40,7 @@ void Player::Update()
 {
     if (isJumping)
     {
-        if (jumpSpeed && !CollidesWithGameobjects(posX, posY + fallSpeed))
+        if (jumpSpeed && !CollidesWithGameobjects(posX, posY - jumpSpeed))
         {
             SetPosY(posY - jumpSpeed);
             jumpSpeed--;
