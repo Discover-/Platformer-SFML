@@ -177,6 +177,8 @@ int Game::Update()
         }
     }
 
+    sf::View view(window.getDefaultView());
+
     while (window.isOpen())
     {
         sf::Event _event;
@@ -220,6 +222,19 @@ int Game::Update()
                 player->SetIsJumping(true);
 
         player->Update();
+
+        if (player->GetPosX() > window.getSize().x / 2.f)
+            view.setCenter(player->GetPosX(), view.getCenter().y);
+        else
+            view.setCenter(window.getSize().x / 2.f, view.getCenter().y);
+
+        if (player->GetPosY() > window.getSize().y / 2.f)
+            view.setCenter(view.getCenter().x, player->GetPosY());
+        else
+            view.setCenter(view.getCenter().x, window.getSize().y / 2.f);
+
+        window.setView(view);
+
         window.display();
     }
 
