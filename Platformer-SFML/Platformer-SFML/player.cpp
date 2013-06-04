@@ -18,12 +18,13 @@
 #include "game.h"
 #include "player.h"
 
-Player::Player(Game* _game, sf::RenderWindow _window, float x, float y)
+Player::Player(Game* _game, sf::RenderWindow* _window, float x, float y, sf::Sprite _spriteCharacter)
 {
     window = _window;
     posX = x;
     posY = y;
     game = _game;
+    spriteCharacter = _spriteCharacter;
 
     for (int i = 0; i < 4; ++i)
         keysDown[i] = false;
@@ -31,7 +32,7 @@ Player::Player(Game* _game, sf::RenderWindow _window, float x, float y)
     isJumping = false;
     isFalling = false;
     fallSpeed = 0;
-    jumpSpeed = 150;
+    jumpSpeed = 15;
 }
 
 void Player::Update()
@@ -40,23 +41,23 @@ void Player::Update()
     {
         if (jumpSpeed)
         {
-            spriteCharacter.setPosition(posX, posY - jumpSpeed);
+            SetPosY(posY - jumpSpeed);
             jumpSpeed--;
         }
         else
         {
             isJumping = false;
-            //isFalling = true;
+            isFalling = true;
             jumpSpeed = 15;
         }
     }
 
     if (isFalling)
     {
-        spriteCharacter.setPosition(pos.x, pos.y + fallSpeed);
+        SetPosY(posY + fallSpeed);
         fallSpeed++;
 
-        if (!fallSpeed)
+        if (fallSpeed > 15)
         {
             isFalling = false;
             fallSpeed = 0;
@@ -64,20 +65,25 @@ void Player::Update()
     }
 
     if (posX < 0)
-        posX = 0;
+        SetPosX(0.0f);
 
     if (posY < 0)
-        posY = 0;
+        SetPosY(0.0f);
 
-    if (posX > 938)
-        posX = 938;
+    if (posX > 900)
+        SetPosX(900.0f);
 
-    if (posY > 544)
-        posY = 544;
+    if (posY > 500)
+        SetPosY(500.0f);
+
+    Draw(NULL, true);
 }
 
-void Player::Draw(sf::Sprite* _spriteCharacter /* = NULL */)
+void Player::Draw(sf::Sprite* _spriteCharacter /* = NULL */, bool updatePos /* = false */)
 {
+    if (updatePos)
+        _spriteCharacter ? _spriteCharacter->setPosition(posX, posY) : spriteCharacter.setPosition(posX, posY);
+
     window->draw(_spriteCharacter ? *_spriteCharacter : spriteCharacter);
 }
 
@@ -94,7 +100,7 @@ void Player::SetKeysDown(sf::Uint8 index, bool value)
     {
         switch (index)
         {
-            case 0: //! ^ & W
+            case 0: //! A & >
                 keysDown[2] = false;
                 break;
             case 2: //! v & A
@@ -110,4 +116,21 @@ void Player::SetKeysDown(sf::Uint8 index, bool value)
                 break;
         }
     }
+}
+
+void Player::SetPosX(float val)
+{
+    SetPosXY(val, posY);
+}
+
+void Player::SetPosY(float val)
+{
+    SetPosXY(posX, val);
+}
+
+void Player::SetPosXY(float valX, float valY)
+{
+    posX = valX;
+    posY = valY;
+    spriteCharacter.setPosition(posX, posY);
 }

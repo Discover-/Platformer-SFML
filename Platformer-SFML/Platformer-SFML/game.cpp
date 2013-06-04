@@ -1,7 +1,5 @@
-#include "shareddefines.h"
 #include <iostream>
 #include <vector>
-//#include <cmath>
 #include <cstring>
 #include <map>
 #include <time.h>
@@ -17,6 +15,7 @@
 #include "Windows.h"
 #include "game.h"
 #include "player.h"
+#include "shareddefines.h"
 
 Game::Game()
 {
@@ -32,13 +31,13 @@ int Game::Update()
 {
     isRunning = true;
     sf::RenderWindow window(sf::VideoMode(1000, 600), "Platformer C++ SFML");
-    player = new Player(this, window, 300, 600);
 
     sf::Texture imageCharacter;
     imageCharacter.loadFromFile("tux_frame_0.png");
     sf::Sprite spriteCharacter;
     spriteCharacter.setTexture(imageCharacter);
     spriteCharacter.setPosition(400, 500);
+    player = new Player(this, &window, 300, 600, spriteCharacter);
 
     sf::Texture imageDirt[2];
     sf::Texture imageGrass[2];
@@ -92,7 +91,6 @@ int Game::Update()
         skyY += 50.0f;
     }
 
-    player->SetSpriteBody(spriteCharacter);
     window.setFramerateLimit(30);
 
     while (window.isOpen())
@@ -121,13 +119,16 @@ int Game::Update()
         sf::Vector2f pos = player->GetPosXY();
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-            player->SetPosXY(pos.x -= 1.0f, pos.y);
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Space) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-            player->SetIsJumping(true);
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-            player->SetPosXY(pos.x += 1.0f, pos.y);
+            player->SetPosXY(pos.x -= 4.0f, pos.y);
+        
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Space) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+            if (!player->IsJumping() && !player->IsFalling())
+                player->SetIsJumping(true);
+        
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+            player->SetPosXY(pos.x += 4.0f, pos.y);
 
-        player->Draw(&window, &spriteCharacter);
+        player->Draw(&spriteCharacter);
         player->Update();
         window.display();
     }

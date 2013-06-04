@@ -1,5 +1,4 @@
 class Player;
-
 class Game
 {
     public:
