@@ -7,6 +7,12 @@ enum TypeId
     TYPEID_PLAYER   = 1,
 };
 
+struct TileInfo
+{
+    sf::Texture image;
+    float posX, posY;
+};
+
 inline int urand(int min, int max)
 {
     return (rand() % (max - min + 1) + min);
