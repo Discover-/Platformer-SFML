@@ -20,14 +20,33 @@
 #include "bullet.h"
 #include "unit.h"
 
-Enemy::Enemy(Game* _game, sf::RenderWindow* _window, float x, float y, sf::Sprite _spriteBody) : Unit(_game, _window, x, y, _spriteBody)
+Enemy::Enemy(Game* _game, sf::RenderWindow* _window, float x1, float y1, float x2, float y2, sf::Sprite _spriteBody, TypeId _typeId) : Unit(_game, _window, x1, y1, _spriteBody, _typeId)
 {
-
+    destinationX1 = x1;
+    destinationY1 = y1;
+    destinationX2 = x2;
+    destinationY2 = y2;
+    movingForward = true;
 }
 
 void Enemy::Update()
 {
     Unit::Update();
+
+    if (movingForward)
+    {
+        SetPositionX(GetPositionX() + GetMoveSpeed());
+
+        if (GetPositionX() > destinationX2)
+            movingForward = false;
+    }
+    else
+    {
+        SetPositionX(GetPositionX() - GetMoveSpeed());
+
+        if (GetPositionX() < destinationX1)
+            movingForward = true;
+    }
 }
 
 void Enemy::HandleTimers(sf::Int32 diff_time)

@@ -80,6 +80,7 @@ void Bullet::Update()
 
 void Bullet::Draw(sf::Sprite* _spriteBullet /* = NULL */, bool updatePos /* = false */)
 {
+    return;
     sf::Sprite* spriteToDraw = _spriteBullet ? _spriteBullet : &spriteBullet;
 
     if (updatePos)

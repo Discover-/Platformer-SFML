@@ -13,14 +13,13 @@
 #include <SFML/OpenGL.hpp>
 #include <SFML/Window.hpp>
 #include "Windows.h"
-
 #include "game.h"
 #include "player.h"
 #include "collision.h"
 #include "shareddefines.h"
 #include "bullet.h"
 
-Player::Player(Game* _game, sf::RenderWindow* _window, float x, float y, sf::Sprite _spriteBody) : Unit(_game, _window, x, y, _spriteBody)
+Player::Player(Game* _game, sf::RenderWindow* _window, float x, float y, sf::Sprite _spriteBody, TypeId _typeId) : Unit(_game, _window, x, y, _spriteBody, _typeId)
 {
     for (int i = 0; i < 4; ++i)
         keysDown[i] = false;

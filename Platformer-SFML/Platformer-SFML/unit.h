@@ -17,13 +17,14 @@
 #include <SFML/Window.hpp>
 #include "Windows.h"
 #include "position.h"
+#include "shareddefines.h"
 
 class Game;
 
 class Unit : public Position
 {
     public:
-        Unit(Game* _game, sf::RenderWindow* _window, float x, float y, sf::Sprite _spriteBody);
+        Unit(Game* _game, sf::RenderWindow* _window, float x, float y, sf::Sprite _spriteBody, TypeId _typeId);
         ~Unit();
 
         virtual void Update();
@@ -51,7 +52,7 @@ class Unit : public Position
 
     private:
         Game* game;
-        //float posX, posY;
+        TypeId typeId;
         bool keysDown[4];
         sf::Sprite spriteBody;
         sf::RenderWindow* window;

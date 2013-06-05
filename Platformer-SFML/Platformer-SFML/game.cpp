@@ -15,6 +15,7 @@
 #include "Windows.h"
 #include "game.h"
 #include "player.h"
+#include "enemy.h"
 #include "bullet.h"
 #include "shareddefines.h"
 
@@ -36,7 +37,12 @@ int Game::Update()
     sf::Texture imageCharacter;
     imageCharacter.loadFromFile("tux_frame_0.png");
     sf::Sprite spriteCharacter(imageCharacter);
-    player = new Player(this, &window, 500, 70, spriteCharacter);
+    player = new Player(this, &window, 500, 70, spriteCharacter, TYPEID_PLAYER);
+
+    sf::Texture imageEnemy;
+    imageEnemy.loadFromFile("kit_frame_0.png");
+    sf::Sprite spriteEnemy(imageEnemy);
+    Enemy* enemy = new Enemy(this, &window, 50, 70, 400, 70, spriteEnemy, TYPEID_ENEMY);
 
     sf::Font font;
     font.loadFromFile("arial.ttf");
@@ -240,6 +246,7 @@ int Game::Update()
             view.setCenter(view.getCenter().x, window.getSize().y / 2.f);
 
         player->Update();
+        enemy->Update();
 
         for (std::vector<Bullet*>::iterator itr = allBullets.begin(); itr != allBullets.end(); ++itr)
         {

@@ -5,13 +5,19 @@
 #include "collision.h"
 #include "game.h"
 
-Unit::Unit(Game* _game, sf::RenderWindow* _window, float x, float y, sf::Sprite _spriteBody)
+Unit::Unit(Game* _game, sf::RenderWindow* _window, float x, float y, sf::Sprite _spriteBody, TypeId _typeId)
 {
+    sf::Vector2f vec = _spriteBody.getPosition();
+    float __x = vec.x;
+    float __y = vec.y;
+    sf::Texture const* tex = _spriteBody.getTexture();
+
     window = _window;
     SetPositionX(x);
     SetPositionY(y);
     game = _game;
     spriteBody = _spriteBody;
+    typeId = _typeId;
 
     for (int i = 0; i < 4; ++i)
         keysDown[i] = false;
@@ -20,7 +26,7 @@ Unit::Unit(Game* _game, sf::RenderWindow* _window, float x, float y, sf::Sprite 
     isFalling = true;
     fallSpeed = 0;
     jumpSpeed = 15;
-    moveSpeed = 10.0f;
+    moveSpeed = _typeId == TYPEID_PLAYER ? 10.0f : 3.0f;
 }
 
 void Unit::Update()

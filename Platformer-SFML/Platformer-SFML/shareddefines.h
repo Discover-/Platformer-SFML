@@ -1,5 +1,11 @@
-#include <cmath>
-#include <stdlib.h>
+#ifndef __SHAREDDEFINES_H
+#define __SHAREDDEFINES_H
+
+enum TypeId
+{
+    TYPEID_ENEMY    = 0,
+    TYPEID_PLAYER   = 1,
+};
 
 inline int urand(int min, int max)
 {
@@ -13,3 +19,4 @@ inline bool IsInRange(float currX, float xDest, float currY, float yDest, float 
 }
 
 //void Load
+#endif

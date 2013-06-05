@@ -8,7 +8,7 @@ class Game;
 class Enemy : public Unit
 {
     public:
-        Enemy(Game* _game, sf::RenderWindow* _window, float x, float y, sf::Sprite _spriteBody);
+        Enemy(Game* _game, sf::RenderWindow* _window, float x1, float y1, float x2, float y2, sf::Sprite _spriteBody, TypeId _typeId);
         ~Enemy();
 
         void Update();
@@ -16,7 +16,9 @@ class Enemy : public Unit
 
     private:
         Game* game;
-
+        float destinationX1, destinationY1;
+        float destinationX2, destinationY2;
+        bool movingForward;
 };
 
 #endif
