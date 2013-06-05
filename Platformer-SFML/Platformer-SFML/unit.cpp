@@ -23,7 +23,7 @@ Unit::Unit(Game* _game, sf::RenderWindow* _window, float x, float y, sf::Sprite 
         keysDown[i] = false;
 
     isJumping = false;
-    isFalling = true;
+    isFalling = false;
     fallSpeed = 0;
     jumpSpeed = 15;
     moveSpeed = _typeId == TYPEID_PLAYER ? 10.0f : 3.0f;

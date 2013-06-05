@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <set>
 #include <string>
+#include <fstream>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <SFML/Config.hpp>
@@ -18,6 +19,7 @@
 #include "enemy.h"
 #include "bullet.h"
 #include "shareddefines.h"
+#include "level.h"
 
 Game::Game()
 {
@@ -26,7 +28,7 @@ Game::Game()
 
 Game::~Game()
 {
-
+    
 }
 
 int Game::Update()
@@ -47,146 +49,46 @@ int Game::Update()
     sf::Font font;
     font.loadFromFile("Fonts/arial.ttf");
 
-    sf::Texture imageDirt[2];
-    sf::Texture imageGrass[2];
-    sf::Texture imageGround[2];
-    sf::Texture imageSky[4];
-    sf::Sprite spriteDirt[15][60];
-    sf::Sprite spriteGrass[12][60];
-    sf::Sprite spriteGround[12][60];
-    sf::Sprite spriteSky[12][60];
-
-    for (int i = 0; i < 4; ++i)
-    {
-        std::string numberInStr = std::to_string(long double(i));
-
-        if (i < 2)
-        {
-            imageDirt[i].loadFromFile("Graphics/Tiles/dirt_" + numberInStr + ".png");
-            imageGrass[i].loadFromFile("Graphics/Tiles/grass_" + numberInStr + ".png");
-            imageGround[i].loadFromFile("Graphics/Tiles/ground_" + numberInStr + ".png");
-        }
-
-        imageSky[i].loadFromFile("Graphics/Tiles/sky_" + numberInStr + ".png");
-    }
-
-    for (int i = 7; i < 9; ++i)
-        for (int j = 0; j < 60; ++j)
-            spriteGrass[i][j].setTexture(imageGrass[urand(0, 1)]);
-
-    for (int i = 9; i < 12; ++i)
-        for (int j = 0; j < 60; ++j)
-            spriteGround[i][j].setTexture(imageGround[urand(0, 1)]);
-
-    for (int i = 12; i < 15; ++i)
-        for (int j = 0; j < 60; ++j)
-            spriteDirt[i][j].setTexture(imageDirt[urand(0, 1)]);
-
-    for (int i = 0; i < 12; ++i)
-        for (int j = 0; j < 60; ++j)
-            spriteSky[i][j].setTexture(imageSky[(i > 7 || urand(0, 20) < 16) ? 3 : urand(0, 2)]);
-
-    float boxX = 0.0f, boxY = 0.0f;
-
-    //! Filling up skybox
-    for (int i = 0; i < 12; ++i)
-    {
-        for (int j = 0; j < 60; ++j)
-        {
-            spriteSky[i][j].setPosition(boxX, boxY);
-            boxX += 50.0f;
-        }
-
-        boxX = 0.0f;
-        boxY += 50.0f;
-    }
-
-    //! Filling up grass
-    boxX = 0.0f;
-    boxY = 250.0f;
-
-    for (int i = 7; i < 9; ++i)
-    {
-        for (int j = 0; j < 60; ++j)
-        {
-            spriteGrass[i][j].setPosition(boxX, boxY);
-            boxX += 50.0f;
-        }
-
-        boxX = 0.0f;
-        boxY += 50.0f;
-    }
-
-    //! Filling up ground
-    boxX = 0.0f;
-    boxY = 350.0f;
-
-    for (int i = 9; i < 12; ++i)
-    {
-        for (int j = 0; j < 60; ++j)
-        {
-            spriteGround[i][j].setPosition(boxX, boxY);
-            boxX += 50.0f;
-        }
-
-        boxX = 0.0f;
-        boxY += 50.0f;
-    }
-
-    //! Filling up dirt
-    boxX = 0.0f;
-    boxY = 500.0f;
-
-    for (int i = 12; i < 15; ++i)
-    {
-        for (int j = 0; j < 60; ++j)
-        {
-            spriteDirt[i][j].setPosition(boxX, boxY);
-            boxX += 50.0f;
-        }
-
-        boxX = 0.0f;
-        boxY += 50.0f;
-    }
-
     window.setFramerateLimit(30);
     window.setMouseCursorVisible(false);
 
     //! Sky blocks are not collidable.
-    for (int i = 0; i < 12; ++i)
-        for (int j = 0; j < 60; ++j)
-            gameObjects.push_back(spriteSky[i][j]);
+    //for (int i = 0; i < 12; ++i)
+    //    for (int j = 0; j < 60; ++j)
+    //        gameObjects.push_back(spriteSky[i][j]);
 
-    for (int i = 9; i < 12; ++i)
-    {
-        for (int j = 0; j < 60; ++j)
-        {
-            gameObjects.push_back(spriteGround[i][j]);
-            gameObjectsCollidable.push_back(spriteGround[i][j]);
-        }
-    }
+    //for (int i = 9; i < 12; ++i)
+    //{
+    //    for (int j = 0; j < 60; ++j)
+    //    {
+    //        gameObjects.push_back(spriteGround[i][j]);
+    //        gameObjectsCollidable.push_back(spriteGround[i][j]);
+    //    }
+    //}
 
-    for (int i = 7; i < 9; ++i)
-    {
-        for (int j = 0; j < 60; ++j)
-        {
-            gameObjects.push_back(spriteGrass[i][j]);
-            gameObjectsCollidable.push_back(spriteGrass[i][j]);
-        }
-    }
+    //for (int i = 7; i < 9; ++i)
+    //{
+    //    for (int j = 0; j < 60; ++j)
+    //    {
+    //        gameObjects.push_back(spriteGrass[i][j]);
+    //        gameObjectsCollidable.push_back(spriteGrass[i][j]);
+    //    }
+    //}
 
-    for (int i = 12; i < 15; ++i)
-    {
-        for (int j = 0; j < 60; ++j)
-        {
-            gameObjects.push_back(spriteDirt[i][j]);
-            gameObjectsCollidable.push_back(spriteDirt[i][j]);
-        }
-    }
+    //for (int i = 12; i < 15; ++i)
+    //{
+    //    for (int j = 0; j < 60; ++j)
+    //    {
+    //        gameObjects.push_back(spriteDirt[i][j]);
+    //        gameObjectsCollidable.push_back(spriteDirt[i][j]);
+    //    }
+    //}
 
     sf::View view(window.getDefaultView());
     sf::Clock clock;
     sf::Clock fpsClock;
+    Level* level1 = new Level(this);
+    level1->LoadMap("Levels/level1.txt");
 
     while (window.isOpen())
     {
@@ -203,21 +105,7 @@ int Game::Update()
 
         window.clear();
 
-        for (int i = 0; i < 12; ++i)
-            for (int j = 0; j < 60; ++j)
-                window.draw(spriteSky[i][j]);
-
-        for (int i = 9; i < 12; ++i)
-            for (int j = 0; j < 60; ++j)
-                window.draw(spriteGround[i][j]);
-
-        for (int i = 7; i < 9; ++i)
-            for (int j = 0; j < 60; ++j)
-                window.draw(spriteGrass[i][j]);
-
-        for (int i = 12; i < 15; ++i)
-            for (int j = 0; j < 60; ++j)
-                window.draw(spriteDirt[i][j]);
+        level1->DrawMap(window);
 
         float posX, posY;
         player->GetPosition(posX, posY);
@@ -283,7 +171,6 @@ int Game::Update()
             text2.setPosition(400 + player->GetPositionX(), 0.0f);
             window.draw(text2);
         }
-
         window.display();
     }
 
