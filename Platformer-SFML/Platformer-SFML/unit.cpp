@@ -117,7 +117,7 @@ void Unit::Shoot()
     //Bullet* bullet = new Bullet(game, window, posX + 50, posY + 20);
 
     sf::Texture imageBullet;
-    imageBullet.loadFromFile("tux_frame_0.png");
+    imageBullet.loadFromFile("Graphics/Other/bullet.png");
     sf::Sprite spriteBullet(imageBullet);
     Bullet* bullet = new Bullet(game, window, GetPositionX() + 150, GetPositionY() + 20, spriteBullet);
     game->AddBullet(bullet);

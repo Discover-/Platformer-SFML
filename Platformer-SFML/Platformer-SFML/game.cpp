@@ -35,17 +35,17 @@ int Game::Update()
     sf::RenderWindow window(sf::VideoMode(1000, 600), "Platformer C++ SFML");
 
     sf::Texture imageCharacter;
-    imageCharacter.loadFromFile("tux_frame_0.png");
+    imageCharacter.loadFromFile("Graphics/Characters/Tux/tux_from_linux-00-01.png");
     sf::Sprite spriteCharacter(imageCharacter);
     player = new Player(this, &window, 500, 70, spriteCharacter, TYPEID_PLAYER);
 
     sf::Texture imageEnemy;
-    imageEnemy.loadFromFile("kit_frame_0.png");
+    imageEnemy.loadFromFile("Graphics/Characters/Kit/frame_0.png");
     sf::Sprite spriteEnemy(imageEnemy);
     Enemy* enemy = new Enemy(this, &window, 50, 70, 400, 70, spriteEnemy, TYPEID_ENEMY);
 
     sf::Font font;
-    font.loadFromFile("arial.ttf");
+    font.loadFromFile("Fonts/arial.ttf");
 
     sf::Texture imageDirt[2];
     sf::Texture imageGrass[2];
@@ -56,16 +56,19 @@ int Game::Update()
     sf::Sprite spriteGround[12][60];
     sf::Sprite spriteSky[12][60];
 
-    for (int i = 0; i < 2; ++i)
+    for (int i = 0; i < 4; ++i)
     {
         std::string numberInStr = std::to_string(long double(i));
-        imageDirt[i].loadFromFile("dirt_" + numberInStr + ".png");
-        imageGrass[i].loadFromFile("grass_" + numberInStr + ".png");
-        imageGround[i].loadFromFile("ground_" + numberInStr + ".png");
-    }
 
-    for (int i = 0; i < 4; ++i)
-        imageSky[i].loadFromFile("sky_" + std::to_string(long double(i)) + ".png");
+        if (i < 2)
+        {
+            imageDirt[i].loadFromFile("Graphics/Tiles/dirt_" + numberInStr + ".png");
+            imageGrass[i].loadFromFile("Graphics/Tiles/grass_" + numberInStr + ".png");
+            imageGround[i].loadFromFile("Graphics/Tiles/ground_" + numberInStr + ".png");
+        }
+
+        imageSky[i].loadFromFile("Graphics/Tiles/sky_" + numberInStr + ".png");
+    }
 
     for (int i = 7; i < 9; ++i)
         for (int j = 0; j < 60; ++j)
@@ -255,7 +258,7 @@ int Game::Update()
                 (*itr)->Update();
 
                 //sf::Texture imageBullet;
-                //imageBullet.loadFromFile("bullet.png");
+                //imageBullet.loadFromFile("Graphics/Other/bullet.png");
                 //sf::Sprite spriteBullet;
                 //spriteBullet.setTexture(imageBullet);
                 //spriteBullet.setPosition((*itr)->GetPosXY());
@@ -268,18 +271,19 @@ int Game::Update()
 
         float fps = 1 / fpsClock.getElapsedTime().asSeconds();
 
-        if (fps > 30)
-        {
-            sf::Text text("Actual FPS: 30", font, 15);
-            text.setColor(sf::Color::Black);
-            text.setPosition(400 + player->GetPositionX(), 0.0f);
-            window.draw(text);
-        }
-
         sf::Text text("FPS: " + std::to_string(long double(int(fps))), font, 15);
         text.setColor(sf::Color::Black);
         text.setPosition(436 + player->GetPositionX(), 15.0f);
         window.draw(text);
+
+        if (fps > 30)
+        {
+            sf::Text text2("Actual FPS: 30", font, 15);
+            text2.setColor(sf::Color::Black);
+            text2.setPosition(400 + player->GetPositionX(), 0.0f);
+            window.draw(text2);
+        }
+
         window.display();
     }
 
