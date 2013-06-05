@@ -67,12 +67,12 @@ void Unit::Update()
 
 void Unit::Draw(sf::Sprite* _spriteBody /* = NULL */, bool updatePos /* = false */)
 {
-    sf::Sprite* spriteToDraw = _spriteBody ? _spriteBody : &spriteBody;
+    sf::Sprite spriteToDraw = _spriteBody ? *_spriteBody : spriteBody;
 
     if (updatePos)
-        spriteToDraw->setPosition(GetPositionX(), GetPositionY());
+        spriteToDraw.setPosition(GetPositionX(), GetPositionY());
 
-    window->draw(*spriteToDraw);
+    window->draw(spriteToDraw);
 }
 
 void Unit::HandleTimers(sf::Int32 diff_time)
