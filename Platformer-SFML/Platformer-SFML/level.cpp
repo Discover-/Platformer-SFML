@@ -49,6 +49,14 @@ void Level::LoadMap(char const* filename)
             tileInfo.posX = j * 50.0f;
             tileInfo.posY = i * 50.0f;
             sprites.push_back(tileInfo);
+
+            sf::Sprite tmpSprite(image);
+            tmpSprite.setPosition(j * 50.0f, i * 50.0f);
+
+            if (tilesInfoLayers[i][j] != 9 && tilesInfoLayers[i][j] != 0)
+                game->AddGameObjectCollidable(tmpSprite);
+
+            game->AddGameObject(tmpSprite);
         }
     }
 }

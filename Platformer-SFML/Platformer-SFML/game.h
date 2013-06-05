@@ -14,6 +14,8 @@ class Game
         bool IsRunning() { return isRunning; }
         std::vector<sf::Sprite> GetGameObjects() { return gameObjects; }
         std::vector<sf::Sprite> GetGameObjectsCollidable() { return gameObjectsCollidable; }
+        void AddGameObject(sf::Sprite gameobject) { gameObjects.push_back(gameobject); }
+        void AddGameObjectCollidable(sf::Sprite gameobject) { gameObjectsCollidable.push_back(gameobject); }
         void HandleTimers(sf::Int32 diff_time);
         Player* GetPlayer() { return player; }
         void AddBullet(Bullet* bullet) { allBullets.push_back(bullet); }
