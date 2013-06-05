@@ -4,12 +4,6 @@
 class Player;
 class Bullet;
 
-struct TileInfo
-{
-    sf::Texture image;
-    float posX, posY;
-};
-
 class Game
 {
     public:

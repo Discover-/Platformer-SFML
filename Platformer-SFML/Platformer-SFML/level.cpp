@@ -15,17 +15,12 @@ Level::~Level()
     
 }
 
-void Level::LoadMap(char const* filename, sf::RenderWindow &window)
+void Level::LoadMap(char const* filename)
 {
+    std::vector<std::vector<int>> tilesInfoLayers;
+    std::vector<int> tilesInfoBlocks;
     std::ifstream openfile(filename);
     std::string line;
-    std::vector<std::pair<sf::Image, sf::Sprite>> tempVector;
-    //sf::Sprite* sprite;
-    sf::Texture image;
-
-    int layer = 0;
-
-    std::cout << "Level 1 design: " << std::endl;
 
     while (std::getline(openfile, line))
     {
@@ -33,14 +28,27 @@ void Level::LoadMap(char const* filename, sf::RenderWindow &window)
         {
             if (line[i] != ' ')
             {
-                std::cout << line[i] << " - ";
-                std::string fileName = GetTileFilename(line[i]);
-
-                image.loadFromFile(fileName);
-                sf::Sprite sprite(image);
-                sprite.setTexture(image);
-                sprite.setPosition(layer * 50.0f, i * 50.0f);
+                char str = line[i];
+                tilesInfoBlocks.push_back(atoi(&str));
             }
+        }
+
+        tilesInfoLayers.push_back(tilesInfoBlocks);
+        tilesInfoBlocks.clear();
+    }
+
+    for (int i = 0; i < tilesInfoLayers.size(); i++)
+    {
+        for (int j = 0; j < tilesInfoLayers[i].size(); j++)
+        {
+            std::string fileName = GetTileFilename(tilesInfoLayers[i][j]);
+            sf::Texture image;
+            image.loadFromFile(fileName);
+            TileInfo tileInfo;
+            tileInfo.image = image;
+            tileInfo.posX = j * 50.0f;
+            tileInfo.posY = i * 50.0f;
+            sprites.push_back(tileInfo);
         }
     }
 }
@@ -48,35 +56,15 @@ void Level::LoadMap(char const* filename, sf::RenderWindow &window)
 void Level::DrawMap(sf::RenderWindow &window)
 {
     Player* player = game->GetPlayer();
-    //window.draw(*map[5][5]);
 
-    //for (int i = 0; i < 100; ++i)
-    //    for (int j = 0; j < 100; ++j)
-    //        if (sf::Sprite* sprite = map[i][j])
-    //            window.draw(*sprite);
-
-    //for (std::vector<sf::Sprite>::iterator itr = mapVector.begin(); itr != mapVector.end(); ++itr)
+    for (std::vector<TileInfo>::iterator itr = sprites.begin(); itr != sprites.end(); ++itr)
     {
         //! ONLY draw the images if the player is within visibility distance, else there's no point in wasting performance.
-        //if (IsInRange(player->GetPositionX(), j * 50.0f, player->GetPositionY(), i * 50.0f, 600.0f))
+        if (IsInRange(player->GetPositionX(), (*itr).posX, player->GetPositionY(), (*itr).posY, 1000.0f))
         {
-            //sprite.setPosition(j * 50.0f, i * 50.0f);
-            //window.draw((*itr));
+            sf::Sprite sprite((*itr).image);
+            sprite.setPosition((*itr).posX, (*itr).posY);
+            window.draw(sprite);
         }
     }
-
-    //for (int i = 0; i < mapVector.size(); i++)
-    //{
-    //    for (int j = 0; j < mapVector[i].size(); j++)
-    //    {
-    //        //! ONLY draw the images if the player is within visibility distance, else there's no point in wasting performance.
-    //        if (IsInRange(player->GetPositionX(), j * 50.0f, player->GetPositionY(), i * 50.0f, 600.0f))
-    //        {
-    //            image.loadFromFile(fileArray[i][j]);
-    //            sprite.setTexture(image);
-    //            sprite.setPosition(j * 50.0f, i * 50.0f);
-    //            window.draw(sprite);
-    //        }
-    //    }
-    //}
 }
