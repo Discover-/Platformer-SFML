@@ -15,11 +15,17 @@ Level::~Level()
     
 }
 
-void Level::LoadMap(const char* filename)
+void Level::LoadMap(char const* filename, sf::RenderWindow &window)
 {
     std::ifstream openfile(filename);
     std::string line;
-    std::vector<int> tempVector;
+    std::vector<std::pair<sf::Image, sf::Sprite>> tempVector;
+    //sf::Sprite* sprite;
+    sf::Texture image;
+
+    int layer = 0;
+
+    std::cout << "Level 1 design: " << std::endl;
 
     while (std::getline(openfile, line))
     {
@@ -27,49 +33,13 @@ void Level::LoadMap(const char* filename)
         {
             if (line[i] != ' ')
             {
-                char value[1] = { line[i] };
-                tempVector.push_back(atoi(value));
-            }
-        }
+                std::cout << line[i] << " - ";
+                std::string fileName = GetTileFilename(line[i]);
 
-        mapVector.push_back(tempVector);
-        tempVector.clear();
-    }
-
-    for (int i = 0; i < mapVector.size(); i++)
-    {
-        for (int j = 0; j < mapVector[i].size(); j++)
-        {
-            std::string randNumb = std::to_string(long double(urand(0, 1)));
-
-            switch (mapVector[i][j])
-            {
-                case 9:
-                    fileArray[i][j] = "Graphics/Tiles/sky_3.png"; //! Empty sky block
-                    break;
-                case 0:
-                    fileArray[i][j] = "Graphics/Tiles/sky_" + std::to_string(long double(urand(0, 20) < 16 ? 3 : urand(0, 2))) + ".png";
-                    break;
-                case 1:
-                    fileArray[i][j] = "Graphics/Tiles/dirt_" + randNumb + ".png";
-                    break;
-                case 2:
-                    fileArray[i][j] = "Graphics/Tiles/dirt_rock_" + randNumb + ".png";
-                    break;
-                case 3:
-                    fileArray[i][j] = "Graphics/Tiles/grass_" + randNumb + ".png";
-                    break;
-                case 4:
-                    fileArray[i][j] = "Graphics/Tiles/grass_ontop_" + randNumb + ".png";
-                    break;
-                case 5:
-                    fileArray[i][j] = "Graphics/Tiles/ground_" + randNumb + ".png";
-                    break;
-                case 6:
-                    fileArray[i][j] = "Graphics/Tiles/sand_" + randNumb + ".png";
-                    break;
-                default:
-                    return;
+                image.loadFromFile(fileName);
+                sf::Sprite sprite(image);
+                sprite.setTexture(image);
+                sprite.setPosition(layer * 50.0f, i * 50.0f);
             }
         }
     }
@@ -77,22 +47,36 @@ void Level::LoadMap(const char* filename)
 
 void Level::DrawMap(sf::RenderWindow &window)
 {
-    sf::Sprite sprite;
-    sf::Texture image;
     Player* player = game->GetPlayer();
+    //window.draw(*map[5][5]);
 
-    for (int i = 0; i < mapVector.size(); i++)
+    //for (int i = 0; i < 100; ++i)
+    //    for (int j = 0; j < 100; ++j)
+    //        if (sf::Sprite* sprite = map[i][j])
+    //            window.draw(*sprite);
+
+    //for (std::vector<sf::Sprite>::iterator itr = mapVector.begin(); itr != mapVector.end(); ++itr)
     {
-        for (int j = 0; j < mapVector[i].size(); j++)
+        //! ONLY draw the images if the player is within visibility distance, else there's no point in wasting performance.
+        //if (IsInRange(player->GetPositionX(), j * 50.0f, player->GetPositionY(), i * 50.0f, 600.0f))
         {
-            //! ONLY draw the images if the player is within visibility distance, else there's no point in wasting performance.
-            if (IsInRange(player->GetPositionX(), j * 50.0f, player->GetPositionY(), i * 50.0f, 600.0f))
-            {
-                image.loadFromFile(fileArray[i][j]);
-                sprite.setTexture(image);
-                sprite.setPosition(j * 50.0f, i * 50.0f);
-                window.draw(sprite);
-            }
+            //sprite.setPosition(j * 50.0f, i * 50.0f);
+            //window.draw((*itr));
         }
     }
+
+    //for (int i = 0; i < mapVector.size(); i++)
+    //{
+    //    for (int j = 0; j < mapVector[i].size(); j++)
+    //    {
+    //        //! ONLY draw the images if the player is within visibility distance, else there's no point in wasting performance.
+    //        if (IsInRange(player->GetPositionX(), j * 50.0f, player->GetPositionY(), i * 50.0f, 600.0f))
+    //        {
+    //            image.loadFromFile(fileArray[i][j]);
+    //            sprite.setTexture(image);
+    //            sprite.setPosition(j * 50.0f, i * 50.0f);
+    //            window.draw(sprite);
+    //        }
+    //    }
+    //}
 }

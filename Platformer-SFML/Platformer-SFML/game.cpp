@@ -87,8 +87,44 @@ int Game::Update()
     sf::View view(window.getDefaultView());
     sf::Clock clock;
     sf::Clock fpsClock;
-    Level* level1 = new Level(this);
-    level1->LoadMap("Levels/level1.txt");
+
+    //Level* level1 = new Level(this);
+
+    std::vector<std::vector<int>> tilesInfoLayers;
+    std::vector<int> tilesInfoBlocks;
+    std::ifstream openfile("Levels/level1.txt");
+    std::string line;
+    std::vector<TileInfo> sprites;
+
+    while (std::getline(openfile, line))
+    {
+        for (int i = 0; i < line.length(); i++)
+        {
+            if (line[i] != ' ')
+            {
+                char str = line[i];
+                tilesInfoBlocks.push_back(atoi(&str));
+            }
+        }
+
+        tilesInfoLayers.push_back(tilesInfoBlocks);
+        tilesInfoBlocks.clear();
+    }
+
+    for (int i = 0; i < tilesInfoLayers.size(); i++)
+    {
+        for (int j = 0; j < tilesInfoLayers[i].size(); j++)
+        {
+            std::string fileName = GetTileFilename(tilesInfoLayers[i][j]);
+            sf::Texture image;
+            image.loadFromFile(fileName);
+            TileInfo tileInfo;
+            tileInfo.image = image;
+            tileInfo.posX = j * 50.0f;
+            tileInfo.posY = i * 50.0f;
+            sprites.push_back(tileInfo);
+        }
+    }
 
     while (window.isOpen())
     {
@@ -105,7 +141,12 @@ int Game::Update()
 
         window.clear();
 
-        level1->DrawMap(window);
+        for (std::vector<TileInfo>::iterator itr = sprites.begin(); itr != sprites.end(); ++itr)
+        {
+            sf::Sprite sprite((*itr).image);
+            sprite.setPosition((*itr).posX, (*itr).posY);
+            window.draw(sprite);
+        }
 
         float posX, posY;
         player->GetPosition(posX, posY);
@@ -180,4 +221,5 @@ int Game::Update()
 void Game::HandleTimers(sf::Int32 diff_time)
 {
     player->HandleTimers(diff_time);
+    //enemy->HandleTimers(diff_time);
 }

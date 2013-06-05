@@ -18,5 +18,34 @@ inline bool IsInRange(float currX, float xDest, float currY, float yDest, float 
             (currX > xDest - distance && currX < xDest + distance && currY > yDest - distance && currY < yDest + distance));
 }
 
+inline std::string GetTileFilename(int tileId)
+{
+    std::string randNumb = std::to_string(long double(urand(0, 1)));
+
+    switch (tileId)
+    {
+        case 9:
+            return "Graphics/Tiles/sky_3.png"; //! Empty sky block
+        case 0:
+            return "Graphics/Tiles/sky_" + std::to_string(long double(urand(0, 20) < 16 ? 3 : urand(0, 2))) + ".png";
+        case 1:
+            return "Graphics/Tiles/dirt_" + randNumb + ".png";
+        case 2:
+            return "Graphics/Tiles/dirt_rock_" + randNumb + ".png";
+        case 3:
+            return "Graphics/Tiles/grass_" + randNumb + ".png";
+        case 4:
+            return "Graphics/Tiles/grass_ontop_" + randNumb + ".png";
+        case 5:
+            return "Graphics/Tiles/ground_" + randNumb + ".png";
+        case 6:
+            return "Graphics/Tiles/sand_" + randNumb + ".png";
+        default:
+            break;
+    }
+
+    return "";
+}
+
 //void Load
 #endif
