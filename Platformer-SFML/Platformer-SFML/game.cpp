@@ -210,15 +210,16 @@ int Game::Update()
             for (int j = 0; j < 60; ++j)
                 window.draw(spriteDirt[i][j]);
 
-        sf::Vector2f pos = player->GetPosXY();
+        float posX, posY;
+        player->GetPosition(posX, posY);
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-            if (!player->CollidesWithGameobjects(player->GetPosX() - 4.0f, player->GetPosY() + 5.0f))
-                player->SetPosXY(pos.x -= player->GetMoveSpeed(), pos.y);
+            if (!player->CollidesWithGameobjects(player->GetPositionX() - 4.0f, player->GetPositionY() + 5.0f))
+                player->SetPositionXY(posX -= player->GetMoveSpeed(), posY);
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-            if (!player->CollidesWithGameobjects(player->GetPosX() + 4.0f, player->GetPosY() + 5.0f))
-                player->SetPosXY(pos.x += player->GetMoveSpeed(), pos.y);
+            if (!player->CollidesWithGameobjects(player->GetPositionX() + 4.0f, player->GetPositionY() + 5.0f))
+                player->SetPositionXY(posX += player->GetMoveSpeed(), posY);
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
             if (!player->IsJumping() && !player->IsFalling())
@@ -228,13 +229,13 @@ int Game::Update()
             if (player->CanShoot())
                 player->Shoot();
 
-        if (player->GetPosX() > window.getSize().x / 2.f)
-            view.setCenter(player->GetPosX(), view.getCenter().y);
+        if (player->GetPositionX() > window.getSize().x / 2.f)
+            view.setCenter(player->GetPositionX(), view.getCenter().y);
         else
             view.setCenter(window.getSize().x / 2.f, view.getCenter().y);
 
-        if (player->GetPosY() > window.getSize().y / 2.f)
-            view.setCenter(view.getCenter().x, player->GetPosY());
+        if (player->GetPositionY() > window.getSize().y / 2.f)
+            view.setCenter(view.getCenter().x, player->GetPositionY());
         else
             view.setCenter(view.getCenter().x, window.getSize().y / 2.f);
 
@@ -258,19 +259,19 @@ int Game::Update()
 
         window.setView(view);
 
-        int fps = 1 / fpsClock.getElapsedTime().asSeconds();
+        float fps = 1 / fpsClock.getElapsedTime().asSeconds();
 
         if (fps > 30)
         {
             sf::Text text("Actual FPS: 30", font, 15);
             text.setColor(sf::Color::Black);
-            text.setPosition(400 + player->GetPosX(), 0.0f);
+            text.setPosition(400 + player->GetPositionX(), 0.0f);
             window.draw(text);
         }
 
-        sf::Text text("FPS: " + std::to_string(long double(fps)), font, 15);
+        sf::Text text("FPS: " + std::to_string(long double(int(fps))), font, 15);
         text.setColor(sf::Color::Black);
-        text.setPosition(436 + player->GetPosX(), 15.0f);
+        text.setPosition(436 + player->GetPositionX(), 15.0f);
         window.draw(text);
         window.display();
     }
