@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
-//#include <cmath>
 #include <cstring>
 #include <map>
 #include <time.h>
