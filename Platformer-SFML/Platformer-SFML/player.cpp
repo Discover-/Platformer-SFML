@@ -19,8 +19,8 @@
 #include "shareddefines.h"
 #include "bullet.h"
 
-Player::Player(Game* _game, sf::RenderWindow* _window, float x, float y, std::vector<std::pair<int, sf::Texture>> _spriteCharacters, TypeId _typeId, int _life, int _totalMoveFrames, int _frameInterval, bool _canFly) :
-Unit(_game, _window, x, y, _spriteCharacters, _typeId, _life, _totalMoveFrames, _frameInterval, _canFly)
+Player::Player(Game* _game, sf::RenderWindow* _window, float x, float y, std::vector<std::pair<int, sf::Texture>> _spritesLeft, std::vector<std::pair<int, sf::Texture>> _spritesRight, TypeId _typeId, int _life, int _totalMoveFrames, int _frameInterval, bool _canFly) :
+Unit(_game, _window, x, y, _spritesLeft, _spritesRight, _typeId, _life, _totalMoveFrames, _frameInterval, _canFly)
 {
     for (int i = 0; i < 4; ++i)
         keysDown[i] = false;
@@ -40,6 +40,7 @@ void Player::Update()
         if (!CollidesWithGameobjects(GetPositionX() - GetMoveSpeed(), GetPositionY()))
         {
             SetPosition(GetPositionX() - GetMoveSpeed(), GetPositionY());
+            SetIsMovingToLeft(false);
             SetIsMoving(true);
         }
     }
@@ -49,6 +50,7 @@ void Player::Update()
         if (!CollidesWithGameobjects(GetPositionX() + GetMoveSpeed(), GetPositionY()))
         {
             SetPosition(GetPositionX() + GetMoveSpeed(), GetPositionY());
+            SetIsMovingToLeft(true);
             SetIsMoving(true);
         }
     }

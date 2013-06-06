@@ -24,7 +24,7 @@ class Game;
 class Unit : public Position
 {
     public:
-        Unit(Game* _game, sf::RenderWindow* _window, float x, float y, std::vector<std::pair<int, sf::Texture>> _spriteBodies, TypeId _typeId, int _life, int _totalMoveFrames, int _frameInterval, bool _canFly);
+        Unit(Game* _game, sf::RenderWindow* _window, float x, float y, std::vector<std::pair<int, sf::Texture>> _spritesLeft, std::vector<std::pair<int, sf::Texture>> _spritesRight, TypeId _typeId, int _life, int _totalMoveFrames, int _frameInterval, bool _canFly);
         ~Unit();
 
         virtual void Update();
@@ -49,6 +49,10 @@ class Unit : public Position
         float GetMoveSpeed() { return moveSpeed; }
         void SetMoveSpeed(float val) { moveSpeed = val; }
 
+        int GetMoveFrame();
+        bool IsMovingToLeft() { return movingToLeft; }
+        void SetIsMovingToLeft(bool val) { movingToLeft = val; }
+
         /* MECHANICS */
         void Shoot();
         bool CanShoot() { return canShoot; }
@@ -69,7 +73,8 @@ class Unit : public Position
         Game* game;
         TypeId typeId;
         bool isAlive;
-        std::vector<std::pair<int, sf::Texture>> spriteBodies;
+        std::vector<std::pair<int, sf::Texture>> spriteBodiesLeft;
+        std::vector<std::pair<int, sf::Texture>> spriteBodiesRight;
         sf::RenderWindow* window;
 
         /* MOVEMENT */
@@ -78,6 +83,7 @@ class Unit : public Position
         float moveSpeed;
         int moveFrame, totalMoveFrames, frameInterval, frameIntervalStore;
         bool canFly;
+        bool movingToLeft;
 
         /* MECHANICS */
         bool canShoot;

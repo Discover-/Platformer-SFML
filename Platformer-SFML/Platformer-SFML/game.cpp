@@ -39,28 +39,37 @@ int Game::Update()
     //window.setKeyRepeatEnabled(false);
 
     sf::Texture imageCharacter;
-    std::vector<std::pair<int, sf::Texture>> spriteCharacters;
+    std::vector<std::pair<int, sf::Texture>> spriteCharactersLeft;
+    std::vector<std::pair<int, sf::Texture>> spriteCharactersRight;
 
-    for (int i = 0; i < 10; ++i)
+    for (int j = 0; j < 2; ++j)
     {
-        imageCharacter.loadFromFile("Graphics/Character/walk_" + std::to_string(long double(i)) + ".png");
-        spriteCharacters.push_back(std::make_pair(i, imageCharacter));
+        for (int i = 0; i < 10; ++i)
+        {
+            std::string str = "Graphics/Character/walk_" + std::to_string(long double(i)) + "_" + (j ? "l" : "r") + ".png";
+            imageCharacter.loadFromFile("Graphics/Character/walk_" + std::to_string(long double(i)) + "_" + (j ? "l" : "r") + ".png");
+            j ? spriteCharactersRight.push_back(std::make_pair(i, imageCharacter)) : spriteCharactersLeft.push_back(std::make_pair(i, imageCharacter));
+        }
     }
 
-    player = new Player(this, &window, 500, 70, spriteCharacters, TYPEID_PLAYER, 5, 9, 80, false);
+    player = new Player(this, &window, 500, 70, spriteCharactersLeft, spriteCharactersRight, TYPEID_PLAYER, 5, 9, 30, false);
 
     sf::Texture imageEnemy;
-    std::vector<std::pair<int, sf::Texture>> spriteEnemies;
+    std::vector<std::pair<int, sf::Texture>> spriteEnemiesLeft;
+    std::vector<std::pair<int, sf::Texture>> spriteEnemiesRight;
 
-    for (int i = 0; i < 2; ++i)
+    for (int j = 0; j < 2; ++j)
     {
-        imageEnemy.loadFromFile("Graphics/Enemies/fly_" + std::string(i ? "fly" : "normal") + ".png");
-        spriteEnemies.push_back(std::make_pair(i, imageEnemy));
+        for (int i = 0; i < 2; ++i)
+        {
+            imageEnemy.loadFromFile("Graphics/Enemies/fly_" + std::string(i ? "fly_" : "normal_") + (j ? "l" : "r") + ".png");
+            j ? spriteEnemiesRight.push_back(std::make_pair(i, imageEnemy)) : spriteEnemiesLeft.push_back(std::make_pair(i, imageEnemy));
+        }
     }
 
-    Enemy* enemy1 = new Enemy(this, &window, 166.0f, 345.0f, 400.0f, 345.0f, spriteEnemies, TYPEID_ENEMY, 3, 1, 80, true);
-    Enemy* enemy2 = new Enemy(this, &window, 445.0f, 190.0f, 650.0f, 190.0f, spriteEnemies, TYPEID_ENEMY, 3, 1, 80, true);
-    Enemy* enemy3 = new Enemy(this, &window, 845.0f, 240.0f, 1250.0f, 250.0f, spriteEnemies, TYPEID_ENEMY, 3, 1, 80, true);
+    Enemy* enemy1 = new Enemy(this, &window, 166.0f, 345.0f, 400.0f, 345.0f, spriteEnemiesLeft, spriteEnemiesRight, TYPEID_ENEMY, 3, 1, 80, true);
+    Enemy* enemy2 = new Enemy(this, &window, 445.0f, 190.0f, 650.0f, 190.0f, spriteEnemiesLeft, spriteEnemiesRight, TYPEID_ENEMY, 3, 1, 80, true);
+    Enemy* enemy3 = new Enemy(this, &window, 845.0f, 240.0f, 1250.0f, 250.0f, spriteEnemiesLeft, spriteEnemiesRight, TYPEID_ENEMY, 3, 1, 80, true);
     allEnemies.push_back(enemy1);
     allEnemies.push_back(enemy2);
     allEnemies.push_back(enemy3);
@@ -183,10 +192,8 @@ int Game::Update()
                 }
                 
                 sf::Text textPaused("Paused", font, 80);
-                sf::FloatRect textRect = textPaused.getLocalBounds();
                 textPaused.setColor(sf::Color::White);
-                textPaused.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
-                textPaused.setPosition(sf::Vector2f(500.0f, 300.0f));
+                textPaused.setPosition(view.getCenter().x, view.getCenter().y);
                 window.draw(textPaused);
                 break;
             }

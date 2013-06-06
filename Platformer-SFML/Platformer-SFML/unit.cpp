@@ -5,13 +5,14 @@
 #include "collision.h"
 #include "game.h"
 
-Unit::Unit(Game* _game, sf::RenderWindow* _window, float x, float y, std::vector<std::pair<int, sf::Texture>> _spriteBodies, TypeId _typeId, int _life, int _totalMoveFrames, int _frameInterval, bool _canFly)
+Unit::Unit(Game* _game, sf::RenderWindow* _window, float x, float y, std::vector<std::pair<int, sf::Texture>> _spritesLeft, std::vector<std::pair<int, sf::Texture>> _spritesRight, TypeId _typeId, int _life, int _totalMoveFrames, int _frameInterval, bool _canFly)
 {
     window = _window;
     SetPositionX(x);
     SetPositionY(y);
     game = _game;
-    spriteBodies = _spriteBodies;
+    spriteBodiesLeft = _spritesLeft;
+    spriteBodiesRight = _spritesRight;
     typeId = _typeId;
     isJumping = false;
     isMoving = _typeId == TYPEID_ENEMY;
@@ -196,13 +197,28 @@ void Unit::BounceAway(bool toLeft)
 
 sf::Sprite Unit::GetSpriteBody()
 {
-    for (std::vector<std::pair<int, sf::Texture>>::iterator itr = spriteBodies.begin(); itr != spriteBodies.end(); ++itr)
+    if (movingToLeft)
     {
-        if ((*itr).first == moveFrame)
+        for (std::vector<std::pair<int, sf::Texture>>::iterator itr = spriteBodiesLeft.begin(); itr != spriteBodiesLeft.end(); ++itr)
         {
-            sf::Sprite sprite((*itr).second);
-            sprite.setPosition(GetPositionX(), GetPositionY());
-            return sprite;
+            if ((*itr).first == moveFrame)
+            {
+                sf::Sprite sprite((*itr).second);
+                sprite.setPosition(GetPositionX(), GetPositionY());
+                return sprite;
+            }
+        }
+    }
+    else
+    {
+        for (std::vector<std::pair<int, sf::Texture>>::iterator itr = spriteBodiesRight.begin(); itr != spriteBodiesRight.end(); ++itr)
+        {
+            if ((*itr).first == moveFrame)
+            {
+                sf::Sprite sprite((*itr).second);
+                sprite.setPosition(GetPositionX(), GetPositionY());
+                return sprite;
+            }
         }
     }
 

@@ -20,14 +20,13 @@
 #include "bullet.h"
 #include "unit.h"
 
-Enemy::Enemy(Game* _game, sf::RenderWindow* _window, float x1, float y1, float x2, float y2, std::vector<std::pair<int, sf::Texture>> _spriteEnemies, TypeId _typeId, int _life, int _totalMoveFrames, int _frameInterval, bool _canFly) :
-Unit(_game, _window, x1, y1, _spriteEnemies, _typeId, _life, _totalMoveFrames, _frameInterval, _canFly)
+Enemy::Enemy(Game* _game, sf::RenderWindow* _window, float x1, float y1, float x2, float y2, std::vector<std::pair<int, sf::Texture>> _spritesLeft, std::vector<std::pair<int, sf::Texture>> _spritesRight, TypeId _typeId, int _life, int _totalMoveFrames, int _frameInterval, bool _canFly) :
+Unit(_game, _window, x1, y1, _spritesLeft, _spritesRight, _typeId, _life, _totalMoveFrames, _frameInterval, _canFly)
 {
     destinationX1 = x1;
     destinationY1 = y1;
     destinationX2 = x2;
     destinationY2 = y2;
-    movingForward = true;
 }
 
 void Enemy::Update()
@@ -36,21 +35,21 @@ void Enemy::Update()
 
     if (CollidesWithGameobjects(GetPositionX() + GetMoveSpeed(), GetPositionY()))
         return;
-        //movingForward = !movingForward;
+        //movingToLeft = !movingToLeft;
 
-    if (movingForward)
+    if (IsMovingToLeft())
     {
         SetPosition(GetPositionX() + GetMoveSpeed(), GetPositionY());
 
         if (GetPositionX() > destinationX2)
-            movingForward = false;
+            SetIsMovingToLeft(false);
     }
     else
     {
         SetPosition(GetPositionX() - GetMoveSpeed(), GetPositionY());
 
         if (GetPositionX() < destinationX1)
-            movingForward = true;
+            SetIsMovingToLeft(true);
     }
 }
 
