@@ -183,7 +183,7 @@ void Unit::Shoot()
 
     sf::Texture imageBullet;
     imageBullet.loadFromFile("Graphics/Other/bullet.png");
-    Bullet* bullet = new Bullet(game, window, GetPositionX() + 50, GetPositionY() + 20, imageBullet);
+    Bullet* bullet = new Bullet(game, window, movingToLeft ? GetPositionX() + 50.0f : GetPositionX() - 10.0f, GetPositionY() + 20.0f, imageBullet, movingToLeft);
     game->AddBullet(bullet);
 }
 

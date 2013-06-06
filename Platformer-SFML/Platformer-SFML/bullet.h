@@ -19,7 +19,7 @@ class Game;
 class Bullet
 {
     public:
-        Bullet(Game* _game, sf::RenderWindow* _window, float _x, float _y, sf::Texture _imageBullet, float _velocity = 5);
+        Bullet(Game* _game, sf::RenderWindow* _window, float _x, float _y, sf::Texture _imageBullet, bool _movingToLeft, float _velocity = 5);
         ~Bullet();
 
         void Update();
@@ -44,6 +44,7 @@ class Bullet
         bool isRemoved;
         float posX, posY;
         float velocity;
+        bool movingToLeft;
         sf::RenderWindow* window;
         sf::Texture imageBullet;
 };

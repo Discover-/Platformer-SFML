@@ -4,7 +4,7 @@
 #include "game.h"
 #include "shareddefines.h"
 
-Bullet::Bullet(Game* _game, sf::RenderWindow* _window, float _x, float _y, sf::Texture _imageBullet, float _velocity /* = 5 */)
+Bullet::Bullet(Game* _game, sf::RenderWindow* _window, float _x, float _y, sf::Texture _imageBullet, bool _movingToLeft, float _velocity /* = 5 */)
 {
     if (!_game)
         return;
@@ -16,6 +16,7 @@ Bullet::Bullet(Game* _game, sf::RenderWindow* _window, float _x, float _y, sf::T
     posY = _y;
     window = _window;
     imageBullet = _imageBullet;
+    movingToLeft = _movingToLeft;
 }
 
 Bullet::~Bullet()
@@ -33,7 +34,7 @@ void Bullet::Update()
     bool isPaused = GAME_STATE_PAUSED_DRAWING(game->GetGameState());
 
     if (!isPaused)
-        posX += velocity;
+        posX = movingToLeft ? posX + velocity : posX - velocity;
 
     sf::Sprite spriteBullet(imageBullet);
     spriteBullet.setPosition(posX, posY);
