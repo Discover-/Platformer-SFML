@@ -111,10 +111,21 @@ bool Unit::CollidesWithGameobjects(float newPosX /* = 0.0f */, float newPosY /* 
     if (newPosX != 0.0f && newPosY != 0.0f)
         charSprite.setPosition(newPosX, newPosY);
 
+    sf::Vector2f spritePos = charSprite.getPosition();
+    sf::FloatRect spriteRect = charSprite.getGlobalBounds();
+
     std::vector<sf::Sprite> gameObjects = game->GetGameObjectsCollidable();
     for (std::vector<sf::Sprite>::iterator itr = gameObjects.begin(); itr != gameObjects.end(); ++itr)
-        if (Collision::PixelPerfectTest(charSprite, (*itr)))
+    {
+        //if (Collision::PixelPerfectTest(charSprite, (*itr)))
+
+        sf::Vector2f gameobjectPos = (*itr).getPosition();
+        sf::FloatRect gameobjectRect = (*itr).getGlobalBounds();
+
+        if (WillCollision(spritePos.x, spritePos.y, spriteRect.height, spriteRect.width, gameobjectPos.x, gameobjectPos.y, gameobjectRect.height, gameobjectRect.width))
             return true;
+
+    }
 
     return false;
 }
