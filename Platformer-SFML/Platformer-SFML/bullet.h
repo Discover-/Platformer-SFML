@@ -19,7 +19,7 @@ class Game;
 class Bullet
 {
     public:
-        Bullet(Game* _game, sf::RenderWindow* _window, float _x, float _y, sf::Sprite _spriteBullet, float _velocity = 5);
+        Bullet(Game* _game, sf::RenderWindow* _window, float _x, float _y, sf::Texture _imageBullet, float _velocity = 5);
         ~Bullet();
 
         void Update();
@@ -34,8 +34,8 @@ class Bullet
         float GetVelocity() { return velocity; }
         void Explode();
 
-        sf::Sprite GetSpriteBullet() { return spriteBullet; }
-        void SetSprite(sf::Sprite sprite) { spriteBullet = sprite; }
+        //sf::Sprite GetSpriteBullet() { return spriteBullet; }
+        //void SetSprite(sf::Sprite sprite) { spriteBullet = sprite; }
 
         void Draw(sf::Sprite* _spriteBullet = NULL, bool updatePos = false);
 
@@ -45,5 +45,5 @@ class Bullet
         float posX, posY;
         float velocity;
         sf::RenderWindow* window;
-        sf::Sprite spriteBullet;
+        sf::Texture imageBullet;
 };

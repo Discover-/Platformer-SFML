@@ -31,6 +31,8 @@ class Game
         GameState GetGameState() { return STATE_PLAYING; }
         void SetGameState(GameState state) { gameState = state; }
 
+        std::vector<Enemy*> GetEnemies() { return allEnemies; }
+
     private:
         bool isRunning;
         Player* player;

@@ -19,7 +19,7 @@
 #include "shareddefines.h"
 #include "bullet.h"
 
-Player::Player(Game* _game, sf::RenderWindow* _window, float x, float y, sf::Sprite _spriteBody, TypeId _typeId) : Unit(_game, _window, x, y, _spriteBody, _typeId)
+Player::Player(Game* _game, sf::RenderWindow* _window, float x, float y, sf::Sprite _spriteBody, TypeId _typeId, int _life) : Unit(_game, _window, x, y, _spriteBody, _typeId, _life)
 {
     for (int i = 0; i < 4; ++i)
         keysDown[i] = false;

@@ -24,7 +24,7 @@ class Game;
 class Unit : public Position
 {
     public:
-        Unit(Game* _game, sf::RenderWindow* _window, float x, float y, sf::Sprite _spriteBody, TypeId _typeId);
+        Unit(Game* _game, sf::RenderWindow* _window, float x, float y, sf::Sprite _spriteBody, TypeId _typeId, int _life);
         ~Unit();
 
         virtual void Update();
@@ -49,10 +49,17 @@ class Unit : public Position
         void SetCanShoot(bool val) { canShoot = val; }
         void SetShootCooldown(sf::Int32 val) { shootCooldown = val; }
 
+        bool DropLife() { life--; return !life; }
+        void SetLife(int val) { life = val; }
+        int GetLife() { return life; }
+
+        void JustDied() { isAlive = false; }
+        bool IsDead() { return !isAlive; }
+
     private:
         Game* game;
         TypeId typeId;
-        bool keysDown[4];
+        bool isAlive;
         sf::Sprite spriteBody;
         sf::RenderWindow* window;
 
@@ -64,6 +71,7 @@ class Unit : public Position
         /* MECHANICS */
         bool canShoot;
         sf::Int32 shootCooldown;
+        int life;
 };
 
 #endif

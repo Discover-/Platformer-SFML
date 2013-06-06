@@ -40,14 +40,14 @@ int Game::Update()
     sf::Texture imageCharacter;
     imageCharacter.loadFromFile("Graphics/Characters/Tux/tux_from_linux-00-01.png");
     sf::Sprite spriteCharacter(imageCharacter);
-    player = new Player(this, &window, 500, 70, spriteCharacter, TYPEID_PLAYER);
+    player = new Player(this, &window, 500, 70, spriteCharacter, TYPEID_PLAYER, 5);
 
     sf::Texture imageEnemy;
     imageEnemy.loadFromFile("Graphics/Characters/Kit/frame_0.png");
     sf::Sprite spriteEnemy(imageEnemy);
-    Enemy* enemy1 = new Enemy(this, &window, 166, 135, 400, 70, spriteEnemy, TYPEID_ENEMY);
-    Enemy* enemy2 = new Enemy(this, &window, 514, 110, 710, 70, spriteEnemy, TYPEID_ENEMY);
-    Enemy* enemy3 = new Enemy(this, &window, 950, 330, 1300, 330, spriteEnemy, TYPEID_ENEMY);
+    Enemy* enemy1 = new Enemy(this, &window, 166.0f, 135.0f, 400.0f, 70.0f, spriteEnemy, TYPEID_ENEMY, 3);
+    Enemy* enemy2 = new Enemy(this, &window, 514.0f, 110.0f, 710.0f, 70.0f, spriteEnemy, TYPEID_ENEMY, 3);
+    Enemy* enemy3 = new Enemy(this, &window, 950.0f, 330.0f, 1300.0f, 330.0f, spriteEnemy, TYPEID_ENEMY, 3);
     allEnemies.push_back(enemy1);
     allEnemies.push_back(enemy2);
     allEnemies.push_back(enemy3);
@@ -111,7 +111,8 @@ int Game::Update()
                 player->Update();
 
                 for (std::vector<Enemy*>::iterator itr = allEnemies.begin(); itr != allEnemies.end(); ++itr)
-                    (*itr)->Update();
+                    if (!(*itr)->IsDead())
+                        (*itr)->Update();
 
                 if (player->GetPositionX() > window.getSize().x / 2.f)
                     view.setCenter(player->GetPositionX(), view.getCenter().y);
@@ -156,7 +157,8 @@ int Game::Update()
                 player->Update();
                 
                 for (std::vector<Enemy*>::iterator itr = allEnemies.begin(); itr != allEnemies.end(); ++itr)
-                    (*itr)->Update();
+                    if (!(*itr)->IsDead())
+                        (*itr)->Update();
 
                 break;
             }
@@ -194,7 +196,8 @@ void Game::HandleTimers(sf::Int32 diff_time)
     player->HandleTimers(diff_time);
 
     //for (std::vector<Enemy*>::iterator itr = allEnemies.begin(); itr != allEnemies.end(); ++itr)
-        //(*itr)->HandleTimers(diff_time);
+        //if (!(*itr)->IsDead())
+            //(*itr)->HandleTimers(diff_time);
 }
 
 void Game::StartActualGame(sf::RenderWindow &window)
@@ -203,4 +206,3 @@ void Game::StartActualGame(sf::RenderWindow &window)
     currLevel->LoadMap("Levels/level1.txt");
     //window.setMouseCursorVisible(false);
 }
-

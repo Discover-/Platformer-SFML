@@ -69,8 +69,6 @@ void Menu::Update(sf::RenderWindow &window)
     float mouseX = float(sf::Mouse::getPosition(window).x);
     float mouseY = float(sf::Mouse::getPosition(window).y);
 
-    //selectedOption = 0;
-
     for (std::vector<MenuSpriteInfo>::iterator itr = sprites.begin(); itr != sprites.end(); ++itr)
     {
         sf::Sprite sprite((*itr).image);

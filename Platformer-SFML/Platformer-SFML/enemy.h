@@ -8,7 +8,7 @@ class Game;
 class Enemy : public Unit
 {
     public:
-        Enemy(Game* _game, sf::RenderWindow* _window, float x1, float y1, float x2, float y2, sf::Sprite _spriteBody, TypeId _typeId);
+        Enemy(Game* _game, sf::RenderWindow* _window, float x1, float y1, float x2, float y2, sf::Sprite _spriteBody, TypeId _typeId, int _life);
         ~Enemy();
 
         void Update();

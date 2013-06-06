@@ -20,7 +20,7 @@
 #include "bullet.h"
 #include "unit.h"
 
-Enemy::Enemy(Game* _game, sf::RenderWindow* _window, float x1, float y1, float x2, float y2, sf::Sprite _spriteBody, TypeId _typeId) : Unit(_game, _window, x1, y1, _spriteBody, _typeId)
+Enemy::Enemy(Game* _game, sf::RenderWindow* _window, float x1, float y1, float x2, float y2, sf::Sprite _spriteBody, TypeId _typeId, int _life) : Unit(_game, _window, x1, y1, _spriteBody, _typeId, _life)
 {
     destinationX1 = x1;
     destinationY1 = y1;

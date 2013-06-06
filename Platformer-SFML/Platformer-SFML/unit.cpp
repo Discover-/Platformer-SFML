@@ -5,31 +5,30 @@
 #include "collision.h"
 #include "game.h"
 
-Unit::Unit(Game* _game, sf::RenderWindow* _window, float x, float y, sf::Sprite _spriteBody, TypeId _typeId)
+Unit::Unit(Game* _game, sf::RenderWindow* _window, float x, float y, sf::Sprite _spriteBody, TypeId _typeId, int _life)
 {
     sf::Vector2f vec = _spriteBody.getPosition();
     float __x = vec.x;
     float __y = vec.y;
     sf::Texture const* tex = _spriteBody.getTexture();
-
     window = _window;
     SetPositionX(x);
     SetPositionY(y);
     game = _game;
     spriteBody = _spriteBody;
     typeId = _typeId;
-
-    for (int i = 0; i < 4; ++i)
-        keysDown[i] = false;
-
     isJumping = false;
     fallSpeed = 0;
     jumpSpeed = 15;
     moveSpeed = _typeId == TYPEID_PLAYER ? 10.0f : 3.0f;
+    life = _life;
 }
 
 void Unit::Update()
 {
+    if (!isAlive)
+        return;
+
     if (game->GetGameState() == STATE_PAUSED || game->GetGameState() == STATE_PAUSED_FOCUS)
     {
         Draw();
@@ -90,6 +89,9 @@ void Unit::Draw(sf::Sprite* _spriteBody /* = NULL */, bool updatePos /* = false 
 
 void Unit::HandleTimers(sf::Int32 diff_time)
 {
+    if (!isAlive)
+        return;
+
     if (!canShoot)
     {
         if (diff_time >= shootCooldown)
@@ -130,13 +132,15 @@ bool Unit::CollidesWithGameobjects(float newPosX /* = 0.0f */, float newPosY /* 
 
 void Unit::Shoot()
 {
+    if (!isAlive)
+        return;
+
     shootCooldown = 400;
     canShoot = false;
     //Bullet* bullet = new Bullet(game, window, posX + 50, posY + 20);
 
     sf::Texture imageBullet;
     imageBullet.loadFromFile("Graphics/Other/bullet.png");
-    sf::Sprite spriteBullet(imageBullet);
-    Bullet* bullet = new Bullet(game, window, GetPositionX() + 150, GetPositionY() + 20, spriteBullet);
+    Bullet* bullet = new Bullet(game, window, GetPositionX() + 50, GetPositionY() + 20, imageBullet);
     game->AddBullet(bullet);
 }
