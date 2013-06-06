@@ -23,7 +23,7 @@ class Game;
 class Player : public Unit
 {
     public:
-        Player(Game* _game, sf::RenderWindow* _window, float x, float y, sf::Sprite _spriteBody, TypeId _typeId, int _life);
+        Player(Game* _game, sf::RenderWindow* _window, float x, float y, std::vector<std::pair<int, sf::Texture>> _spriteCharacters, TypeId _typeId, int _life, int _totalMoveFrames, int _frameInterval, bool _canFly);
         ~Player();
 
         void Update();

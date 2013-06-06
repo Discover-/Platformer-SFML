@@ -18,15 +18,21 @@ class Game
 
         int Update();
         bool IsRunning() { return isRunning; }
-        void HandleTimers(sf::Int32 diff_time);
+        void StartActualGame(sf::RenderWindow &window);
+
         std::vector<sf::Sprite> GetGameObjects() { return gameObjects; }
         std::vector<sf::Sprite> GetGameObjectsCollidable() { return gameObjectsCollidable; }
         void AddGameObject(sf::Sprite gameobject) { gameObjects.push_back(gameobject); }
         void AddGameObjectCollidable(sf::Sprite gameobject) { gameObjectsCollidable.push_back(gameobject); }
+        void ClearGameObjects() { gameObjects.clear(); }
+        void ClearGameObjectCollidables() { gameObjectsCollidable.clear(); }
+
+        void HandleTimers(sf::Int32 diff_time);
+
         Player* GetPlayer() { return player; }
+
         void AddBullet(Bullet* bullet) { allBullets.push_back(bullet); }
         std::vector<Bullet*> GetBullets() { return allBullets; }
-        void StartActualGame(sf::RenderWindow &window);
 
         GameState GetGameState() { return STATE_PLAYING; }
         void SetGameState(GameState state) { gameState = state; }

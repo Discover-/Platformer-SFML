@@ -37,6 +37,9 @@ void Level::LoadMap(char const* filename)
         tilesInfoBlocks.clear();
     }
 
+    game->ClearGameObjects();
+    game->ClearGameObjectCollidables();
+
     for (int i = 0; i < tilesInfoLayers.size(); i++)
     {
         for (int j = 0; j < tilesInfoLayers[i].size(); j++)

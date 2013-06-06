@@ -5,23 +5,26 @@
 #include "collision.h"
 #include "game.h"
 
-Unit::Unit(Game* _game, sf::RenderWindow* _window, float x, float y, sf::Sprite _spriteBody, TypeId _typeId, int _life)
+Unit::Unit(Game* _game, sf::RenderWindow* _window, float x, float y, std::vector<std::pair<int, sf::Texture>> _spriteBodies, TypeId _typeId, int _life, int _totalMoveFrames, int _frameInterval, bool _canFly)
 {
-    sf::Vector2f vec = _spriteBody.getPosition();
-    float __x = vec.x;
-    float __y = vec.y;
-    sf::Texture const* tex = _spriteBody.getTexture();
     window = _window;
     SetPositionX(x);
     SetPositionY(y);
     game = _game;
-    spriteBody = _spriteBody;
+    spriteBodies = _spriteBodies;
     typeId = _typeId;
     isJumping = false;
+    isMoving = _typeId == TYPEID_ENEMY;
     fallSpeed = 0;
     jumpSpeed = 15;
-    moveSpeed = _typeId == TYPEID_PLAYER ? 10.0f : 3.0f;
+    bounceSpeed = 15;
+    moveSpeed = _typeId == TYPEID_PLAYER ? 7.0f : 3.0f;
     life = _life;
+    moveFrame = 0;
+    totalMoveFrames = _totalMoveFrames;
+    frameInterval = 0;
+    frameIntervalStore = _frameInterval;
+    canFly = _canFly;
 }
 
 void Unit::Update()
@@ -52,12 +55,29 @@ void Unit::Update()
             jumpSpeed = 15;
         }
     }
-    else
-    {
-        isFalling = true;
+    //else if (isBouncing)
+    //{
+    //    float newX = bounceToLeft ? GetPositionX() - bounceSpeed : GetPositionX() + bounceSpeed;
 
-        if (!CollidesWithGameobjects(GetPositionX(), GetPositionY() + fallSpeed + 5.0f))
+    //    if (bounceSpeed)// && !CollidesWithGameobjects(newX, GetPositionY()))
+    //    {
+    //        SetPositionY(newX);
+    //        bounceSpeed--;
+    //    }
+    //    else
+    //    {
+    //        isBouncing = false;
+    //        isJumping = false;
+    //        isFalling = true;
+    //        bounceSpeed = 15;
+    //        fallSpeed = 0;
+    //    }
+    //}
+    else if (!canFly)
+    {
+        if (!CollidesWithGameobjects(GetPositionX(), GetPositionY() + fallSpeed))
         {
+            isFalling = true;
             SetPositionY(GetPositionY() + fallSpeed);
             fallSpeed++;
         }
@@ -67,6 +87,9 @@ void Unit::Update()
             fallSpeed = 0;
         }
     }
+
+    //if (!isFalling && !isJumping && !isBouncing)
+    //    BounceAway(urand(0, 1) == 0 ? false : true);
 
     if (GetPositionX() < 0)
         SetPositionX(0.0f);
@@ -79,7 +102,7 @@ void Unit::Update()
 
 void Unit::Draw(sf::Sprite* _spriteBody /* = NULL */, bool updatePos /* = false */)
 {
-    sf::Sprite spriteToDraw = _spriteBody ? *_spriteBody : spriteBody;
+    sf::Sprite spriteToDraw = _spriteBody ? *_spriteBody : GetSpriteBody();
 
     if (updatePos)
         spriteToDraw.setPosition(GetPositionX(), GetPositionY());
@@ -105,29 +128,45 @@ void Unit::HandleTimers(sf::Int32 diff_time)
         else
             shootCooldown -= diff_time;
     }
+
+    //if (!isJumping && !isFalling)
+    {
+        if (isMoving)
+        {
+            if (diff_time >= frameInterval)
+            {
+                frameInterval = frameIntervalStore;
+                moveFrame++;
+
+                if (moveFrame > totalMoveFrames)
+                    moveFrame = typeId == TYPEID_PLAYER ? 1 : 0;
+            }
+            else
+                frameInterval -= diff_time;
+        }
+        else if (!isMoving)
+            moveFrame = 0;
+    }
 }
 
 bool Unit::CollidesWithGameobjects(float newPosX /* = 0.0f */, float newPosY /* = 0.0f */)
 {
-    sf::Sprite charSprite = spriteBody;
+    sf::Sprite spriteBody = GetSpriteBody();
 
     if (newPosX != 0.0f && newPosY != 0.0f)
-        charSprite.setPosition(newPosX, newPosY);
+        spriteBody.setPosition(newPosX, newPosY);
 
-    sf::Vector2f spritePos = charSprite.getPosition();
-    sf::FloatRect spriteRect = charSprite.getGlobalBounds();
+    sf::Vector2f spritePos = spriteBody.getPosition();
+    sf::FloatRect spriteRect = spriteBody.getGlobalBounds();
 
     std::vector<sf::Sprite> gameObjects = game->GetGameObjectsCollidable();
     for (std::vector<sf::Sprite>::iterator itr = gameObjects.begin(); itr != gameObjects.end(); ++itr)
     {
-        //if (Collision::PixelPerfectTest(charSprite, (*itr)))
-
         sf::Vector2f gameobjectPos = (*itr).getPosition();
         sf::FloatRect gameobjectRect = (*itr).getGlobalBounds();
 
         if (WillCollision(spritePos.x, spritePos.y, spriteRect.height, spriteRect.width, gameobjectPos.x, gameobjectPos.y, gameobjectRect.height, gameobjectRect.width))
             return true;
-
     }
 
     return false;
@@ -140,10 +179,32 @@ void Unit::Shoot()
 
     shootCooldown = 400;
     canShoot = false;
-    //Bullet* bullet = new Bullet(game, window, posX + 50, posY + 20);
 
     sf::Texture imageBullet;
     imageBullet.loadFromFile("Graphics/Other/bullet.png");
     Bullet* bullet = new Bullet(game, window, GetPositionX() + 50, GetPositionY() + 20, imageBullet);
     game->AddBullet(bullet);
+}
+
+void Unit::BounceAway(bool toLeft)
+{
+    isJumping = false;
+    //isBouncing = true;
+    bounceToLeft = toLeft;
+    fallSpeed = 0;
+}
+
+sf::Sprite Unit::GetSpriteBody()
+{
+    for (std::vector<std::pair<int, sf::Texture>>::iterator itr = spriteBodies.begin(); itr != spriteBodies.end(); ++itr)
+    {
+        if ((*itr).first == moveFrame)
+        {
+            sf::Sprite sprite((*itr).second);
+            sprite.setPosition(GetPositionX(), GetPositionY());
+            return sprite;
+        }
+    }
+
+    return sf::Sprite();
 }

@@ -20,7 +20,8 @@
 #include "bullet.h"
 #include "unit.h"
 
-Enemy::Enemy(Game* _game, sf::RenderWindow* _window, float x1, float y1, float x2, float y2, sf::Sprite _spriteBody, TypeId _typeId, int _life) : Unit(_game, _window, x1, y1, _spriteBody, _typeId, _life)
+Enemy::Enemy(Game* _game, sf::RenderWindow* _window, float x1, float y1, float x2, float y2, std::vector<std::pair<int, sf::Texture>> _spriteEnemies, TypeId _typeId, int _life, int _totalMoveFrames, int _frameInterval, bool _canFly) :
+Unit(_game, _window, x1, y1, _spriteEnemies, _typeId, _life, _totalMoveFrames, _frameInterval, _canFly)
 {
     destinationX1 = x1;
     destinationY1 = y1;
@@ -34,18 +35,19 @@ void Enemy::Update()
     Unit::Update();
 
     if (CollidesWithGameobjects(GetPositionX() + GetMoveSpeed(), GetPositionY()))
-        movingForward = !movingForward;
+        return;
+        //movingForward = !movingForward;
 
     if (movingForward)
     {
-        SetPositionX(GetPositionX() + GetMoveSpeed());
+        SetPosition(GetPositionX() + GetMoveSpeed(), GetPositionY());
 
         if (GetPositionX() > destinationX2)
             movingForward = false;
     }
     else
     {
-        SetPositionX(GetPositionX() - GetMoveSpeed());
+        SetPosition(GetPositionX() - GetMoveSpeed(), GetPositionY());
 
         if (GetPositionX() < destinationX1)
             movingForward = true;
@@ -54,5 +56,8 @@ void Enemy::Update()
 
 void Enemy::HandleTimers(sf::Int32 diff_time)
 {
+    //if (game->IsPaused() || game->IsInMenu())
+    //    return;
+
     Unit::HandleTimers(diff_time);
 }

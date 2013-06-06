@@ -49,28 +49,44 @@ inline bool WillCollision(float x1, float y1, float h1, float w1, float x2, floa
 
 inline std::string GetTileFilename(int tileId)
 {
-    std::string randNumb = std::to_string(long double(urand(0, 1)));
-
     switch (tileId)
     {
-        case 9:
-            return "Graphics/Tiles/sky_3.png"; //! Empty sky block
-        case 0:
-            return "Graphics/Tiles/sky_" + std::to_string(long double(urand(0, 20) < 16 ? 3 : urand(0, 2))) + ".png";
-        case 1:
-            return "Graphics/Tiles/dirt_" + randNumb + ".png";
-        case 2:
-            return "Graphics/Tiles/dirt_rock_" + randNumb + ".png";
-        case 3:
-            return "Graphics/Tiles/grass_" + randNumb + ".png";
-        case 4:
-            return "Graphics/Tiles/grass_ontop_" + randNumb + ".png";
-        case 5:
-            return "Graphics/Tiles/ground_" + randNumb + ".png";
-        case 6:
-            return "Graphics/Tiles/sand_" + randNumb + ".png";
+        case 9: //! cloud_3.png
+            return "Graphics/Tiles/cloud_3.png"; //! Empty sky block
+        case 0: //! cloud_*.png
+            return "Graphics/Tiles/cloud_" + std::to_string(long double(urand(0, 20) < 18 ? 3 : urand(0, 2))) + ".png";
+        case 1: //! block.png
+            return "Graphics/Tiles/block.png";
+        case 2: //! ground.png
+            return "Graphics/Tiles/ground.png";
+        case 3: //! ground_dirt.png
+            return "Graphics/Tiles/ground_dirt.png";
+        case 4: //! ground_rock.png
+            return "Graphics/Tiles/ground_rock.png";
+        case 5: //! ground_sand.png
+            return "Graphics/Tiles/ground_sand.png";
+        case 6: //! bridge.png
+            return "Graphics/Tiles/bridge.png";
         default:
             break;
+        //case 9:
+        //    return "Graphics/Old/Tiles/sky_3.png"; //! Empty sky block
+        //case 0:
+        //    return "Graphics/Old/Tiles/sky_" + std::to_string(long double(urand(0, 20) < 16 ? 3 : urand(0, 2))) + ".png";
+        //case 1:
+        //    return "Graphics/Old/Tiles/dirt_" + randNumb + ".png";
+        //case 2:
+        //    return "Graphics/Old/Tiles/dirt_rock_" + randNumb + ".png";
+        //case 3:
+        //    return "Graphics/Old/Tiles/grass_" + randNumb + ".png";
+        //case 4:
+        //    return "Graphics/Old/Tiles/grass_ontop_" + randNumb + ".png";
+        //case 5:
+        //    return "Graphics/Old/Tiles/ground_" + randNumb + ".png";
+        //case 6:
+        //    return "Graphics/Old/Tiles/sand_" + randNumb + ".png";
+        //default:
+        //    break;
     }
 
     return "";

@@ -24,19 +24,25 @@ class Game;
 class Unit : public Position
 {
     public:
-        Unit(Game* _game, sf::RenderWindow* _window, float x, float y, sf::Sprite _spriteBody, TypeId _typeId, int _life);
+        Unit(Game* _game, sf::RenderWindow* _window, float x, float y, std::vector<std::pair<int, sf::Texture>> _spriteBodies, TypeId _typeId, int _life, int _totalMoveFrames, int _frameInterval, bool _canFly);
         ~Unit();
 
         virtual void Update();
         virtual void HandleTimers(sf::Int32 diff_time);
         void Draw(sf::Sprite* _spriteBody = NULL, bool updatePos = false);
-        void SetSpriteBody(sf::Sprite sprite) { spriteBody = sprite; }
-        sf::Sprite GetSpriteBody() { return spriteBody; }
+
+        //void SetSpriteBody(sf::Sprite sprite) { spriteCharacters[moveFrame].second = sprite; }
+        sf::Sprite GetSpriteBody();
 
         /* MOVEMENT */
+        void SetIsMoving(bool val) { isMoving = val; }
+        bool IsMoving() { return isMoving; }
+
         void SetIsJumping(bool val) { isJumping = val; fallSpeed = 0; }
         bool IsJumping() { return isJumping; }
         bool IsFalling() { return isFalling; }
+        bool IsBouncing() { return isBouncing; }
+        void BounceAway(bool toLeft);
 
         bool CollidesWithGameobjects(float newPosX = 0.0f, float newPosY = 0.0f);
 
@@ -56,17 +62,22 @@ class Unit : public Position
         void JustDied() { isAlive = false; }
         bool IsDead() { return !isAlive; }
 
+        void SetCanFly(bool val) { canFly = val; }
+        bool CanFly() { return canFly; }
+
     private:
         Game* game;
         TypeId typeId;
         bool isAlive;
-        sf::Sprite spriteBody;
+        std::vector<std::pair<int, sf::Texture>> spriteBodies;
         sf::RenderWindow* window;
 
         /* MOVEMENT */
-        bool isJumping, isFalling;
-        int fallSpeed, jumpSpeed;
+        bool isMoving, isJumping, isFalling, isBouncing;
+        int fallSpeed, jumpSpeed, bounceSpeed, bounceToLeft;
         float moveSpeed;
+        int moveFrame, totalMoveFrames, frameInterval, frameIntervalStore;
+        bool canFly;
 
         /* MECHANICS */
         bool canShoot;

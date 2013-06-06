@@ -24,7 +24,7 @@
 Game::Game()
 {
     isRunning = true;
-    gameState = STATE_MENU;
+    gameState = STATE_PLAYING;
 }
 
 Game::~Game()
@@ -36,24 +36,37 @@ int Game::Update()
 {
     isRunning = true;
     sf::RenderWindow window(sf::VideoMode(1000, 600), "Platformer C++ SFML");
+    //window.setKeyRepeatEnabled(false);
 
     sf::Texture imageCharacter;
-    imageCharacter.loadFromFile("Graphics/Characters/Tux/tux_from_linux-00-01.png");
-    sf::Sprite spriteCharacter(imageCharacter);
-    player = new Player(this, &window, 500, 70, spriteCharacter, TYPEID_PLAYER, 5);
+    std::vector<std::pair<int, sf::Texture>> spriteCharacters;
+
+    for (int i = 0; i < 10; ++i)
+    {
+        imageCharacter.loadFromFile("Graphics/Character/walk_" + std::to_string(long double(i)) + ".png");
+        spriteCharacters.push_back(std::make_pair(i, imageCharacter));
+    }
+
+    player = new Player(this, &window, 500, 70, spriteCharacters, TYPEID_PLAYER, 5, 9, 80, false);
 
     sf::Texture imageEnemy;
-    imageEnemy.loadFromFile("Graphics/Characters/Kit/frame_0.png");
-    sf::Sprite spriteEnemy(imageEnemy);
-    Enemy* enemy1 = new Enemy(this, &window, 166.0f, 135.0f, 400.0f, 70.0f, spriteEnemy, TYPEID_ENEMY, 3);
-    Enemy* enemy2 = new Enemy(this, &window, 514.0f, 110.0f, 710.0f, 70.0f, spriteEnemy, TYPEID_ENEMY, 3);
-    Enemy* enemy3 = new Enemy(this, &window, 950.0f, 330.0f, 1300.0f, 330.0f, spriteEnemy, TYPEID_ENEMY, 3);
+    std::vector<std::pair<int, sf::Texture>> spriteEnemies;
+
+    for (int i = 0; i < 2; ++i)
+    {
+        imageEnemy.loadFromFile("Graphics/Enemies/fly_" + std::string(i ? "fly" : "normal") + ".png");
+        spriteEnemies.push_back(std::make_pair(i, imageEnemy));
+    }
+
+    Enemy* enemy1 = new Enemy(this, &window, 166.0f, 70.0f, 400.0f, 70.0f, spriteEnemies, TYPEID_ENEMY, 3, 1, 80, true);
+    Enemy* enemy2 = new Enemy(this, &window, 445.0f, 190.0f, 650.0f, 70.0f, spriteEnemies, TYPEID_ENEMY, 3, 1, 80, true);
+    Enemy* enemy3 = new Enemy(this, &window, 950.0f, 70.0f, 1300.0f, 330.0f, spriteEnemies, TYPEID_ENEMY, 3, 1, 80, true);
     allEnemies.push_back(enemy1);
     allEnemies.push_back(enemy2);
     allEnemies.push_back(enemy3);
 
     sf::Font font;
-    font.loadFromFile("Fonts/arial.ttf");
+    font.loadFromFile("Fonts/Market_Deco.ttf");
 
     window.setFramerateLimit(30);
 
@@ -64,6 +77,7 @@ int Game::Update()
     currLevel = new Level(this);
     Menu* menu = new Menu(this);
     menu->Load();
+    StartActualGame(window);
 
     while (window.isOpen())
     {
@@ -74,6 +88,12 @@ int Game::Update()
             std::cout << "Mouse X: " << sf::Mouse::getPosition(window).x << std::endl;
             std::cout << "Mouse Y: " << sf::Mouse::getPosition(window).y << std::endl;
         }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::F1))
+            currLevel->LoadMap("Levels/level1.txt");
+        //! Open up new instance of the game.
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::F2))
+            return Update();
 
         while (window.pollEvent(_event))
         {
@@ -91,18 +111,26 @@ int Game::Update()
                 //window.setMouseCursorVisible(false);
                 gameState = STATE_PLAYING;
             }
+
+            //if (_event.type == sf::Event::KeyReleased)
+            //    if (_event.key.code)
+
         }
 
         HandleTimers(clock.restart().asMilliseconds());
         fpsClock.restart();
-        window.clear();
+
+        sf::Color colorSky;
+        colorSky.r = 136;
+        colorSky.g = 247;
+        colorSky.b = 255;
+        window.clear(colorSky);
 
         switch (gameState)
         {
             case STATE_MENU:
             {
                 menu->Update(window);
-
                 break;
             }
             case STATE_PLAYING:
@@ -127,20 +155,8 @@ int Game::Update()
                 window.setView(view);
 
                 for (std::vector<Bullet*>::iterator itr = allBullets.begin(); itr != allBullets.end(); ++itr)
-                {
                     if (!(*itr)->IsRemoved())
-                    {
                         (*itr)->Update();
-
-                        //sf::Texture imageBullet;
-                        //imageBullet.loadFromFile("Graphics/Other/menu_button_play.png");
-                        //sf::Sprite spriteBullet;
-                        //spriteBullet.setTexture(imageBullet);
-                        //spriteBullet.setPosition((*itr)->GetPosXY());
-                        //(*itr)->SetSprite(spriteBullet);
-                        //window.draw((*itr)->GetSpriteBullet());
-                    }
-                }
 
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
                 {
@@ -160,6 +176,18 @@ int Game::Update()
                     if (!(*itr)->IsDead())
                         (*itr)->Update();
 
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+                {
+                    //window.setMouseCursorVisible(false);
+                    gameState = STATE_PLAYING;
+                }
+                
+                sf::Text textPaused("Paused", font, 80);
+                sf::FloatRect textRect = textPaused.getLocalBounds();
+                textPaused.setColor(sf::Color::White);
+                textPaused.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+                textPaused.setPosition(sf::Vector2f(500.0f, 300.0f));
+                window.draw(textPaused);
                 break;
             }
             default:
@@ -167,20 +195,17 @@ int Game::Update()
                 break;
         }
 
-        float fps = 1 / fpsClock.getElapsedTime().asSeconds();
-
-        sf::Text text("FPS: " + std::to_string(long double(int(fps))), font, 15);
+        sf::Text text("Position X: " + std::to_string(long double(int(player->GetPositionX()))) + "\nPosition Y: " + std::to_string(long double(int(player->GetPositionY()))), font, 15);
         text.setColor(GAME_STATE_DRAW_GAME(gameState) ? sf::Color::Black : sf::Color::White);
-        text.setPosition(0.0f, 15.0f);
+        text.setPosition(0.0f, 0.0f);
         window.draw(text);
 
-        if (fps > 30)
-        {
-            sf::Text text2("Actual FPS: 30", font, 15);
-            text2.setColor(GAME_STATE_DRAW_GAME(gameState) ? sf::Color::Black : sf::Color::White);
-            text2.setPosition(0.0f, 0.0f);
-            window.draw(text2);
-        }
+        float fps = 1 / fpsClock.getElapsedTime().asSeconds();
+
+        sf::Text text2("FPS: " + std::to_string(long double(int(fps))), font, 15);
+        text2.setColor(GAME_STATE_DRAW_GAME(gameState) ? sf::Color::Black : sf::Color::White);
+        text2.setPosition(0.0f, 30.0f);
+        window.draw(text2);
 
         window.display();
     }
@@ -190,14 +215,14 @@ int Game::Update()
 
 void Game::HandleTimers(sf::Int32 diff_time)
 {
-    if (gameState != STATE_PLAYING)
-        return;
+    //if (gameState != STATE_PLAYING)
+    //    return;
 
     player->HandleTimers(diff_time);
 
-    //for (std::vector<Enemy*>::iterator itr = allEnemies.begin(); itr != allEnemies.end(); ++itr)
-        //if (!(*itr)->IsDead())
-            //(*itr)->HandleTimers(diff_time);
+    for (std::vector<Enemy*>::iterator itr = allEnemies.begin(); itr != allEnemies.end(); ++itr)
+        if (!(*itr)->IsDead())
+            (*itr)->HandleTimers(diff_time);
 }
 
 void Game::StartActualGame(sf::RenderWindow &window)
