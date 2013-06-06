@@ -58,9 +58,9 @@ int Game::Update()
         spriteEnemies.push_back(std::make_pair(i, imageEnemy));
     }
 
-    Enemy* enemy1 = new Enemy(this, &window, 166.0f, 70.0f, 400.0f, 70.0f, spriteEnemies, TYPEID_ENEMY, 3, 1, 80, true);
-    Enemy* enemy2 = new Enemy(this, &window, 445.0f, 190.0f, 650.0f, 70.0f, spriteEnemies, TYPEID_ENEMY, 3, 1, 80, true);
-    Enemy* enemy3 = new Enemy(this, &window, 950.0f, 70.0f, 1300.0f, 330.0f, spriteEnemies, TYPEID_ENEMY, 3, 1, 80, true);
+    Enemy* enemy1 = new Enemy(this, &window, 166.0f, 345.0f, 400.0f, 345.0f, spriteEnemies, TYPEID_ENEMY, 3, 1, 80, true);
+    Enemy* enemy2 = new Enemy(this, &window, 445.0f, 190.0f, 650.0f, 190.0f, spriteEnemies, TYPEID_ENEMY, 3, 1, 80, true);
+    Enemy* enemy3 = new Enemy(this, &window, 845.0f, 240.0f, 1250.0f, 250.0f, spriteEnemies, TYPEID_ENEMY, 3, 1, 80, true);
     allEnemies.push_back(enemy1);
     allEnemies.push_back(enemy2);
     allEnemies.push_back(enemy3);
@@ -195,16 +195,19 @@ int Game::Update()
                 break;
         }
 
-        sf::Text text("Position X: " + std::to_string(long double(int(player->GetPositionX()))) + "\nPosition Y: " + std::to_string(long double(int(player->GetPositionY()))), font, 15);
-        text.setColor(GAME_STATE_DRAW_GAME(gameState) ? sf::Color::Black : sf::Color::White);
-        text.setPosition(0.0f, 0.0f);
-        window.draw(text);
+        if (gameState != STATE_MENU)
+        {
+            sf::Text text("Position X: " + std::to_string(long double(int(player->GetPositionX()))) + "\nPosition Y: " + std::to_string(long double(int(player->GetPositionY()))), font, 15);
+            text.setColor(GAME_STATE_DRAW_GAME(gameState) ? sf::Color::Black : sf::Color::White);
+            text.setPosition(view.getCenter().x + 375.0f, view.getCenter().y - 300.0f);
+            window.draw(text);
+        }
 
         float fps = 1 / fpsClock.getElapsedTime().asSeconds();
 
         sf::Text text2("FPS: " + std::to_string(long double(int(fps))), font, 15);
         text2.setColor(GAME_STATE_DRAW_GAME(gameState) ? sf::Color::Black : sf::Color::White);
-        text2.setPosition(0.0f, 30.0f);
+        text2.setPosition(view.getCenter().x + 375.0f, view.getCenter().y - 270.0f);
         window.draw(text2);
 
         window.display();
