@@ -69,7 +69,7 @@ void Menu::Update(sf::RenderWindow &window)
     float mouseX = float(sf::Mouse::getPosition(window).x);
     float mouseY = float(sf::Mouse::getPosition(window).y);
 
-    selectedOption = 0;
+    //selectedOption = 0;
 
     for (std::vector<MenuSpriteInfo>::iterator itr = sprites.begin(); itr != sprites.end(); ++itr)
     {
@@ -82,18 +82,28 @@ void Menu::Update(sf::RenderWindow &window)
             break;
         }
     }
-        
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
-        game->StartActualGame(window);
-    else if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+        selectedOption--;
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+        selectedOption++;
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return) || sf::Mouse::isButtonPressed(sf::Mouse::Left))
     {
-        if (selectedOption == 1)
-            game->StartActualGame(window);
-        else if (selectedOption == 2)
-            window.close();
-        //else if (selectedOption == 3)
-        // NYI
+        switch (selectedOption)
+        {
+            case 1:
+                game->StartActualGame(window);
+                break;
+            case 2:
+                window.close();
+                break;
+            case 3:
+                // NYI
+                break;
+            default:
+                break;
+        }
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
         window.close();
