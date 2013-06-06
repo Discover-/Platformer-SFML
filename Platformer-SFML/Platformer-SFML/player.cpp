@@ -17,8 +17,8 @@
 #include "collision.h"
 #include "shareddefines.h"
 #include "bullet.h"
-#include "game.h"
 #include "enemy.h"
+#include "game.h"
 
 Player::Player(Game* _game, sf::RenderWindow* _window, float x, float y, std::vector<std::pair<int, sf::Texture>> _spritesLeft, std::vector<std::pair<int, sf::Texture>> _spritesRight, TypeId _typeId, int _life, int _totalMoveFrames, int _frameInterval, bool _canFly) :
 Unit(_game, _window, x, y, _spritesLeft, _spritesRight, _typeId, _life, _totalMoveFrames, _frameInterval, _canFly)
@@ -63,9 +63,6 @@ void Player::Update()
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
         if (CanShoot())
             Shoot();
-
-    if (game->GetEnemies().empty())
-        return;
 
     std::vector<Enemy*> enemies = game->GetEnemies();
 

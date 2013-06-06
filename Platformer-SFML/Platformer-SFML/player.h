@@ -16,7 +16,8 @@
 #include <SFML/Window.hpp>
 #include "Windows.h"
 #include "unit.h"
-#include "game.h"
+
+class Game;
 
 class Player : public Unit
 {
