@@ -31,6 +31,15 @@ Unit::Unit(Game* _game, sf::RenderWindow* _window, float x, float y, sf::Sprite 
 
 void Unit::Update()
 {
+    if (game->GetGameState() == STATE_PAUSED || game->GetGameState() == STATE_PAUSED_FOCUS)
+    {
+        Draw();
+        return;
+    }
+
+    if (game->GetGameState() == STATE_MENU)
+        return;
+
     if (isJumping)
     {
         if (jumpSpeed && !CollidesWithGameobjects(GetPositionX(), GetPositionY() - jumpSpeed))

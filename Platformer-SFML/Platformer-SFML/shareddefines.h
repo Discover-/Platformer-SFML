@@ -1,6 +1,16 @@
 #ifndef __SHAREDDEFINES_H
 #define __SHAREDDEFINES_H
 
+enum GameState
+{
+    STATE_MENU          = 0,
+    STATE_PAUSED        = 1,
+    STATE_PAUSED_FOCUS  = 2,
+    STATE_PLAYING       = 3,
+};
+
+#define GAME_STATE_DRAW_GAME(x) (x == STATE_PAUSED || x == STATE_PAUSED_FOCUS || x == STATE_PLAYING)
+
 enum TypeId
 {
     TYPEID_ENEMY    = 0,
@@ -22,6 +32,11 @@ inline bool IsInRange(float currX, float xDest, float currY, float yDest, float 
 {
     return ((currX < xDest - distance && currX > xDest + distance && currY < yDest - distance && currY > yDest + distance) ||
             (currX > xDest - distance && currX < xDest + distance && currY > yDest - distance && currY < yDest + distance));
+}
+
+inline bool WillCollision(float x1, float y1, float h1, float w1, float x2, float y2, float h2, float w2)
+{
+    return !(y1 >= y2 + h2 || x1 >= x2 + w2 || y1 + h1 <= y2 || x1 + w1 <= x2);
 }
 
 inline std::string GetTileFilename(int tileId)

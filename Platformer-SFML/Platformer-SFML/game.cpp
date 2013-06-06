@@ -24,17 +24,48 @@
 Game::Game()
 {
     isRunning = true;
+    gameState = STATE_MENU;
 }
 
 Game::~Game()
 {
-    
+
 }
 
 int Game::Update()
 {
     isRunning = true;
     sf::RenderWindow window(sf::VideoMode(1000, 600), "Platformer C++ SFML");
+
+    sf::Texture imageMenuPlay;
+    imageMenuPlay.loadFromFile("Graphics/Other/menu_button_play.png");
+    sf::Sprite spriteMenuPlay(imageMenuPlay);
+    spriteMenuPlay.setPosition(0.0f, 70.0f);
+
+    sf::Texture imageMenuExit;
+    imageMenuExit.loadFromFile("Graphics/Other/menu_button_exit.png");
+    sf::Sprite spriteMenuExit(imageMenuExit);
+    spriteMenuExit.setPosition(0.0f, 220.0f);
+
+    sf::Texture imageMenuInfo;
+    imageMenuInfo.loadFromFile("Graphics/Other/menu_button_info.png");
+    sf::Sprite spriteMenuInfo(imageMenuInfo);
+    spriteMenuInfo.setPosition(0.0f, 370.0f);
+
+    sf::Texture imageMenuPlayLightup;
+    imageMenuPlayLightup.loadFromFile("Graphics/Other/menu_button_play_lightup.png");
+    sf::Sprite spriteMenuPlayLightup(imageMenuPlayLightup);
+    spriteMenuPlayLightup.setPosition(0.0f, 70.0f);
+
+    sf::Texture imageMenuExitLightup;
+    imageMenuExitLightup.loadFromFile("Graphics/Other/menu_button_exit_lightup.png");
+    sf::Sprite spriteMenuExitLightup(imageMenuExitLightup);
+    spriteMenuExitLightup.setPosition(0.0f, 220.0f);
+
+    sf::Texture imageMenuInfoLightup;
+    imageMenuInfoLightup.loadFromFile("Graphics/Other/menu_button_info_lightup.png");
+    sf::Sprite spriteMenuInfoLightup(imageMenuInfoLightup);
+    spriteMenuInfoLightup.setPosition(0.0f, 370.0f);
 
     sf::Texture imageCharacter;
     imageCharacter.loadFromFile("Graphics/Characters/Tux/tux_from_linux-00-01.png");
@@ -50,127 +81,168 @@ int Game::Update()
     font.loadFromFile("Fonts/arial.ttf");
 
     window.setFramerateLimit(30);
-    window.setMouseCursorVisible(false);
-
-    //! Sky blocks are not collidable.
-    //for (int i = 0; i < 12; ++i)
-    //    for (int j = 0; j < 60; ++j)
-    //        gameObjects.push_back(spriteSky[i][j]);
-
-    //for (int i = 9; i < 12; ++i)
-    //{
-    //    for (int j = 0; j < 60; ++j)
-    //    {
-    //        gameObjects.push_back(spriteGround[i][j]);
-    //        gameObjectsCollidable.push_back(spriteGround[i][j]);
-    //    }
-    //}
-
-    //for (int i = 7; i < 9; ++i)
-    //{
-    //    for (int j = 0; j < 60; ++j)
-    //    {
-    //        gameObjects.push_back(spriteGrass[i][j]);
-    //        gameObjectsCollidable.push_back(spriteGrass[i][j]);
-    //    }
-    //}
-
-    //for (int i = 12; i < 15; ++i)
-    //{
-    //    for (int j = 0; j < 60; ++j)
-    //    {
-    //        gameObjects.push_back(spriteDirt[i][j]);
-    //        gameObjectsCollidable.push_back(spriteDirt[i][j]);
-    //    }
-    //}
 
     sf::View view(window.getDefaultView());
     sf::Clock clock;
     sf::Clock fpsClock;
 
-    Level* level1 = new Level(this);
-    level1->LoadMap("Levels/level1.txt");
+    Level* level = new Level(this);
 
     while (window.isOpen())
     {
-        HandleTimers(clock.restart().asMilliseconds());
-        fpsClock.restart();
-
         sf::Event _event;
 
         while (window.pollEvent(_event))
         {
             if (_event.type == sf::Event::Closed)
                 window.close();
-        }
 
-        window.clear();
-        level1->DrawMap(window);
-
-        float posX, posY;
-        player->GetPosition(posX, posY);
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-            if (!player->CollidesWithGameobjects(player->GetPositionX() - 4.0f, player->GetPositionY() + 5.0f))
-                player->SetPositionXY(posX -= player->GetMoveSpeed(), posY);
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-            if (!player->CollidesWithGameobjects(player->GetPositionX() + 4.0f, player->GetPositionY() + 5.0f))
-                player->SetPositionXY(posX += player->GetMoveSpeed(), posY);
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-            if (!player->IsJumping() && !player->IsFalling())
-                player->SetIsJumping(true);
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-            if (player->CanShoot())
-                player->Shoot();
-
-        if (player->GetPositionX() > window.getSize().x / 2.f)
-            view.setCenter(player->GetPositionX(), view.getCenter().y);
-        else
-            view.setCenter(window.getSize().x / 2.f, view.getCenter().y);
-
-        if (player->GetPositionY() > window.getSize().y / 2.f)
-            view.setCenter(view.getCenter().x, player->GetPositionY());
-        else
-            view.setCenter(view.getCenter().x, window.getSize().y / 2.f);
-
-        player->Update();
-        enemy->Update();
-
-        for (std::vector<Bullet*>::iterator itr = allBullets.begin(); itr != allBullets.end(); ++itr)
-        {
-            if (!(*itr)->IsRemoved())
+            if (_event.type == sf::Event::LostFocus && gameState == STATE_PLAYING)
             {
-                (*itr)->Update();
+                window.setMouseCursorVisible(true);
+                gameState = STATE_PAUSED_FOCUS;
+            }
 
-                //sf::Texture imageBullet;
-                //imageBullet.loadFromFile("Graphics/Other/bullet.png");
-                //sf::Sprite spriteBullet;
-                //spriteBullet.setTexture(imageBullet);
-                //spriteBullet.setPosition((*itr)->GetPosXY());
-                //(*itr)->SetSprite(spriteBullet);
-                //window.draw((*itr)->GetSpriteBullet());
+            if (_event.type == sf::Event::GainedFocus && gameState == STATE_PAUSED_FOCUS)
+            {
+                window.setMouseCursorVisible(false);
+                gameState = STATE_PLAYING;
             }
         }
 
-        window.setView(view);
+        HandleTimers(clock.restart().asMilliseconds());
+        fpsClock.restart();
+        window.clear();
+
+        switch (gameState)
+        {
+            case STATE_MENU:
+            {
+                sf::Sprite spritePlay = spriteMenuPlay;
+                sf::Sprite spriteExit = spriteMenuExit;
+                sf::Sprite spriteInfo = spriteMenuInfo;
+                sf::Sprite* selection = NULL;
+
+                float mouseX = float(sf::Mouse::getPosition(window).x);
+                float mouseY = float(sf::Mouse::getPosition(window).y);
+
+                if (WillCollision(mouseX, mouseY, 10.0f, 10.0f, spriteMenuPlay.getPosition().x, spriteMenuPlay.getPosition().y, spriteMenuPlay.getLocalBounds().height, spriteMenuPlay.getLocalBounds().width))
+                {
+                    spritePlay = spriteMenuPlayLightup;
+                    selection = &spritePlay;
+                }
+                else if (WillCollision(mouseX, mouseY, 10.0f, 10.0f, spriteMenuExit.getPosition().x, spriteMenuExit.getPosition().y, spriteMenuExit.getLocalBounds().height, spriteMenuExit.getLocalBounds().width))
+                {
+                    spriteExit = spriteMenuExitLightup;
+                    selection = &spriteExit;
+                }
+                else if (WillCollision(mouseX, mouseY, 10.0f, 10.0f, spriteMenuInfo.getPosition().x, spriteMenuInfo.getPosition().y, spriteMenuInfo.getLocalBounds().height, spriteMenuInfo.getLocalBounds().width))
+                {
+                    spriteInfo = spriteMenuInfoLightup;
+                    selection = &spriteInfo;
+                }
+
+                window.draw(spritePlay);
+                window.draw(spriteExit);
+                window.draw(spriteInfo);
+
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
+                {
+                    gameState = STATE_PLAYING;
+                    level->LoadMap("Levels/level1.txt");
+                    window.setMouseCursorVisible(false);
+                    break;
+                }
+
+                if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+                {
+                    if (selection == &spritePlay)
+                    {
+                        gameState = STATE_PLAYING;
+                        level->LoadMap("Levels/level1.txt");
+                        window.setMouseCursorVisible(false);
+                    }
+                    else if (selection == &spriteExit)
+                        window.close();
+                    //else if (selection == &spriteInfo)
+                    // NYI
+                }
+
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+                    window.close();
+
+                break;
+            }
+            case STATE_PLAYING:
+            {
+                level->DrawMap(window);
+                player->Update();
+                enemy->Update();
+
+                if (player->GetPositionX() > window.getSize().x / 2.f)
+                    view.setCenter(player->GetPositionX(), view.getCenter().y);
+                else
+                    view.setCenter(window.getSize().x / 2.f, view.getCenter().y);
+
+                if (player->GetPositionY() > window.getSize().y / 2.f)
+                    view.setCenter(view.getCenter().x, player->GetPositionY());
+                else
+                    view.setCenter(view.getCenter().x, window.getSize().y / 2.f);
+
+                window.setView(view);
+
+                for (std::vector<Bullet*>::iterator itr = allBullets.begin(); itr != allBullets.end(); ++itr)
+                {
+                    if (!(*itr)->IsRemoved())
+                    {
+                        (*itr)->Update();
+
+                        //sf::Texture imageBullet;
+                        //imageBullet.loadFromFile("Graphics/Other/menu_button_play.png");
+                        //sf::Sprite spriteBullet;
+                        //spriteBullet.setTexture(imageBullet);
+                        //spriteBullet.setPosition((*itr)->GetPosXY());
+                        //(*itr)->SetSprite(spriteBullet);
+                        //window.draw((*itr)->GetSpriteBullet());
+                    }
+                }
+
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+                {
+                    window.setMouseCursorVisible(true);
+                    gameState = STATE_PAUSED;
+                }
+
+                break;
+            }
+            case STATE_PAUSED:
+            case STATE_PAUSED_FOCUS:
+            {
+                level->DrawMap(window);
+                player->Update();
+                enemy->Update();
+                break;
+            }
+            default:
+                std::cout << "Unknown gamestate " << gameState << std::endl;
+                break;
+        }
 
         float fps = 1 / fpsClock.getElapsedTime().asSeconds();
 
         sf::Text text("FPS: " + std::to_string(long double(int(fps))), font, 15);
-        text.setColor(sf::Color::Black);
-        text.setPosition(436 + player->GetPositionX(), 15.0f);
+        text.setColor(GAME_STATE_DRAW_GAME(gameState) ? sf::Color::Black : sf::Color::White);
+        text.setPosition(0.0f, 15.0f);
         window.draw(text);
 
         if (fps > 30)
         {
             sf::Text text2("Actual FPS: 30", font, 15);
-            text2.setColor(sf::Color::Black);
-            text2.setPosition(400 + player->GetPositionX(), 0.0f);
+            text2.setColor(GAME_STATE_DRAW_GAME(gameState) ? sf::Color::Black : sf::Color::White);
+            text2.setPosition(0.0f, 0.0f);
             window.draw(text2);
         }
+
         window.display();
     }
 
@@ -179,6 +251,9 @@ int Game::Update()
 
 void Game::HandleTimers(sf::Int32 diff_time)
 {
+    if (gameState != STATE_PLAYING)
+        return;
+
     player->HandleTimers(diff_time);
     //enemy->HandleTimers(diff_time);
 }

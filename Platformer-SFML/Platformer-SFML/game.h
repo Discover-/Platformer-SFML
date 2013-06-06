@@ -1,5 +1,9 @@
+#ifndef __GAME_H
+#define __GAME_H
+
 #include <vector>
 #include <SFML/Graphics.hpp>
+#include "shareddefines.h"
 
 class Player;
 class Bullet;
@@ -12,14 +16,17 @@ class Game
 
         int Update();
         bool IsRunning() { return isRunning; }
+        void HandleTimers(sf::Int32 diff_time);
         std::vector<sf::Sprite> GetGameObjects() { return gameObjects; }
         std::vector<sf::Sprite> GetGameObjectsCollidable() { return gameObjectsCollidable; }
         void AddGameObject(sf::Sprite gameobject) { gameObjects.push_back(gameobject); }
         void AddGameObjectCollidable(sf::Sprite gameobject) { gameObjectsCollidable.push_back(gameobject); }
-        void HandleTimers(sf::Int32 diff_time);
         Player* GetPlayer() { return player; }
         void AddBullet(Bullet* bullet) { allBullets.push_back(bullet); }
         std::vector<Bullet*> GetBullets() { return allBullets; }
+
+        GameState GetGameState() { return gameState; }
+        void SetGameState(GameState state) { gameState = state; }
 
     private:
         bool isRunning;
@@ -27,4 +34,7 @@ class Game
         std::vector<sf::Sprite> gameObjects;
         std::vector<sf::Sprite> gameObjectsCollidable;
         std::vector<Bullet*> allBullets;
+        GameState gameState;
 };
+
+#endif

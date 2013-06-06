@@ -72,6 +72,10 @@ void Level::DrawMap(sf::RenderWindow &window)
         {
             sf::Sprite sprite((*itr).image);
             sprite.setPosition((*itr).posX, (*itr).posY);
+
+            if (game->GetGameState() == STATE_PAUSED || game->GetGameState() == STATE_PAUSED_FOCUS)
+                sprite.setColor(sf::Color(255, 255, 255, 128));
+
             window.draw(sprite);
         }
     }

@@ -28,10 +28,32 @@ Player::Player(Game* _game, sf::RenderWindow* _window, float x, float y, sf::Spr
 void Player::Update()
 {
     Unit::Update();
+
+    if (game->GetGameState() != STATE_PLAYING)
+        return;
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+        if (!CollidesWithGameobjects(GetPositionX() - 4.0f, GetPositionY() + 5.0f))
+            SetPositionXY(GetPositionX() - GetMoveSpeed(), GetPositionY());
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+        if (!CollidesWithGameobjects(GetPositionX() + 4.0f, GetPositionY() + 5.0f))
+            SetPositionXY(GetPositionX() + GetMoveSpeed(), GetPositionY());
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+        if (!IsJumping() && !IsFalling())
+            SetIsJumping(true);
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+        if (CanShoot())
+            Shoot();
 }
 
 void Player::HandleTimers(sf::Int32 diff_time)
 {
+    if (game->GetGameState() != STATE_PLAYING)
+        return;
+
     Unit::HandleTimers(diff_time);
 }
 
