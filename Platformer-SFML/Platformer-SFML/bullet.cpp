@@ -97,11 +97,8 @@ void Bullet::Update()
             }
         }
 
-        if (posX < 0)
-            SetPosX(0.0f);
-
-        if (posY < 0)
-            SetPosY(0.0f);
+        if (posX < 0 || posY < 0)
+            Explode();
     }
 
     Draw(&spriteBullet, true);
