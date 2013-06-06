@@ -30,87 +30,91 @@ void Bullet::Update()
     if (isRemoved || !game || !game->IsRunning() || !player)
         return;
 
-    //SetPosXY(posX + velocity, posY);
-    posX += velocity;
+    bool isPaused = GAME_STATE_PAUSED_DRAWING(game->GetGameState());
+
+    if (!isPaused)
+        posX += velocity;
 
     sf::Sprite spriteBullet(imageBullet);
     spriteBullet.setPosition(posX, posY);
 
-    sf::Sprite spriteChar = player->GetSpriteBody();
-    sf::Vector2f posBullet = spriteBullet.getPosition();
-    sf::Vector2f posChar = spriteChar.getPosition();
-    sf::FloatRect boundsBullet = spriteBullet.getGlobalBounds();
-    sf::FloatRect boundsChar = spriteChar.getGlobalBounds();
-
-    //if (Collision::PixelPerfectTest(spriteBullet, spriteChar))
-    if (WillCollision(posX, posY, boundsBullet.height, boundsBullet.width, posChar.x, posChar.y, boundsChar.height, boundsChar.width))
+    if (!isPaused)
     {
-        Explode();
-        player->DropLife();
-    }
-    else
-    {
-        std::vector<Enemy*> enemies = game->GetEnemies();
+        sf::Sprite spriteChar = player->GetSpriteBody();
+        sf::Vector2f posBullet = spriteBullet.getPosition();
+        sf::Vector2f posChar = spriteChar.getPosition();
+        sf::FloatRect boundsBullet = spriteBullet.getGlobalBounds();
+        sf::FloatRect boundsChar = spriteChar.getGlobalBounds();
 
-        for (std::vector<Enemy*>::iterator itr = enemies.begin(); itr != enemies.end(); ++itr)
+        if (WillCollision(posX, posY, boundsBullet.height, boundsBullet.width, posChar.x, posChar.y, boundsChar.height, boundsChar.width))
         {
-            if ((*itr)->IsDead())
-                continue;
+            Explode();
+            player->DropLife();
+        }
+        else
+        {
+            std::vector<Enemy*> enemies = game->GetEnemies();
 
-            float enemyX, enemyY;
-            (*itr)->GetPosition(enemyX, enemyY);
-            sf::FloatRect boundsEnemy = (*itr)->GetSpriteBody().getGlobalBounds();
-
-            if (IsInRange(posX, enemyX, posY, enemyY, 200.0f))
+            for (std::vector<Enemy*>::iterator itr = enemies.begin(); itr != enemies.end(); ++itr)
             {
-                if (WillCollision(posBullet.x, posBullet.y, boundsBullet.height, boundsBullet.width, enemyX, enemyY, boundsEnemy.height, boundsEnemy.width))
+                if ((*itr)->IsDead())
+                    continue;
+
+                float enemyX, enemyY;
+                (*itr)->GetPosition(enemyX, enemyY);
+                sf::FloatRect boundsEnemy = (*itr)->GetSpriteBody().getGlobalBounds();
+
+                if (IsInRange(posX, enemyX, posY, enemyY, 200.0f))
                 {
-                    Explode();
+                    if (WillCollision(posBullet.x, posBullet.y, boundsBullet.height, boundsBullet.width, enemyX, enemyY, boundsEnemy.height, boundsEnemy.width))
+                    {
+                        Explode();
 
-                    if ((*itr)->DropLife())
-                        (*itr)->JustDied();
+                        if ((*itr)->DropLife())
+                            (*itr)->JustDied();
 
-                    break;
+                        break;
+                    }
+                }
+            }
+
+            std::vector<sf::Sprite> gameObjects = game->GetGameObjectsCollidable();
+
+            for (std::vector<sf::Sprite>::iterator itr = gameObjects.begin(); itr != gameObjects.end(); ++itr)
+            {
+                sf::Vector2f posGameobject = (*itr).getPosition();
+                sf::FloatRect boundsGameobject = (*itr).getGlobalBounds();
+
+                if (IsInRange(posX, posGameobject.x, posY, posGameobject.y, 200.0f))
+                {
+                    if (WillCollision(posBullet.x, posBullet.y, boundsBullet.height, boundsBullet.width, posGameobject.x, posGameobject.y, boundsGameobject.height, boundsGameobject.width))
+                    {
+                        Explode();
+                        break;
+                    }
                 }
             }
         }
 
-        std::vector<sf::Sprite> gameObjects = game->GetGameObjectsCollidable();
+        if (posX < 0)
+            SetPosX(0.0f);
 
-        for (std::vector<sf::Sprite>::iterator itr = gameObjects.begin(); itr != gameObjects.end(); ++itr)
-        {
-            sf::Vector2f posGameobject = (*itr).getPosition();
-            sf::FloatRect boundsGameobject = (*itr).getGlobalBounds();
-
-            if (IsInRange(posX, posGameobject.x, posY, posGameobject.y, 200.0f))
-            {
-                if (WillCollision(posBullet.x, posBullet.y, boundsBullet.height, boundsBullet.width, posGameobject.x, posGameobject.y, boundsGameobject.height, boundsGameobject.width))
-                {
-                    Explode();
-                    break;
-                }
-            }
-        }
+        if (posY < 0)
+            SetPosY(0.0f);
     }
-
-    if (posX < 0)
-        SetPosX(0.0f);
-
-    if (posY < 0)
-        SetPosY(0.0f);
 
     Draw(&spriteBullet, true);
 }
 
-void Bullet::Draw(sf::Sprite* _spriteBullet /* = NULL */, bool updatePos /* = false */)
+void Bullet::Draw(sf::Sprite* spriteBullet /* = NULL */, bool updatePos /* = false */)
 {
     if (isRemoved)
         return;
 
-    if (updatePos)
-        _spriteBullet->setPosition(posX, posY);
+    //if (updatePos)
+        spriteBullet->setPosition(posX, posY);
 
-    window->draw(*_spriteBullet);
+    window->draw(*spriteBullet);
 }
 
 void Bullet::Explode()
