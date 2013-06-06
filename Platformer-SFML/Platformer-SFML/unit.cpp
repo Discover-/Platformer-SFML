@@ -29,7 +29,7 @@ void Unit::Update()
     if (!isAlive)
         return;
 
-    if (game->GetGameState() == STATE_PAUSED || game->GetGameState() == STATE_PAUSED_FOCUS)
+    if (GAME_STATE_PAUSED_DRAWING(game->GetGameState()))
     {
         Draw();
         return;
@@ -83,6 +83,9 @@ void Unit::Draw(sf::Sprite* _spriteBody /* = NULL */, bool updatePos /* = false 
 
     if (updatePos)
         spriteToDraw.setPosition(GetPositionX(), GetPositionY());
+
+    if (GAME_STATE_PAUSED_DRAWING(game->GetGameState()))
+        spriteToDraw.setColor(sf::Color(255, 255, 255, 128));
 
     window->draw(spriteToDraw);
 }

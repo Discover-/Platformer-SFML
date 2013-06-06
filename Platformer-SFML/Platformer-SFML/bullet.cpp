@@ -111,8 +111,11 @@ void Bullet::Draw(sf::Sprite* spriteBullet /* = NULL */, bool updatePos /* = fal
     if (isRemoved)
         return;
 
-    //if (updatePos)
+    if (updatePos)
         spriteBullet->setPosition(posX, posY);
+
+    if (GAME_STATE_PAUSED_DRAWING(game->GetGameState()))
+        spriteBullet->setColor(sf::Color(255, 255, 255, 128));
 
     window->draw(*spriteBullet);
 }
