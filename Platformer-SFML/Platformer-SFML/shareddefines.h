@@ -27,7 +27,6 @@ struct MenuSpriteInfo
 {
     sf::Texture image;
     float posX, posY;
-    bool lightUp;
     int id;
 };
 

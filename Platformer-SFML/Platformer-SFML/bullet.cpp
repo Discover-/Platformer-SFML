@@ -15,17 +15,8 @@ Bullet::Bullet(Game* _game, sf::RenderWindow* _window, float _x, float _y, sf::S
     posX = _x;
     posY = _y;
     window = _window;
-    _spriteBullet.setPosition(_x, _y);
     spriteBullet = _spriteBullet;
-    //spriteBullet.setTexture(_spriteBullet);
     spriteBullet.setPosition(_x, _y);
-    //sf::Texture imageBullet;
-    //imageBullet.loadFromFile("tux_frame_0.png");
-    //spriteBullet.setTexture(imageBullet);
-    //spriteBullet.setPosition(posX, posY);
-    _spriteBullet.setPosition(_x - 200, _y);
-    window->draw(_spriteBullet);
-    window->draw(spriteBullet);
 }
 
 Bullet::~Bullet()
@@ -44,29 +35,32 @@ void Bullet::Update()
     posX += velocity;
 
     sf::Sprite spriteChar = player->GetSpriteBody();
+    sf::Vector2f posBullet = spriteBullet.getPosition();
+    sf::Vector2f posChar = spriteChar.getPosition();
+    sf::FloatRect boundsBullet = spriteBullet.getGlobalBounds();
+    sf::FloatRect boundsChar = spriteChar.getGlobalBounds();
 
-    if (Collision::PixelPerfectTest(spriteBullet, spriteChar))
+    //if (Collision::PixelPerfectTest(spriteBullet, spriteChar))
+    if (WillCollision(posBullet.x, posBullet.y, boundsBullet.height, boundsBullet.width, posChar.x, posChar.y, boundsChar.height, boundsChar.width))
         Explode();
-    //else
+    else
     {
-        //std::vector<sf::Sprite> gameObjects = game->GetGameObjectsCollidable();
+        std::vector<sf::Sprite> gameObjects = game->GetGameObjectsCollidable();
 
-        //for (std::vector<sf::Sprite>::iterator itr = gameObjects.begin(); itr != gameObjects.end(); ++itr)
-        //{
-        //    sf::Vector2f posGo = (*itr).getPosition();
-        //    //std::cout << "Gameobject all X: " << posGo.x << ", Y: " << posGo.y << std::endl;
+        for (std::vector<sf::Sprite>::iterator itr = gameObjects.begin(); itr != gameObjects.end(); ++itr)
+        {
+            sf::Vector2f posGameobject = (*itr).getPosition();
+            sf::FloatRect boundsGameobject = spriteBullet.getGlobalBounds();
 
-        //    if (IsInRange(posX, posGo.x, posY, posGo.y, 200.0f))
-        //    {
-        //        std::cout << "Gameobject inrange X: " << posGo.x << ", Y: " << posGo.y << std::endl;
-
-        //        if (Collision::PixelPerfectTest(spriteBullet, (*itr)))
-        //        {
-        //            Explode();
-        //            break;
-        //        }
-        //    }
-        //}
+            if (IsInRange(posX, posGameobject.x, posY, posGameobject.y, 200.0f))
+            {
+                if (WillCollision(posBullet.x, posBullet.y, boundsBullet.height, boundsBullet.width, posGameobject.x, posGameobject.y, boundsGameobject.height, boundsGameobject.width))
+                {
+                    Explode();
+                    break;
+                }
+            }
+        }
     }
 
     if (posX < 0)
@@ -80,7 +74,9 @@ void Bullet::Update()
 
 void Bullet::Draw(sf::Sprite* _spriteBullet /* = NULL */, bool updatePos /* = false */)
 {
-    return;
+    if (isRemoved)
+        return;
+
     sf::Sprite* spriteToDraw = _spriteBullet ? _spriteBullet : &spriteBullet;
 
     if (updatePos)

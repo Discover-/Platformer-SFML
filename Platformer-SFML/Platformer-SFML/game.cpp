@@ -16,7 +16,6 @@
 #include "Windows.h"
 #include "game.h"
 #include "player.h"
-#include "enemy.h"
 #include "bullet.h"
 #include "shareddefines.h"
 #include "level.h"
@@ -46,7 +45,12 @@ int Game::Update()
     sf::Texture imageEnemy;
     imageEnemy.loadFromFile("Graphics/Characters/Kit/frame_0.png");
     sf::Sprite spriteEnemy(imageEnemy);
-    Enemy* enemy = new Enemy(this, &window, 50, 70, 400, 70, spriteEnemy, TYPEID_ENEMY);
+    Enemy* enemy1 = new Enemy(this, &window, 166, 135, 400, 70, spriteEnemy, TYPEID_ENEMY);
+    Enemy* enemy2 = new Enemy(this, &window, 514, 110, 710, 70, spriteEnemy, TYPEID_ENEMY);
+    Enemy* enemy3 = new Enemy(this, &window, 950, 330, 1300, 330, spriteEnemy, TYPEID_ENEMY);
+    allEnemies.push_back(enemy1);
+    allEnemies.push_back(enemy2);
+    allEnemies.push_back(enemy3);
 
     sf::Font font;
     font.loadFromFile("Fonts/arial.ttf");
@@ -65,6 +69,12 @@ int Game::Update()
     {
         sf::Event _event;
 
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
+        {
+            std::cout << "Mouse X: " << sf::Mouse::getPosition(window).x << std::endl;
+            std::cout << "Mouse Y: " << sf::Mouse::getPosition(window).y << std::endl;
+        }
+
         while (window.pollEvent(_event))
         {
             if (_event.type == sf::Event::Closed)
@@ -72,13 +82,13 @@ int Game::Update()
 
             if (_event.type == sf::Event::LostFocus && gameState == STATE_PLAYING)
             {
-                window.setMouseCursorVisible(true);
+                //window.setMouseCursorVisible(true);
                 gameState = STATE_PAUSED_FOCUS;
             }
 
             if (_event.type == sf::Event::GainedFocus && gameState == STATE_PAUSED_FOCUS)
             {
-                window.setMouseCursorVisible(false);
+                //window.setMouseCursorVisible(false);
                 gameState = STATE_PLAYING;
             }
         }
@@ -99,7 +109,9 @@ int Game::Update()
             {
                 currLevel->DrawMap(window);
                 player->Update();
-                enemy->Update();
+
+                for (std::vector<Enemy*>::iterator itr = allEnemies.begin(); itr != allEnemies.end(); ++itr)
+                    (*itr)->Update();
 
                 if (player->GetPositionX() > window.getSize().x / 2.f)
                     view.setCenter(player->GetPositionX(), view.getCenter().y);
@@ -131,7 +143,7 @@ int Game::Update()
 
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
                 {
-                    window.setMouseCursorVisible(true);
+                    //window.setMouseCursorVisible(true);
                     gameState = STATE_PAUSED;
                 }
 
@@ -142,7 +154,10 @@ int Game::Update()
             {
                 currLevel->DrawMap(window);
                 player->Update();
-                enemy->Update();
+                
+                for (std::vector<Enemy*>::iterator itr = allEnemies.begin(); itr != allEnemies.end(); ++itr)
+                    (*itr)->Update();
+
                 break;
             }
             default:
@@ -177,13 +192,15 @@ void Game::HandleTimers(sf::Int32 diff_time)
         return;
 
     player->HandleTimers(diff_time);
-    //enemy->HandleTimers(diff_time);
+
+    //for (std::vector<Enemy*>::iterator itr = allEnemies.begin(); itr != allEnemies.end(); ++itr)
+        //(*itr)->HandleTimers(diff_time);
 }
 
 void Game::StartActualGame(sf::RenderWindow &window)
 {
     gameState = STATE_PLAYING;
     currLevel->LoadMap("Levels/level1.txt");
-    window.setMouseCursorVisible(false);
+    //window.setMouseCursorVisible(false);
 }
 

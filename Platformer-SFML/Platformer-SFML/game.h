@@ -5,6 +5,7 @@
 #include <SFML/Graphics.hpp>
 #include "shareddefines.h"
 #include "level.h"
+#include "enemy.h"
 
 class Player;
 class Bullet;
@@ -36,6 +37,7 @@ class Game
         std::vector<sf::Sprite> gameObjects;
         std::vector<sf::Sprite> gameObjectsCollidable;
         std::vector<Bullet*> allBullets;
+        std::vector<Enemy*> allEnemies;
         GameState gameState;
         Level* currLevel;
 };

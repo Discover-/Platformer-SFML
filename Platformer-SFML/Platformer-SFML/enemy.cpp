@@ -33,6 +33,9 @@ void Enemy::Update()
 {
     Unit::Update();
 
+    if (CollidesWithGameobjects(GetPositionX() + GetMoveSpeed(), GetPositionY()))
+        movingForward = !movingForward;
+
     if (movingForward)
     {
         SetPositionX(GetPositionX() + GetMoveSpeed());
