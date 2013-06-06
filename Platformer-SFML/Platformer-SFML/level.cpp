@@ -44,7 +44,7 @@ void Level::LoadMap(char const* filename)
             std::string fileName = GetTileFilename(tilesInfoLayers[i][j]);
             sf::Texture image;
             image.loadFromFile(fileName);
-            TileInfo tileInfo;
+            SpriteInfo tileInfo;
             tileInfo.image = image;
             tileInfo.posX = j * 50.0f;
             tileInfo.posY = i * 50.0f;
@@ -65,7 +65,7 @@ void Level::DrawMap(sf::RenderWindow &window)
 {
     Player* player = game->GetPlayer();
 
-    for (std::vector<TileInfo>::iterator itr = sprites.begin(); itr != sprites.end(); ++itr)
+    for (std::vector<SpriteInfo>::iterator itr = sprites.begin(); itr != sprites.end(); ++itr)
     {
         //! ONLY draw the images if the player is within visibility distance, else there's no point in wasting performance.
         if (IsInRange(player->GetPositionX(), (*itr).posX, player->GetPositionY(), (*itr).posY, 1000.0f))

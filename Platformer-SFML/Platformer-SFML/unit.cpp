@@ -56,9 +56,9 @@ void Unit::Update()
     else
     {
         isFalling = true;
+
         if (!CollidesWithGameobjects(GetPositionX(), GetPositionY() + fallSpeed + 5.0f))
         {
-            
             SetPositionY(GetPositionY() + fallSpeed);
             fallSpeed++;
         }

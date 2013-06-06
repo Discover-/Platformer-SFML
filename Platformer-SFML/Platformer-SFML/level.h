@@ -14,13 +14,12 @@ class Level
         Level(Game* _game);
         ~Level();
 
-        int Update();
         void LoadMap(char const* filename);
         void DrawMap(sf::RenderWindow &window);
 
     private:
         Game* game;
-        std::vector<TileInfo> sprites;
+        std::vector<SpriteInfo> sprites;
 };
 
 #endif

@@ -17,10 +17,18 @@ enum TypeId
     TYPEID_PLAYER   = 1,
 };
 
-struct TileInfo
+struct SpriteInfo
 {
     sf::Texture image;
     float posX, posY;
+};
+
+struct MenuSpriteInfo
+{
+    sf::Texture image;
+    float posX, posY;
+    bool lightUp;
+    int id;
 };
 
 inline int urand(int min, int max)

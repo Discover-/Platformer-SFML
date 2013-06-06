@@ -20,6 +20,7 @@
 #include "bullet.h"
 #include "shareddefines.h"
 #include "level.h"
+#include "menu.h"
 
 Game::Game()
 {
@@ -36,36 +37,6 @@ int Game::Update()
 {
     isRunning = true;
     sf::RenderWindow window(sf::VideoMode(1000, 600), "Platformer C++ SFML");
-
-    sf::Texture imageMenuPlay;
-    imageMenuPlay.loadFromFile("Graphics/Other/menu_button_play.png");
-    sf::Sprite spriteMenuPlay(imageMenuPlay);
-    spriteMenuPlay.setPosition(0.0f, 70.0f);
-
-    sf::Texture imageMenuExit;
-    imageMenuExit.loadFromFile("Graphics/Other/menu_button_exit.png");
-    sf::Sprite spriteMenuExit(imageMenuExit);
-    spriteMenuExit.setPosition(0.0f, 220.0f);
-
-    sf::Texture imageMenuInfo;
-    imageMenuInfo.loadFromFile("Graphics/Other/menu_button_info.png");
-    sf::Sprite spriteMenuInfo(imageMenuInfo);
-    spriteMenuInfo.setPosition(0.0f, 370.0f);
-
-    sf::Texture imageMenuPlayLightup;
-    imageMenuPlayLightup.loadFromFile("Graphics/Other/menu_button_play_lightup.png");
-    sf::Sprite spriteMenuPlayLightup(imageMenuPlayLightup);
-    spriteMenuPlayLightup.setPosition(0.0f, 70.0f);
-
-    sf::Texture imageMenuExitLightup;
-    imageMenuExitLightup.loadFromFile("Graphics/Other/menu_button_exit_lightup.png");
-    sf::Sprite spriteMenuExitLightup(imageMenuExitLightup);
-    spriteMenuExitLightup.setPosition(0.0f, 220.0f);
-
-    sf::Texture imageMenuInfoLightup;
-    imageMenuInfoLightup.loadFromFile("Graphics/Other/menu_button_info_lightup.png");
-    sf::Sprite spriteMenuInfoLightup(imageMenuInfoLightup);
-    spriteMenuInfoLightup.setPosition(0.0f, 370.0f);
 
     sf::Texture imageCharacter;
     imageCharacter.loadFromFile("Graphics/Characters/Tux/tux_from_linux-00-01.png");
@@ -86,7 +57,9 @@ int Game::Update()
     sf::Clock clock;
     sf::Clock fpsClock;
 
-    Level* level = new Level(this);
+    currLevel = new Level(this);
+    Menu* menu = new Menu(this);
+    menu->Load();
 
     while (window.isOpen())
     {
@@ -118,64 +91,13 @@ int Game::Update()
         {
             case STATE_MENU:
             {
-                sf::Sprite spritePlay = spriteMenuPlay;
-                sf::Sprite spriteExit = spriteMenuExit;
-                sf::Sprite spriteInfo = spriteMenuInfo;
-                sf::Sprite* selection = NULL;
-
-                float mouseX = float(sf::Mouse::getPosition(window).x);
-                float mouseY = float(sf::Mouse::getPosition(window).y);
-
-                if (WillCollision(mouseX, mouseY, 10.0f, 10.0f, spriteMenuPlay.getPosition().x, spriteMenuPlay.getPosition().y, spriteMenuPlay.getLocalBounds().height, spriteMenuPlay.getLocalBounds().width))
-                {
-                    spritePlay = spriteMenuPlayLightup;
-                    selection = &spritePlay;
-                }
-                else if (WillCollision(mouseX, mouseY, 10.0f, 10.0f, spriteMenuExit.getPosition().x, spriteMenuExit.getPosition().y, spriteMenuExit.getLocalBounds().height, spriteMenuExit.getLocalBounds().width))
-                {
-                    spriteExit = spriteMenuExitLightup;
-                    selection = &spriteExit;
-                }
-                else if (WillCollision(mouseX, mouseY, 10.0f, 10.0f, spriteMenuInfo.getPosition().x, spriteMenuInfo.getPosition().y, spriteMenuInfo.getLocalBounds().height, spriteMenuInfo.getLocalBounds().width))
-                {
-                    spriteInfo = spriteMenuInfoLightup;
-                    selection = &spriteInfo;
-                }
-
-                window.draw(spritePlay);
-                window.draw(spriteExit);
-                window.draw(spriteInfo);
-
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
-                {
-                    gameState = STATE_PLAYING;
-                    level->LoadMap("Levels/level1.txt");
-                    window.setMouseCursorVisible(false);
-                    break;
-                }
-
-                if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-                {
-                    if (selection == &spritePlay)
-                    {
-                        gameState = STATE_PLAYING;
-                        level->LoadMap("Levels/level1.txt");
-                        window.setMouseCursorVisible(false);
-                    }
-                    else if (selection == &spriteExit)
-                        window.close();
-                    //else if (selection == &spriteInfo)
-                    // NYI
-                }
-
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-                    window.close();
+                menu->Update(window);
 
                 break;
             }
             case STATE_PLAYING:
             {
-                level->DrawMap(window);
+                currLevel->DrawMap(window);
                 player->Update();
                 enemy->Update();
 
@@ -218,7 +140,7 @@ int Game::Update()
             case STATE_PAUSED:
             case STATE_PAUSED_FOCUS:
             {
-                level->DrawMap(window);
+                currLevel->DrawMap(window);
                 player->Update();
                 enemy->Update();
                 break;
@@ -257,3 +179,11 @@ void Game::HandleTimers(sf::Int32 diff_time)
     player->HandleTimers(diff_time);
     //enemy->HandleTimers(diff_time);
 }
+
+void Game::StartActualGame(sf::RenderWindow &window)
+{
+    gameState = STATE_PLAYING;
+    currLevel->LoadMap("Levels/level1.txt");
+    window.setMouseCursorVisible(false);
+}
+

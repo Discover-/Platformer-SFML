@@ -4,6 +4,7 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 #include "shareddefines.h"
+#include "level.h"
 
 class Player;
 class Bullet;
@@ -24,6 +25,7 @@ class Game
         Player* GetPlayer() { return player; }
         void AddBullet(Bullet* bullet) { allBullets.push_back(bullet); }
         std::vector<Bullet*> GetBullets() { return allBullets; }
+        void StartActualGame(sf::RenderWindow &window);
 
         GameState GetGameState() { return STATE_PLAYING; }
         void SetGameState(GameState state) { gameState = state; }
@@ -35,6 +37,7 @@ class Game
         std::vector<sf::Sprite> gameObjectsCollidable;
         std::vector<Bullet*> allBullets;
         GameState gameState;
+        Level* currLevel;
 };
 
 #endif
