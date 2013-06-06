@@ -23,7 +23,6 @@ Unit::Unit(Game* _game, sf::RenderWindow* _window, float x, float y, sf::Sprite 
         keysDown[i] = false;
 
     isJumping = false;
-    isFalling = false;
     fallSpeed = 0;
     jumpSpeed = 15;
     moveSpeed = _typeId == TYPEID_PLAYER ? 10.0f : 3.0f;
@@ -54,20 +53,19 @@ void Unit::Update()
             jumpSpeed = 15;
         }
     }
-
-    if (isFalling)
+    else
     {
+        isFalling = true;
         if (!CollidesWithGameobjects(GetPositionX(), GetPositionY() + fallSpeed + 5.0f))
         {
+            
             SetPositionY(GetPositionY() + fallSpeed);
             fallSpeed++;
         }
         else
         {
-            //SetPositionY(posY + 5.0f);
             isFalling = false;
             fallSpeed = 0;
-            jumpSpeed = 15;
         }
     }
 

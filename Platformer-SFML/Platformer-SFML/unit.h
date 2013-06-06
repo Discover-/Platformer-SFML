@@ -34,8 +34,7 @@ class Unit : public Position
         sf::Sprite GetSpriteBody() { return spriteBody; }
 
         /* MOVEMENT */
-        void SetIsJumping(bool val) { isJumping = val; }
-        void SetIsFalling(bool val) { isFalling = val; }
+        void SetIsJumping(bool val) { isJumping = val; fallSpeed = 0; }
         bool IsJumping() { return isJumping; }
         bool IsFalling() { return isFalling; }
 

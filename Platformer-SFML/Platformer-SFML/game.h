@@ -25,7 +25,7 @@ class Game
         void AddBullet(Bullet* bullet) { allBullets.push_back(bullet); }
         std::vector<Bullet*> GetBullets() { return allBullets; }
 
-        GameState GetGameState() { return gameState; }
+        GameState GetGameState() { return STATE_PLAYING; }
         void SetGameState(GameState state) { gameState = state; }
 
     private:
