@@ -52,7 +52,7 @@ inline std::string GetTileFilename(int tileId)
     switch (tileId)
     {
         case 9: //! cloud_3.png
-            return "Graphics/Tiles/cloud_3.png"; //! Empty sky block
+            return ""; //! Empty sky block
         case 0: //! cloud_*.png
             return "Graphics/Tiles/cloud_" + std::to_string(long double(urand(0, 20) < 18 ? 3 : urand(0, 2))) + ".png";
         case 1: //! block.png

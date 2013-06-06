@@ -45,6 +45,10 @@ void Level::LoadMap(char const* filename)
         for (int j = 0; j < tilesInfoLayers[i].size(); j++)
         {
             std::string fileName = GetTileFilename(tilesInfoLayers[i][j]);
+
+            if (fileName == "")
+                continue;
+
             sf::Texture image;
             image.loadFromFile(fileName);
             SpriteInfo tileInfo;
