@@ -1,14 +1,13 @@
-#ifndef __GAME_H
-#define __GAME_H
+#pragma once
 
 #include <vector>
 #include <SFML/Graphics.hpp>
 #include "shareddefines.h"
-#include "level.h"
-#include "enemy.h"
 
 class Player;
 class Bullet;
+class Level;
+class Enemy;
 
 class Game
 {
@@ -50,4 +49,4 @@ class Game
         Level* currLevel;
 };
 
-#endif
+

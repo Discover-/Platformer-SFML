@@ -1,5 +1,4 @@
-#ifndef __UNIT_H
-#define __UNIT_H
+#pragma once
 
 #include <iostream>
 #include <vector>
@@ -18,8 +17,7 @@
 #include "Windows.h"
 #include "position.h"
 #include "shareddefines.h"
-
-class Game;
+#include "game.h"
 
 class Unit : public Position
 {
@@ -41,7 +39,7 @@ class Unit : public Position
         void SetIsJumping(bool val) { isJumping = val; fallSpeed = 0; }
         bool IsJumping() { return isJumping; }
         bool IsFalling() { return isFalling; }
-        bool IsBouncing() { return isBouncing; }
+        bool IsBouncing() { return hasBounced; }
         void BounceAway(bool toLeft);
 
         bool CollidesWithGameobjects(float newPosX = 0.0f, float newPosY = 0.0f);
@@ -78,7 +76,7 @@ class Unit : public Position
         sf::RenderWindow* window;
 
         /* MOVEMENT */
-        bool isMoving, isJumping, isFalling, isBouncing;
+        bool isMoving, isJumping, isFalling, hasBounced;
         int fallSpeed, jumpSpeed, bounceSpeed, bounceToLeft;
         float moveSpeed;
         int moveFrame, totalMoveFrames, frameInterval, frameIntervalStore;
@@ -91,4 +89,4 @@ class Unit : public Position
         int life;
 };
 
-#endif
+

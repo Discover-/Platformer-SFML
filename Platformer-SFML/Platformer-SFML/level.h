@@ -1,12 +1,10 @@
-#ifndef __LEVEL_H
-#define __LEVEL_H
+#pragma once
 
 #include <vector>
 #include <array>
 #include <SFML/Graphics.hpp>
 #include "shareddefines.h"
-
-class Game;
+#include "game.h"
 
 class Level
 {
@@ -22,4 +20,4 @@ class Level
         std::vector<SpriteInfo> sprites;
 };
 
-#endif
+

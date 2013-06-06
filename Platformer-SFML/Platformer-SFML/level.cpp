@@ -1,5 +1,6 @@
 #include <fstream>
 #include <string>
+#include <stdio.h>
 #include "level.h"
 #include "shareddefines.h"
 #include "player.h"
@@ -39,12 +40,14 @@ void Level::LoadMap(char const* filename)
 
     game->ClearGameObjects();
     game->ClearGameObjectCollidables();
+    sprites.clear();
 
     for (int i = 0; i < tilesInfoLayers.size(); i++)
     {
         for (int j = 0; j < tilesInfoLayers[i].size(); j++)
         {
-            std::string fileName = GetTileFilename(tilesInfoLayers[i][j]);
+            bool isCollidable;
+            std::string fileName = GetTileFilename(tilesInfoLayers[i][j], isCollidable);
 
             if (fileName == "")
                 continue;
@@ -60,7 +63,7 @@ void Level::LoadMap(char const* filename)
             sf::Sprite tmpSprite(image);
             tmpSprite.setPosition(j * 50.0f, i * 50.0f);
 
-            if (tilesInfoLayers[i][j] != 9 && tilesInfoLayers[i][j] != 0)
+            if (isCollidable)
                 game->AddGameObjectCollidable(tmpSprite);
 
             game->AddGameObject(tmpSprite);

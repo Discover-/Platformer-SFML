@@ -1,3 +1,5 @@
+#pragma once
+
 #include <iostream>
 #include <vector>
 #include <cstring>
@@ -13,8 +15,7 @@
 #include <SFML/OpenGL.hpp>
 #include <SFML/Window.hpp>
 #include "Windows.h"
-
-class Game;
+#include "game.h"
 
 class Bullet
 {
@@ -48,3 +49,5 @@ class Bullet
         sf::RenderWindow* window;
         sf::Texture imageBullet;
 };
+
+

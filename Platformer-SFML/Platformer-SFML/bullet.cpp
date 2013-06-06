@@ -3,6 +3,7 @@
 #include "collision.h"
 #include "game.h"
 #include "shareddefines.h"
+#include "enemy.h"
 
 Bullet::Bullet(Game* _game, sf::RenderWindow* _window, float _x, float _y, sf::Texture _imageBullet, bool _movingToLeft, float _velocity /* = 5 */)
 {

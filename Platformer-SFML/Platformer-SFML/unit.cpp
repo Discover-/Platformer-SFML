@@ -42,6 +42,18 @@ void Unit::Update()
     if (game->GetGameState() == STATE_MENU)
         return;
 
+    if (hasBounced)
+    {
+        if (!CollidesWithGameobjects(GetPositionX() - bounceSpeed, GetPositionY()))
+        {
+            SetPosition(GetPositionX() - bounceSpeed, GetPositionY());
+            bounceSpeed--;
+        }
+
+        if (bounceSpeed <= 0)
+            hasBounced = false;
+    }
+
     if (isJumping)
     {
         if (jumpSpeed && !CollidesWithGameobjects(GetPositionX(), GetPositionY() - jumpSpeed))
@@ -56,7 +68,7 @@ void Unit::Update()
             jumpSpeed = 15;
         }
     }
-    //else if (isBouncing)
+    //else if (hasBounced)
     //{
     //    float newX = bounceToLeft ? GetPositionX() - bounceSpeed : GetPositionX() + bounceSpeed;
 
@@ -67,7 +79,7 @@ void Unit::Update()
     //    }
     //    else
     //    {
-    //        isBouncing = false;
+    //        hasBounced = false;
     //        isJumping = false;
     //        isFalling = true;
     //        bounceSpeed = 15;
@@ -88,9 +100,6 @@ void Unit::Update()
             fallSpeed = 0;
         }
     }
-
-    //if (!isFalling && !isJumping && !isBouncing)
-    //    BounceAway(urand(0, 1) == 0 ? false : true);
 
     if (GetPositionX() < 0)
         SetPositionX(0.0f);
@@ -183,15 +192,15 @@ void Unit::Shoot()
 
     sf::Texture imageBullet;
     imageBullet.loadFromFile("Graphics/Other/bullet.png");
-    Bullet* bullet = new Bullet(game, window, movingToLeft ? GetPositionX() + 50.0f : GetPositionX() - 10.0f, GetPositionY() + 20.0f, imageBullet, movingToLeft);
+    Bullet* bullet = new Bullet(game, window, movingToLeft ? GetPositionX() + 50.0f : GetPositionX() - 15.0f, GetPositionY() + 20.0f, imageBullet, movingToLeft);
     game->AddBullet(bullet);
 }
 
 void Unit::BounceAway(bool toLeft)
 {
-    isJumping = false;
-    //isBouncing = true;
-    bounceToLeft = toLeft;
+    hasBounced = true;
+    //bounceToLeft = toLeft;
+    bounceSpeed = 15;
     fallSpeed = 0;
 }
 

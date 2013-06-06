@@ -1,5 +1,4 @@
-#ifndef __SHAREDDEFINES_H
-#define __SHAREDDEFINES_H
+#pragma once
 
 enum GameState
 {
@@ -47,50 +46,43 @@ inline bool WillCollision(float x1, float y1, float h1, float w1, float x2, floa
     return !(y1 >= y2 + h2 || x1 >= x2 + w2 || y1 + h1 <= y2 || x1 + w1 <= x2);
 }
 
-inline std::string GetTileFilename(int tileId)
+inline std::string GetTileFilename(int tileId, bool &isCollidable)
 {
+    isCollidable = false;
+
     switch (tileId)
     {
-        case 9: //! cloud_3.png
-            return ""; //! Empty sky block
         case 0: //! cloud_*.png
-            return "Graphics/Tiles/cloud_" + std::to_string(long double(urand(0, 20) < 18 ? 3 : urand(0, 2))) + ".png";
+            if (urand(0, 20) < 18)
+                break;
+
+            return "Graphics/Tiles/cloud_" + std::to_string(long double(urand(0, 2))) + ".png";
         case 1: //! block.png
+            isCollidable = true;
             return "Graphics/Tiles/block.png";
         case 2: //! ground.png
+            isCollidable = true;
             return "Graphics/Tiles/ground.png";
         case 3: //! ground_dirt.png
+            isCollidable = true;
             return "Graphics/Tiles/ground_dirt.png";
-        case 4: //! ground_rock.png
-            return "Graphics/Tiles/ground_rock.png";
-        case 5: //! ground_sand.png
-            return "Graphics/Tiles/ground_sand.png";
-        case 6: //! bridge.png
+        case 4: //! bridge.png
+            isCollidable = true;
             return "Graphics/Tiles/bridge.png";
+        //! DECOR!
+        case 5: //! grass.png
+            return "Graphics/Tiles/grass.png";
+        case 6: //! hill_short.png
+            return "Graphics/Tiles/hill_short.png";
+        case 7: //! hill_long.png
+            return "Graphics/Tiles/hill_long.png";
+        case 8: //! fence.png
+            return "Graphics/Tiles/fence.png";
         default:
             break;
-        //case 9:
-        //    return "Graphics/Old/Tiles/sky_3.png"; //! Empty sky block
-        //case 0:
-        //    return "Graphics/Old/Tiles/sky_" + std::to_string(long double(urand(0, 20) < 16 ? 3 : urand(0, 2))) + ".png";
-        //case 1:
-        //    return "Graphics/Old/Tiles/dirt_" + randNumb + ".png";
-        //case 2:
-        //    return "Graphics/Old/Tiles/dirt_rock_" + randNumb + ".png";
-        //case 3:
-        //    return "Graphics/Old/Tiles/grass_" + randNumb + ".png";
-        //case 4:
-        //    return "Graphics/Old/Tiles/grass_ontop_" + randNumb + ".png";
-        //case 5:
-        //    return "Graphics/Old/Tiles/ground_" + randNumb + ".png";
-        //case 6:
-        //    return "Graphics/Old/Tiles/sand_" + randNumb + ".png";
-        //default:
-        //    break;
     }
 
     return "";
 }
 
-//void Load
-#endif
+

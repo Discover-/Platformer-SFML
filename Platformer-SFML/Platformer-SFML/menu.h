@@ -1,12 +1,10 @@
-#ifndef __MENU_H
-#define __MENU_H
+#pragma once
 
 #include <vector>
 #include <array>
 #include <SFML/Graphics.hpp>
 #include "shareddefines.h"
-
-class Game;
+#include "game.h"
 
 class Menu
 {
@@ -25,4 +23,4 @@ class Menu
         int selectedOption;
 };
 
-#endif
+

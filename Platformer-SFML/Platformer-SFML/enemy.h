@@ -1,9 +1,7 @@
-#ifndef __ENEMY_H
-#define __ENEMY_H
+#pragma once
 
 #include "unit.h"
-
-class Game;
+#include "game.h"
 
 class Enemy : public Unit
 {
@@ -20,4 +18,4 @@ class Enemy : public Unit
         float destinationX2, destinationY2;
 };
 
-#endif
+

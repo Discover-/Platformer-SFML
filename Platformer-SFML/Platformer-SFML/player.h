@@ -1,5 +1,4 @@
-#ifndef __PLAYER_H
-#define __PLAYER_H
+#pragma once
 
 #include <iostream>
 #include <vector>
@@ -17,8 +16,7 @@
 #include <SFML/Window.hpp>
 #include "Windows.h"
 #include "unit.h"
-
-class Game;
+#include "game.h"
 
 class Player : public Unit
 {
@@ -35,4 +33,4 @@ class Player : public Unit
         bool keysDown[4];
 };
 
-#endif
+

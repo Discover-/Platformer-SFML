@@ -20,6 +20,7 @@
 #include "shareddefines.h"
 #include "level.h"
 #include "menu.h"
+#include "enemy.h"
 
 Game::Game()
 {

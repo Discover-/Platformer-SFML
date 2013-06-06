@@ -13,11 +13,12 @@
 #include <SFML/OpenGL.hpp>
 #include <SFML/Window.hpp>
 #include "Windows.h"
-#include "game.h"
 #include "player.h"
 #include "collision.h"
 #include "shareddefines.h"
 #include "bullet.h"
+#include "game.h"
+#include "enemy.h"
 
 Player::Player(Game* _game, sf::RenderWindow* _window, float x, float y, std::vector<std::pair<int, sf::Texture>> _spritesLeft, std::vector<std::pair<int, sf::Texture>> _spritesRight, TypeId _typeId, int _life, int _totalMoveFrames, int _frameInterval, bool _canFly) :
 Unit(_game, _window, x, y, _spritesLeft, _spritesRight, _typeId, _life, _totalMoveFrames, _frameInterval, _canFly)
@@ -63,27 +64,30 @@ void Player::Update()
         if (CanShoot())
             Shoot();
 
-    //std::vector<Enemy*> enemies = game->GetEnemies();
+    if (game->GetEnemies().empty())
+        return;
 
-    //for (std::vector<Enemy*>::iterator itr = enemies.begin(); itr != enemies.end(); ++itr)
-    //{
-    //    if ((*itr)->IsDead())
-    //        continue;
+    std::vector<Enemy*> enemies = game->GetEnemies();
 
-    //    float enemyX, enemyY;
-    //    (*itr)->GetPosition(enemyX, enemyY);
-    //    sf::FloatRect boundsEnemy = (*itr)->GetSpriteBody().getGlobalBounds();
-    //    sf::Vector2f posEnemy = (*itr)->GetSpriteBody().getPosition();
+    for (std::vector<Enemy*>::iterator itr = enemies.begin(); itr != enemies.end(); ++itr)
+    {
+        if ((*itr)->IsDead())
+            continue;
 
-    //    if (IsInRange(GetPositionX(), enemyX, GetPositionY(), enemyY, 150.0f))
-    //    {
-    //        if (WillCollision(posEnemy.x, posEnemy.y, boundsEnemy.height, boundsEnemy.width, enemyX, enemyY, boundsEnemy.height, boundsEnemy.width))
-    //        {
-    //            BounceAway(false);
-    //            break;
-    //        }
-    //    }
-    //}
+        float enemyX, enemyY;
+        (*itr)->GetPosition(enemyX, enemyY);
+        sf::FloatRect boundsEnemy = (*itr)->GetSpriteBody().getGlobalBounds();
+        sf::Vector2f posEnemy = (*itr)->GetSpriteBody().getPosition();
+
+        if (IsInRange(GetPositionX(), enemyX, GetPositionY(), enemyY, 150.0f))
+        {
+            if (WillCollision(posEnemy.x, posEnemy.y, boundsEnemy.height, boundsEnemy.width, enemyX, enemyY, boundsEnemy.height, boundsEnemy.width))
+            {
+                BounceAway(false);
+                break;
+            }
+        }
+    }
 }
 
 void Player::HandleTimers(sf::Int32 diff_time)
