@@ -288,3 +288,47 @@ void Game::StartActualGame(sf::RenderWindow &window)
     currLevel->LoadMap("Levels/level1.txt");
     //window.setMouseCursorVisible(false);
 }
+
+bool Game::IsQuickSandArea(float x, float y, float h, float w)
+{
+    for (std::vector<sf::Sprite>::iterator itr = quickSandGameobjects.begin(); itr != quickSandGameobjects.end(); ++itr)
+    {
+        sf::Vector2f quickSandPos = (*itr).getPosition();
+        sf::FloatRect quickSandRect = (*itr).getGlobalBounds();
+
+        //! We add 5 pixels to the height so it properly checks for gameobjects we're moving on.
+        if (WillCollision(x, y, h + 5, w, quickSandPos.x, quickSandPos.y, quickSandRect.height, quickSandRect.width))
+            return true;
+    }
+
+    return false;
+}
+
+bool Game::IsInWaterArea(float x, float y, float h, float w)
+{
+    for (std::vector<sf::Sprite>::iterator itr = waterGameobjects.begin(); itr != waterGameobjects.end(); ++itr)
+    {
+        sf::Vector2f waterPos = (*itr).getPosition();
+        sf::FloatRect waterRect = (*itr).getGlobalBounds();
+
+        //! We add 5 pixels to the height so it properly checks for gameobjects we're moving on.
+        if (WillCollision(x, y, h + 5, w, waterPos.x, waterPos.y, waterRect.height, waterRect.width))
+            return true;
+    }
+
+    return false;
+}
+
+bool Game::IsInLavaArea(float x, float y, float h, float w)
+{
+    for (std::vector<sf::Sprite>::iterator itr = lavaGameobjects.begin(); itr != lavaGameobjects.end(); ++itr)
+    {
+        sf::Vector2f lavaPos = (*itr).getPosition();
+        sf::FloatRect lavaRect = (*itr).getGlobalBounds();
+
+        if (WillCollision(x, y, h, w, lavaPos.x, lavaPos.y, lavaRect.height, lavaRect.width))
+            return true;
+    }
+
+    return false;
+}

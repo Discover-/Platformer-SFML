@@ -28,6 +28,9 @@ Unit::Unit(Game* _game, sf::RenderWindow* _window, float x, float y, std::vector
     hasBounced = false;
     isOnMovingTile = false;
     imageDeadSprite.loadFromFile("Graphics/Enemies/" + std::string(canFly ? "fly_dead" : "slime_dead") + ".png");
+    isInQuickSandArea = false;
+    isInWaterArea = false;
+    isInLavaArea = false;
 }
 
 void Unit::Update()
@@ -70,6 +73,47 @@ void Unit::Update()
 
         return;
     }
+
+    sf::FloatRect spriteRect = GetSpriteBody().getGlobalBounds();
+
+    if (game->IsQuickSandArea(GetPositionX(), GetPositionY(), spriteRect.height, spriteRect.width))
+    {
+        if (!isInQuickSandArea)
+        {
+            SetMoveSpeed(GetMoveSpeed() / 2.0f);
+            isInQuickSandArea = true;
+        }
+    }
+    else if (isInQuickSandArea)
+    {
+        SetMoveSpeed(GetMoveSpeed() * 2.0f);
+        isInQuickSandArea = false;
+    }
+
+    if (game->IsInWaterArea(GetPositionX(), GetPositionY(), spriteRect.height, spriteRect.width))
+    {
+        if (!isInWaterArea)
+        {
+            SetMoveSpeed(GetMoveSpeed() / 2.0f);
+            isInWaterArea = true;
+        }
+    }
+    else if (isInWaterArea)
+    {
+        SetMoveSpeed(GetMoveSpeed() * 2.0f);
+        isInWaterArea = false;
+    }
+
+    if (game->IsInLavaArea(GetPositionX(), GetPositionY(), spriteRect.height, spriteRect.width))
+    {
+        if (!isInLavaArea)
+        {
+            BounceAway(IsMovingToLeft());
+            isInLavaArea = true;
+        }
+    }
+    else if (isInLavaArea)
+        isInLavaArea = false;
 
     if (hasBounced)
     {

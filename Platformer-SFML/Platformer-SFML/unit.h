@@ -27,8 +27,12 @@ class Unit : public Position
 
         virtual void Update();
         virtual void HandleTimers(sf::Int32 diff_time);
+
         void Draw(sf::Sprite* _spriteBody = NULL, bool updatePos = false);
+
         sf::Sprite GetSpriteBody();
+
+        Game* &GetGame() { return game; }
 
         /* MOVEMENT */
         void SetIsMoving(bool val) { isMoving = val; }
@@ -52,7 +56,12 @@ class Unit : public Position
         bool IsOnMovingTile() { return isOnMovingTile; }
         void SetIsOnMovingTile(bool val) { isOnMovingTile = val; }
 
-        Game* &GetGame() { return game; }
+        bool IsInQuickSandArea() { return isInQuickSandArea; }
+        void SetIsInQuickSandArea(bool val) { isInQuickSandArea = val; }
+        bool IsInWaterArea() { return isInWaterArea; }
+        void SetIsInWaterArea(bool val) { isInWaterArea = val; }
+        bool IsInLavaArea() { return isInLavaArea; }
+        void SetIsInLavaArea(bool val) { isInLavaArea = val; }
 
         /* MECHANICS */
         void Shoot();
@@ -86,6 +95,7 @@ class Unit : public Position
         float moveSpeed;
         int moveFrame, totalMoveFrames, frameInterval, frameIntervalStore;
         bool canFly, movingToLeft, isOnMovingTile;
+        bool isInQuickSandArea, isInWaterArea, isInLavaArea;
 
         /* MECHANICS */
         bool canShoot;

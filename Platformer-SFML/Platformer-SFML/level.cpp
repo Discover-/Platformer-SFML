@@ -50,9 +50,73 @@ void Level::LoadMap(char const* filename)
     {
         for (int j = 0; j < tilesInfoLayers[i].size(); j++)
         {
-            bool isCollidable;
-            std::string str = tilesInfoLayers[i][j];
-            std::string fileName = GetTileFilename(tilesInfoLayers[i][j], isCollidable);
+            if (tilesInfoLayers[i][j] == "_")
+                continue;
+
+            bool isCollidable = false;
+            std::string fileName = "";
+
+            if (tilesInfoLayers[i][j] == "0")
+            {
+                if (urand(0, 20) > 18)
+                    fileName = "Graphics/Tiles/cloud_" + std::to_string(static_cast<long long>(urand(0, 2))) + ".png";
+                else
+                    continue;
+            }
+            else if (tilesInfoLayers[i][j] == "1")
+            {
+                isCollidable = true;
+                fileName = "Graphics/Tiles/block.png";
+            }
+            else if (tilesInfoLayers[i][j] == "2")
+            {
+                isCollidable = true;
+                fileName = "Graphics/Tiles/ground.png";
+            }
+            else if (tilesInfoLayers[i][j] == "3")
+            {
+                isCollidable = true;
+                fileName = "Graphics/Tiles/ground_dirt.png";
+            }
+            else if (tilesInfoLayers[i][j] == "4")
+            {
+                isCollidable = true;
+                fileName = "Graphics/Tiles/bridge.png";
+            }
+            //else if (tilesInfoLayers[i][j] == "5")
+            //    fileName = "Graphics/Tiles/.png";
+            else if (tilesInfoLayers[i][j] == "6")
+                fileName = "Graphics/Tiles/hill_short.png";
+            else if (tilesInfoLayers[i][j] == "7")
+                fileName = "Graphics/Tiles/hill_long.png";
+            else if (tilesInfoLayers[i][j] == "8")
+                fileName = "Graphics/Tiles/fence_normal.png";
+            else if (tilesInfoLayers[i][j] == "9")
+                fileName = "Graphics/Tiles/fence_broken.png";
+            else if (tilesInfoLayers[i][j] == "L")
+                fileName = "Graphics/Tiles/lava.png";
+            else if (tilesInfoLayers[i][j] == "W")
+                fileName = "Graphics/Tiles/water.png";
+            else if (tilesInfoLayers[i][j] == "B")
+                fileName = "Graphics/Tiles/bush.png";
+            else if (tilesInfoLayers[i][j] == "G")
+                fileName = "Graphics/Tiles/grass.png";
+            else if (tilesInfoLayers[i][j] == "R")
+                fileName = "Graphics/Tiles/rock.png";
+            else if (tilesInfoLayers[i][j] == "S")
+                fileName = "Graphics/Tiles/shroom.png";
+            else if (tilesInfoLayers[i][j] == "C")
+                fileName = "Graphics/Tiles/crate.png";
+            else if (tilesInfoLayers[i][j] == "Z")
+            {
+                isCollidable = true;
+                fileName = "Graphics/Tiles/bonus.png";
+            }
+            else if (tilesInfoLayers[i][j] == "D")
+            {
+                isCollidable = true;
+                fileName = "Graphics/Tiles/ground_sand.png";
+            }
 
             if (fileName == "")
                 continue;
@@ -70,6 +134,13 @@ void Level::LoadMap(char const* filename)
 
             if (isCollidable)
                 game->AddGameObjectCollidable(tmpSprite);
+
+            if (tilesInfoLayers[i][j] == "D")
+                game->AddQuickSandObject(tmpSprite);
+            else if (tilesInfoLayers[i][j] == "W")
+                game->AddWaterObject(tmpSprite);
+            else if (tilesInfoLayers[i][j] == "L")
+                game->AddLavaObject(tmpSprite);
 
             game->AddGameObject(tmpSprite);
         }
