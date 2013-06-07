@@ -32,7 +32,7 @@ void Enemy::Update()
 {
     Unit::Update();
 
-    if (IsDead())
+    if (GAME_STATE_PAUSED_DRAWING(GetGame()->GetGameState()) || IsDead())
         return;
 
     if (CollidesWithGameobjects(GetPositionX() + GetMoveSpeed(), GetPositionY()))

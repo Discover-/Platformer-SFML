@@ -36,7 +36,7 @@ void Player::Update()
 {
     Unit::Update();
 
-    if (GetGame()->GetGameState() != STATE_PLAYING)
+    if (GAME_STATE_PAUSED_DRAWING(GetGame()->GetGameState()))
         return;
 
     SetIsMoving(false);

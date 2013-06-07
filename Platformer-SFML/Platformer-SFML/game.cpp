@@ -127,11 +127,9 @@ int Game::Update()
             std::cout << "Mouse Y: " << sf::Mouse::getPosition(window).y << std::endl;
         }
 
+        //! Reload map
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::F1))
             currLevel->LoadMap("Levels/level1.txt");
-        //! Open up new instance of the game.
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::F2))
-            return Update();
 
         while (window.pollEvent(_event))
         {

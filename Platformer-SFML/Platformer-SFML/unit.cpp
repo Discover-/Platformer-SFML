@@ -152,7 +152,7 @@ void Unit::HandleTimers(sf::Int32 diff_time)
             shootCooldown -= diff_time;
     }
 
-    //if (!isJumping && !isFalling)
+    if (!GAME_STATE_PAUSED_DRAWING(game->GetGameState()))
     {
         if (isMoving)
         {
@@ -167,7 +167,7 @@ void Unit::HandleTimers(sf::Int32 diff_time)
             else
                 frameInterval -= diff_time;
         }
-        else if (!isMoving)
+        else
             moveFrame = 0;
     }
 }
