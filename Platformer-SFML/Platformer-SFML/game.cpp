@@ -147,6 +147,7 @@ int Game::Update()
             {
                 currLevel->DrawMap(window);
                 player->Update();
+                player->DrawHearts(window, view);
 
                 for (std::vector<Enemy*>::iterator itr = allEnemies.begin(); itr != allEnemies.end(); ++itr)
                     if (!(*itr)->IsDead())
@@ -181,7 +182,8 @@ int Game::Update()
             {
                 currLevel->DrawMap(window);
                 player->Update();
-                
+                player->DrawHearts(window, view);
+
                 for (std::vector<Enemy*>::iterator itr = allEnemies.begin(); itr != allEnemies.end(); ++itr)
                     if (!(*itr)->IsDead())
                         (*itr)->Update();

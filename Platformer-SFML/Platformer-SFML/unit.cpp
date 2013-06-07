@@ -44,9 +44,11 @@ void Unit::Update()
 
     if (hasBounced)
     {
-        if (!CollidesWithGameobjects(GetPositionX() - bounceSpeed, GetPositionY()))
+        float newX = bounceToLeft ? GetPositionX() - bounceSpeed : GetPositionX() + bounceSpeed;
+
+        if (!CollidesWithGameobjects(newX, GetPositionY()))
         {
-            SetPosition(GetPositionX() - bounceSpeed, GetPositionY());
+            SetPosition(newX, GetPositionY());
             bounceSpeed--;
         }
 
@@ -68,24 +70,6 @@ void Unit::Update()
             jumpSpeed = 15;
         }
     }
-    //else if (hasBounced)
-    //{
-    //    float newX = bounceToLeft ? GetPositionX() - bounceSpeed : GetPositionX() + bounceSpeed;
-
-    //    if (bounceSpeed)// && !CollidesWithGameobjects(newX, GetPositionY()))
-    //    {
-    //        SetPositionY(newX);
-    //        bounceSpeed--;
-    //    }
-    //    else
-    //    {
-    //        hasBounced = false;
-    //        isJumping = false;
-    //        isFalling = true;
-    //        bounceSpeed = 15;
-    //        fallSpeed = 0;
-    //    }
-    //}
     else if (!canFly)
     {
         if (!CollidesWithGameobjects(GetPositionX(), GetPositionY() + fallSpeed))
@@ -198,8 +182,9 @@ void Unit::Shoot()
 
 void Unit::BounceAway(bool toLeft)
 {
+    SetIsJumping(true);
     hasBounced = true;
-    //bounceToLeft = toLeft;
+    bounceToLeft = toLeft;
     bounceSpeed = 15;
     fallSpeed = 0;
 }
@@ -232,4 +217,25 @@ sf::Sprite Unit::GetSpriteBody()
     }
 
     return sf::Sprite();
+}
+
+bool Unit::DropLife()
+{
+     life--;
+
+     if (typeId == TYPEID_PLAYER)
+     {
+        std::vector<std::pair<int /* id */, bool /* full */>> &hearts = ((Player*)this)->GetHearts();
+
+        for (std::vector<std::pair<int /* id */, bool /* full */>>::iterator itr = hearts.begin(); itr != hearts.end(); ++itr)
+        {
+            if ((*itr).second)
+            {
+                (*itr).second = false;
+                break;
+            }
+        }
+     }
+
+     return !life;
 }

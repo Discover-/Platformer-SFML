@@ -25,6 +25,12 @@ Unit(_game, _window, x, y, _spritesLeft, _spritesRight, _typeId, _life, _totalMo
 {
     for (int i = 0; i < 4; ++i)
         keysDown[i] = false;
+
+    imageHeartEmpty.loadFromFile("Graphics/Other/heart_empty.png");
+    imageHeartFull.loadFromFile("Graphics/Other/heart_full.png");
+
+    for (int i = 0; i < 5; ++i)
+        hearts.push_back(std::make_pair(i, true));
 }
 
 void Player::Update()
@@ -64,27 +70,33 @@ void Player::Update()
         if (CanShoot())
             Shoot();
 
-    std::vector<Enemy*> enemies = game->GetEnemies();
+    //! F3 = to left, F4 = to right, both = to left
+    // (*itr)->IsMovingToLeft())
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::F3) || sf::Keyboard::isKeyPressed(sf::Keyboard::F4))
+        if (!IsBouncing())
+            BounceAway(sf::Keyboard::isKeyPressed(sf::Keyboard::F3));
 
-    for (std::vector<Enemy*>::iterator itr = enemies.begin(); itr != enemies.end(); ++itr)
-    {
-        if ((*itr)->IsDead())
-            continue;
+    //std::vector<Enemy*> enemies = game->GetEnemies();
 
-        float enemyX, enemyY;
-        (*itr)->GetPosition(enemyX, enemyY);
-        sf::FloatRect boundsEnemy = (*itr)->GetSpriteBody().getGlobalBounds();
-        sf::Vector2f posEnemy = (*itr)->GetSpriteBody().getPosition();
+    //for (std::vector<Enemy*>::iterator itr = enemies.begin(); itr != enemies.end(); ++itr)
+    //{
+    //    if ((*itr)->IsDead())
+    //        continue;
 
-        if (IsInRange(GetPositionX(), enemyX, GetPositionY(), enemyY, 150.0f))
-        {
-            if (WillCollision(posEnemy.x, posEnemy.y, boundsEnemy.height, boundsEnemy.width, enemyX, enemyY, boundsEnemy.height, boundsEnemy.width))
-            {
-                BounceAway(false);
-                break;
-            }
-        }
-    }
+    //    float enemyX, enemyY;
+    //    (*itr)->GetPosition(enemyX, enemyY);
+    //    if (IsInRange(GetPositionX(), enemyX, GetPositionY(), enemyY, 150.0f))
+    //    {
+    //        sf::FloatRect boundsEnemy = (*itr)->GetSpriteBody().getGlobalBounds();
+    //        sf::Vector2f posEnemy = (*itr)->GetSpriteBody().getPosition();
+
+    //        if (WillCollision(posEnemy.x, posEnemy.y, boundsEnemy.height, boundsEnemy.width, enemyX, enemyY, boundsEnemy.height, boundsEnemy.width))
+    //        {
+    //            BounceAway((*itr)->IsMovingToLeft());
+    //            break;
+    //        }
+    //    }
+    //}
 }
 
 void Player::HandleTimers(sf::Int32 diff_time)
@@ -120,4 +132,19 @@ void Player::SetKeysDown(sf::Uint8 index, bool value)
     //            break;
     //    }
     //}
+}
+
+void Player::DrawHearts(sf::RenderWindow &window, sf::View &view)
+{
+    for (std::vector<std::pair<int /* id */, bool /* full */>>::iterator itr = hearts.begin(); itr != hearts.end(); ++itr)
+    {
+        sf::Texture imageHeart = (*itr).second ? imageHeartFull : imageHeartEmpty;
+        sf::Sprite spriteHeart(imageHeart);
+        spriteHeart.setPosition(view.getCenter().x - 420.0f - ((*itr).first * 18.0f), view.getCenter().y - 295.0f);
+
+        if (GAME_STATE_PAUSED_DRAWING(game->GetGameState()))
+            spriteHeart.setColor(sf::Color(255, 255, 255, 128));
+
+        window.draw(spriteHeart);
+    }
 }

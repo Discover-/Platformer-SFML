@@ -17,13 +17,14 @@
 #include "Windows.h"
 #include "position.h"
 #include "shareddefines.h"
-#include "game.h"
+
+class Game;
 
 class Unit : public Position
 {
     public:
         Unit(Game* _game, sf::RenderWindow* _window, float x, float y, std::vector<std::pair<int, sf::Texture>> _spritesLeft, std::vector<std::pair<int, sf::Texture>> _spritesRight, TypeId _typeId, int _life, int _totalMoveFrames, int _frameInterval, bool _canFly);
-        ~Unit();
+        //~Unit();
 
         virtual void Update();
         virtual void HandleTimers(sf::Int32 diff_time);
@@ -57,7 +58,8 @@ class Unit : public Position
         void SetCanShoot(bool val) { canShoot = val; }
         void SetShootCooldown(sf::Int32 val) { shootCooldown = val; }
 
-        bool DropLife() { life--; return !life; }
+        //! DropLife returns true if there are no lifes left
+        bool DropLife();
         void SetLife(int val) { life = val; }
         int GetLife() { return life; }
 

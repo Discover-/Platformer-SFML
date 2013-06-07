@@ -16,6 +16,7 @@
 #include <SFML/Window.hpp>
 #include "Windows.h"
 #include "unit.h"
+#include "game.h"
 
 class Game;
 
@@ -28,10 +29,15 @@ class Player : public Unit
         void Update();
         void SetKeysDown(sf::Uint8 index, bool value);
         void HandleTimers(sf::Int32 diff_time);
+        void DrawHearts(sf::RenderWindow &window, sf::View &view);
+        std::vector<std::pair<int /* id */, bool /* full */>> &GetHearts() { return hearts; }
 
     private:
         Game* game;
         bool keysDown[4];
+        std::vector<std::pair<int /* id */, bool /* full */>> hearts;
+        sf::Texture imageHeartEmpty;
+        sf::Texture imageHeartFull;
 };
 
 
