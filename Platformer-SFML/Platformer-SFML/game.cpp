@@ -69,7 +69,8 @@ int Game::Update()
     }
 
     Enemy* enemy1 = new Enemy(this, &window, 166.0f, 345.0f, 400.0f, 345.0f, spriteEnemiesLeft, spriteEnemiesRight, TYPEID_ENEMY, 3, 1, 80, true);
-    Enemy* enemy2 = new Enemy(this, &window, 845.0f, 240.0f, 1250.0f, 250.0f, spriteEnemiesLeft, spriteEnemiesRight, TYPEID_ENEMY, 3, 1, 80, true);
+    Enemy* enemy2 = new Enemy(this, &window, 845.0f, 230.0f, 1250.0f, 230.0f, spriteEnemiesLeft, spriteEnemiesRight, TYPEID_ENEMY, 3, 1, 80, true);
+    Enemy* enemy3 = new Enemy(this, &window, 235.0f, 89.0f, 620.0f, 89.0f, spriteEnemiesLeft, spriteEnemiesRight, TYPEID_ENEMY, 3, 1, 80, true);
 
     spriteEnemiesLeft.clear();
     spriteEnemiesRight.clear();
@@ -83,11 +84,12 @@ int Game::Update()
         }
     }
 
-    Enemy* enemy3 = new Enemy(this, &window, 450.0f, 190.0f, 650.0f, 190.0f, spriteEnemiesLeft, spriteEnemiesRight, TYPEID_ENEMY, 3, 1, 200, false);
+    Enemy* enemy4 = new Enemy(this, &window, 450.0f, 190.0f, 650.0f, 190.0f, spriteEnemiesLeft, spriteEnemiesRight, TYPEID_ENEMY, 3, 1, 200, false);
 
     allEnemies.push_back(enemy1);
     allEnemies.push_back(enemy2);
     allEnemies.push_back(enemy3);
+    allEnemies.push_back(enemy4);
 
     sf::Font font;
     font.loadFromFile("Fonts/Market_Deco.ttf");
@@ -229,7 +231,7 @@ int Game::Update()
 
         sf::Text text2("FPS: " + std::to_string(long double(int(fps))), font, 15);
         text2.setColor(GAME_STATE_DRAW_GAME(gameState) ? sf::Color::Black : sf::Color::White);
-        text2.setPosition(view.getCenter().x + 375.0f, view.getCenter().y - 270.0f);
+        text2.setPosition(view.getCenter().x + 375.0f, view.getCenter().y - 265.0f);
         window.draw(text2);
 
         window.display();
