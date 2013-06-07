@@ -92,13 +92,6 @@ int Game::Update()
     allEnemies.push_back(enemy3);
     allEnemies.push_back(enemy4);
 
-    MovingTile* movingTile1 = new MovingTile(this, &window, 3, sf::Vector2f(200.0f, 250.0f), sf::Vector2f(400.0f, 250.0f));
-    MovingTile* movingTile2 = new MovingTile(this, &window, 3, sf::Vector2f(1500.0f, 150.0f), sf::Vector2f(1700.0f, 150.0f));
-    movingTiles.push_back(movingTile1);
-    movingTiles.push_back(movingTile2);
-    gameObjectsCollidable.push_back(movingTile1->GetSprite());
-    gameObjectsCollidable.push_back(movingTile2->GetSprite());
-
     sf::Font font;
     font.loadFromFile("Fonts/Market_Deco.ttf");
 

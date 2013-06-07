@@ -49,6 +49,8 @@ class Game
 
         std::vector<Enemy*> &GetEnemies() { return allEnemies; }
         std::vector<MovingTile*> &GetMovingTiles() { return movingTiles; }
+        void ClearMovingTiles() { movingTiles.clear(); }
+        void AddMovingTile(MovingTile* movingTile) { movingTiles.push_back(movingTile); }
         std::vector<Coin*> &GetCoins() { return allCoins; }
         void ClearCoins() { allCoins.clear(); }
         void AddCoin(Coin* coin) { allCoins.push_back(coin); }

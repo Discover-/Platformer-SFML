@@ -8,6 +8,7 @@
 #include "player.h"
 #include "game.h"
 #include "coin.h"
+#include "movingtile.h"
 
 Level::Level(Game* _game)
 {
@@ -47,6 +48,7 @@ void Level::LoadMap(char const* filename, sf::RenderWindow &window)
     game->ClearGameObjectCollidables();
     sprites.clear();
     game->ClearCoins();
+    game->ClearMovingTiles();
 
     for (int i = 0; i < tilesInfoLayers.size(); i++)
     {
@@ -58,6 +60,11 @@ void Level::LoadMap(char const* filename, sf::RenderWindow &window)
             if (tilesInfoLayers[i][j] == "P")
             {
                 game->AddCoin(new Coin(game, &window, sf::Vector2f(j * 50.0f, i * 50.0f - 20.0f)));
+                continue;
+            }
+            else if (tilesInfoLayers[i][j] == "Y")
+            {
+                game->AddMovingTile(new MovingTile(game, &window, 3, sf::Vector2f(j * 50.0f, i * 50.0f), sf::Vector2f(j * 50.0f + 200.0f, i * 50.0f)));
                 continue;
             }
 
