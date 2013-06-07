@@ -32,7 +32,7 @@ Unit::Unit(Game* _game, sf::RenderWindow* _window, float x, float y, std::vector
 
 void Unit::Update()
 {
-    if (GAME_STATE_PAUSED_DRAWING(game->GetGameState()))
+    if (GAME_STATE_PAUSED_DRAWING(game->GetGameState()) && isAlive)
     {
         Draw();
         return;
