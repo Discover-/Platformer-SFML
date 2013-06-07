@@ -62,9 +62,20 @@ void Level::LoadMap(char const* filename, sf::RenderWindow &window)
                 game->AddCoin(new Coin(game, &window, sf::Vector2f(j * 50.0f, i * 50.0f - 20.0f)));
                 continue;
             }
-            else if (tilesInfoLayers[i][j] == "Y")
+            else if (tilesInfoLayers[i][j] == "Y" || tilesInfoLayers[i][j] == "R")
             {
-                game->AddMovingTile(new MovingTile(game, &window, 3, sf::Vector2f(j * 50.0f, i * 50.0f), sf::Vector2f(j * 50.0f + 200.0f, i * 50.0f)));
+                sf::Vector2f startPos(j * 50.0f, i * 50.0f);
+                sf::Vector2f destiPos = startPos;
+
+                if (tilesInfoLayers[i][j] == "Y")
+                    destiPos.x += 200.0f;
+                else
+                {
+                    startPos.y += 35.0f;
+                    destiPos.y -= 200.0f;
+                }
+
+                game->AddMovingTile(new MovingTile(game, &window, 3, startPos, destiPos, tilesInfoLayers[i][j] == "Y"));
                 continue;
             }
 

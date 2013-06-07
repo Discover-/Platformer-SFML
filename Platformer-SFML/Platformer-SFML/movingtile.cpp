@@ -2,13 +2,14 @@
 #include "shareddefines.h"
 #include "game.h"
 
-MovingTile::MovingTile(Game* _game, sf::RenderWindow* _window, int _velocity, sf::Vector2f _startPosition, sf::Vector2f _destination)
+MovingTile::MovingTile(Game* _game, sf::RenderWindow* _window, int _velocity, sf::Vector2f _startPosition, sf::Vector2f _destination, bool _movesVertical)
 {
     game = _game;
     image.loadFromFile("Graphics/Tiles/plank.png");
     window = _window;
     velocity = _velocity;
-    movingToLeft = true;
+    movingToActualDest = true;
+    movesVertical = _movesVertical;
     SetPosition(_startPosition.x, _startPosition.y);
     startPosition = _startPosition;
     destination = _destination;
@@ -23,23 +24,46 @@ void MovingTile::Update()
 {
     if (!GAME_STATE_PAUSED_DRAWING(game->GetGameState()))
     {
-        if (movingToLeft)
+        if (movesVertical)
         {
-            SetPositionX(GetPositionX() + velocity);
+            if (movingToActualDest)
+            {
+                SetPositionX(GetPositionX() + velocity);
 
-            if (GetPositionX() > destination.x)
-                movingToLeft = false;
+                if (GetPositionX() > destination.x)
+                    movingToActualDest = false;
+            }
+            else
+            {
+                SetPositionX(GetPositionX() - velocity);
+
+                if (GetPositionX() < startPosition.x)
+                    movingToActualDest = true;
+            }
+
+            for (std::list<Unit*>::iterator itr = passengers.begin(); itr != passengers.end(); ++itr)
+                (*itr)->SetPositionX(movingToActualDest ? (*itr)->GetPositionX() + velocity : (*itr)->GetPositionX() - velocity);
         }
         else
         {
-            SetPositionX(GetPositionX() - velocity);
+            if (movingToActualDest)
+            {
+                SetPositionY(GetPositionY() - velocity);
 
-            if (GetPositionX() < startPosition.x)
-                movingToLeft = true;
+                if (GetPositionY() < destination.y)
+                    movingToActualDest = false;
+            }
+            else
+            {
+                SetPositionY(GetPositionY() + velocity);
+
+                if (GetPositionY() > startPosition.y)
+                    movingToActualDest = true;
+            }
+
+            for (std::list<Unit*>::iterator itr = passengers.begin(); itr != passengers.end(); ++itr)
+                (*itr)->SetPositionY(movingToActualDest ? (*itr)->GetPositionY() - velocity : (*itr)->GetPositionY() + velocity);
         }
-
-        for (std::list<Unit*>::iterator itr = passengers.begin(); itr != passengers.end(); ++itr)
-            (*itr)->SetPositionX(movingToLeft ? (*itr)->GetPositionX() + velocity : (*itr)->GetPositionX() - velocity);
     }
 
     sf::Sprite spriteTile(image);

@@ -22,7 +22,7 @@ class Game;
 class MovingTile : public Position
 {
     public:
-        MovingTile(Game* _game, sf::RenderWindow* _window, int _velocity, sf::Vector2f startPosition, sf::Vector2f _destination);
+        MovingTile(Game* _game, sf::RenderWindow* _window, int _velocity, sf::Vector2f startPosition, sf::Vector2f _destination, bool _movesVertical);
         ~MovingTile();
 
         void Update();
@@ -36,7 +36,7 @@ class MovingTile : public Position
         Game* game;
         int velocity;
         sf::Texture image;
-        bool movingToLeft;
+        bool movesVertical, movingToActualDest;
         sf::RenderWindow* window;
         std::list<Unit*> passengers;
         sf::Vector2f startPosition, destination;
