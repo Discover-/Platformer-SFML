@@ -3,6 +3,7 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 #include "shareddefines.h"
+#include "movingtile.h"
 
 class Player;
 class Bullet;
@@ -37,6 +38,7 @@ class Game
         void SetGameState(GameState state) { gameState = state; }
 
         std::vector<Enemy*> GetEnemies() { return allEnemies; }
+        std::vector<MovingTile*> GetMovingTiles() { return movingTiles; }
 
     private:
         bool isRunning;
@@ -47,6 +49,7 @@ class Game
         std::vector<Enemy*> allEnemies;
         GameState gameState;
         Level* currLevel;
+        std::vector<MovingTile*> movingTiles;
 };
 
 

@@ -52,6 +52,9 @@ class Unit : public Position
         bool IsMovingToLeft() { return movingToLeft; }
         void SetIsMovingToLeft(bool val) { movingToLeft = val; }
 
+        bool IsOnMovingTile() { return isOnMovingTile; }
+        void SetIsOnMovingTile(bool val) { isOnMovingTile = val; }
+
         /* MECHANICS */
         void Shoot();
         bool CanShoot() { return canShoot; }
@@ -83,8 +86,7 @@ class Unit : public Position
         int fallSpeed, jumpSpeed, bounceSpeed, bounceToLeft;
         float moveSpeed;
         int moveFrame, totalMoveFrames, frameInterval, frameIntervalStore;
-        bool canFly;
-        bool movingToLeft;
+        bool canFly, movingToLeft, isOnMovingTile;
 
         /* MECHANICS */
         bool canShoot;

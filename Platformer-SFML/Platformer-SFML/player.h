@@ -39,5 +39,3 @@ class Player : public Unit
         sf::Texture imageHeartEmpty;
         sf::Texture imageHeartFull;
 };
-
-

@@ -21,6 +21,7 @@
 #include "level.h"
 #include "menu.h"
 #include "enemy.h"
+#include "movingtile.h"
 
 Game::Game()
 {
@@ -91,6 +92,20 @@ int Game::Update()
     allEnemies.push_back(enemy3);
     allEnemies.push_back(enemy4);
 
+    sf::Texture textureTile;
+    textureTile.loadFromFile("Graphics/Tiles/shroom.png");
+    sf::Vector2f tileStart(700.0f, 250.0f);
+    sf::Vector2f tileDesti(900.0f, 450.0f);
+    MovingTile* movingTile1 = new MovingTile(this, &window, textureTile, 3, tileStart, tileDesti);
+
+    sf::Vector2f tileStart2(900.0f, 50.0f);
+    sf::Vector2f tileDesti2(1100.0f, 250.0f);
+    MovingTile* movingTile2 = new MovingTile(this, &window, textureTile, 3, tileStart2, tileDesti2);
+    movingTiles.push_back(movingTile1);
+    movingTiles.push_back(movingTile2);
+    gameObjectsCollidable.push_back(movingTile1->GetSprite());
+    gameObjectsCollidable.push_back(movingTile2->GetSprite());
+
     sf::Font font;
     font.loadFromFile("Fonts/Market_Deco.ttf");
 
@@ -152,6 +167,20 @@ int Game::Update()
         colorSky.b = 255;
         window.clear(colorSky);
 
+        for (std::vector<MovingTile*>::iterator itr = movingTiles.begin(); itr != movingTiles.end(); ++itr)
+        {
+            sf::FloatRect movingTileRect = (*itr)->GetSprite().getGlobalBounds();
+            sf::FloatRect playerRect = player->GetSpriteBody().getGlobalBounds();
+
+            if (WillCollision(player->GetPositionX(), player->GetPositionY(), playerRect.height, playerRect.width, (*itr)->GetPositionX(), (*itr)->GetPositionY(), movingTileRect.height, movingTileRect.width))
+            {
+                if (!(*itr)->HasPassenger(player))
+                    (*itr)->AddPassenger(player);
+            }
+            else if ((*itr)->HasPassenger(player))
+                (*itr)->RemovePassenger(player);
+        }
+
         switch (gameState)
         {
             case STATE_MENU:
@@ -164,6 +193,9 @@ int Game::Update()
                 currLevel->DrawMap(window);
                 player->Update();
                 player->DrawHearts(window, view);
+
+                for (std::vector<MovingTile*>::iterator itr = movingTiles.begin(); itr != movingTiles.end(); ++itr)
+                    (*itr)->Update();
 
                 for (std::vector<Enemy*>::iterator itr = allEnemies.begin(); itr != allEnemies.end(); ++itr)
                     (*itr)->Update();
@@ -198,6 +230,9 @@ int Game::Update()
                 currLevel->DrawMap(window);
                 player->Update();
                 player->DrawHearts(window, view);
+
+                for (std::vector<MovingTile*>::iterator itr = movingTiles.begin(); itr != movingTiles.end(); ++itr)
+                    (*itr)->Update();
 
                 for (std::vector<Enemy*>::iterator itr = allEnemies.begin(); itr != allEnemies.end(); ++itr)
                     (*itr)->Update();

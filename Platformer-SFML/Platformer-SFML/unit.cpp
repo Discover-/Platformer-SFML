@@ -8,8 +8,7 @@
 Unit::Unit(Game* _game, sf::RenderWindow* _window, float x, float y, std::vector<std::pair<int, sf::Texture>> _spritesLeft, std::vector<std::pair<int, sf::Texture>> _spritesRight, TypeId _typeId, int _life, int _totalMoveFrames, int _frameInterval, bool _canFly)
 {
     window = _window;
-    SetPositionX(x);
-    SetPositionY(y);
+    SetPosition(x, y);
     game = _game;
     spriteBodiesLeft = _spritesLeft;
     spriteBodiesRight = _spritesRight;
@@ -27,6 +26,7 @@ Unit::Unit(Game* _game, sf::RenderWindow* _window, float x, float y, std::vector
     frameIntervalStore = _frameInterval;
     canFly = _canFly;
     hasBounced = false;
+    isOnMovingTile = false;
     imageDeadSprite.loadFromFile("Graphics/Enemies/" + std::string(canFly ? "fly_dead" : "slime_dead") + ".png");
 }
 
@@ -101,7 +101,7 @@ void Unit::Update()
     }
     else if (!canFly)
     {
-        if (!CollidesWithGameobjects(GetPositionX(), GetPositionY() + fallSpeed))
+        if (!isOnMovingTile && !CollidesWithGameobjects(GetPositionX(), GetPositionY() + fallSpeed))
         {
             isFalling = true;
             SetPositionY(GetPositionY() + fallSpeed);
