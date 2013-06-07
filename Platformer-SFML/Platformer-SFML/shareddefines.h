@@ -1,5 +1,10 @@
 #pragma once
 
+#include <fstream>
+#include <iostream>
+#include <sstream>
+#include <string>
+
 enum GameState
 {
     STATE_MENU          = 0,
@@ -46,43 +51,47 @@ inline bool WillCollision(float x1, float y1, float h1, float w1, float x2, floa
     return !(y1 >= y2 + h2 || x1 >= x2 + w2 || y1 + h1 <= y2 || x1 + w1 <= x2);
 }
 
-inline std::string GetTileFilename(int tileId, bool &isCollidable)
+inline std::string GetTileFilename(std::string tileString, bool &isCollidable)
 {
     isCollidable = false;
 
-    switch (tileId)
+    if (tileString == "0")
     {
-        case 0: //! cloud_*.png
-            if (urand(0, 20) < 18)
-                break;
-
-            return "Graphics/Tiles/cloud_" + std::to_string(long double(urand(0, 2))) + ".png";
-        case 1: //! block.png
-            isCollidable = true;
-            return "Graphics/Tiles/block.png";
-        case 2: //! ground.png
-            isCollidable = true;
-            return "Graphics/Tiles/ground.png";
-        case 3: //! ground_dirt.png
-            isCollidable = true;
-            return "Graphics/Tiles/ground_dirt.png";
-        case 4: //! bridge.png
-            isCollidable = true;
-            return "Graphics/Tiles/bridge.png";
-        //! DECOR!
-        case 5: //! grass.png
-            return "Graphics/Tiles/grass.png";
-        case 6: //! hill_short.png
-            return "Graphics/Tiles/hill_short.png";
-        case 7: //! hill_long.png
-            return "Graphics/Tiles/hill_long.png";
-        case 8: //! fence.png
-            return "Graphics/Tiles/fence.png";
-        default:
-            break;
+        if (urand(0, 20) > 18)
+            return "Graphics/Tiles/cloud_" + std::to_string(static_cast<long long>(urand(0, 2))) + ".png";
     }
+    else if (tileString == "1")
+    {
+        isCollidable = true;
+        return "Graphics/Tiles/block.png";
+    }
+    else if (tileString == "2")
+    {
+        isCollidable = true;
+        return "Graphics/Tiles/ground.png";
+    }
+    else if (tileString == "3")
+    {
+        isCollidable = true;
+        return "Graphics/Tiles/ground_dirt.png";
+    }
+    else if (tileString == "4")
+    {
+        isCollidable = true;
+        return "Graphics/Tiles/bridge.png";
+    }
+    else if (tileString == "5")
+        return "Graphics/Tiles/grass.png";
+    else if (tileString == "6")
+        return "Graphics/Tiles/hill_short.png";
+    else if (tileString == "7")
+        return "Graphics/Tiles/hill_long.png";
+    else if (tileString == "8")
+        return "Graphics/Tiles/fence_normal.png";
+    else if (tileString == "9")
+        return "Graphics/Tiles/fence_broken.png";
+    else if (tileString == "x")
+        return "Graphics/Tiles/lava.png";
 
     return "";
 }
-
-

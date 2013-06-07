@@ -1,6 +1,8 @@
 #include <fstream>
 #include <string>
 #include <stdio.h>
+#include <iostream>
+#include <sstream>
 #include "level.h"
 #include "shareddefines.h"
 #include "player.h"
@@ -18,9 +20,10 @@ Level::~Level()
 
 void Level::LoadMap(char const* filename)
 {
-    std::vector<std::vector<int>> tilesInfoLayers;
-    std::vector<int> tilesInfoBlocks;
+    std::vector<std::vector<std::string>> tilesInfoLayers;
+    std::vector<std::string> tilesInfoBlocks;
     std::ifstream openfile(filename);
+    std::stringstream lineStream;
     std::string line;
 
     while (std::getline(openfile, line))
@@ -29,8 +32,9 @@ void Level::LoadMap(char const* filename)
         {
             if (line[i] != ' ')
             {
-                char str = line[i];
-                tilesInfoBlocks.push_back(atoi(&str));
+                lineStream << line[i];
+                tilesInfoBlocks.push_back(lineStream.str());
+                lineStream.str(std::string());
             }
         }
 
@@ -47,6 +51,7 @@ void Level::LoadMap(char const* filename)
         for (int j = 0; j < tilesInfoLayers[i].size(); j++)
         {
             bool isCollidable;
+            std::string str = tilesInfoLayers[i][j];
             std::string fileName = GetTileFilename(tilesInfoLayers[i][j], isCollidable);
 
             if (fileName == "")
@@ -78,7 +83,7 @@ void Level::DrawMap(sf::RenderWindow &window)
     for (std::vector<SpriteInfo>::iterator itr = sprites.begin(); itr != sprites.end(); ++itr)
     {
         //! ONLY draw the images if the player is within visibility distance, else there's no point in wasting performance.
-        if (IsInRange(player->GetPositionX(), (*itr).posX, player->GetPositionY(), (*itr).posY, 1000.0f))
+        if (IsInRange(player->GetPositionX(), (*itr).posX, player->GetPositionY(), (*itr).posY, 950.0f))
         {
             sf::Sprite sprite((*itr).image);
             sprite.setPosition((*itr).posX, (*itr).posY);
