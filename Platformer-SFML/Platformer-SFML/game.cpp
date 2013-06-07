@@ -162,7 +162,7 @@ int Game::Update()
         colorSky.r = 136;
         colorSky.g = 247;
         colorSky.b = 255;
-        window.clear(colorSky);
+        window.clear(gameState == STATE_MENU ? sf::Color() : colorSky);
 
         for (std::vector<MovingTile*>::iterator itr = movingTiles.begin(); itr != movingTiles.end(); ++itr)
         {
