@@ -27,6 +27,7 @@ Unit::Unit(Game* _game, sf::RenderWindow* _window, float x, float y, std::vector
     frameIntervalStore = _frameInterval;
     canFly = _canFly;
     hasBounced = false;
+    imageDeadSprite.loadFromFile("Graphics/Enemies/" + std::string(canFly ? "fly_dead" : "slime_dead") + ".png");
 }
 
 void Unit::Update()
@@ -42,16 +43,29 @@ void Unit::Update()
 
     if (!isAlive)
     {
-        if (canFly && GetPositionY() > 0)
+        if (typeId == TYPEID_ENEMY)
         {
-            SetPositionY(GetPositionY() + fallSpeed);
-            fallSpeed++;
+            if (canFly && GetPositionY() > 0)
+            {
+                SetPositionY(GetPositionY() + fallSpeed);
+                fallSpeed++;
 
-            sf::Texture imageDeadSprite;
-            imageDeadSprite.loadFromFile("Graphics/Enemies/fly_dead.png");
-            sf::Sprite sprite(imageDeadSprite);
-            sprite.setPosition(GetPositionX(), GetPositionY());
-            Draw(&sprite);
+                sf::Sprite sprite(imageDeadSprite);
+                Draw(&sprite, true);
+            }
+            else if (!canFly)
+            {
+                if (!CollidesWithGameobjects(GetPositionX(), GetPositionY() + fallSpeed))
+                {
+                    SetPositionY(GetPositionY() + fallSpeed);
+                    fallSpeed++;
+                }
+                else
+                    fallSpeed = 0;
+
+                sf::Sprite sprite(imageDeadSprite);
+                Draw(&sprite, true);
+            }
         }
 
         return;
