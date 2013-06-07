@@ -25,7 +25,7 @@
 Game::Game()
 {
     isRunning = true;
-    gameState = STATE_PLAYING;
+    gameState = STATE_MENU;
 }
 
 Game::~Game()
@@ -116,7 +116,6 @@ int Game::Update()
     currLevel = new Level(this);
     Menu* menu = new Menu(this);
     menu->Load();
-    StartActualGame(window);
 
     while (window.isOpen())
     {
