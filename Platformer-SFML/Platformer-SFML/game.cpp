@@ -147,7 +147,7 @@ int Game::Update()
             if (_event.type == sf::Event::GainedFocus && gameState == STATE_PAUSED_FOCUS)
             {
                 //window.setMouseCursorVisible(false);
-                gameState = STATE_PLAYING;
+                //gameState = STATE_PLAYING;
             }
 
             //if (_event.type == sf::Event::KeyReleased)
