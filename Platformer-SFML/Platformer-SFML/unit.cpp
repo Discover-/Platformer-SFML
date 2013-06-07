@@ -26,13 +26,11 @@ Unit::Unit(Game* _game, sf::RenderWindow* _window, float x, float y, std::vector
     frameInterval = 0;
     frameIntervalStore = _frameInterval;
     canFly = _canFly;
+    hasBounced = false;
 }
 
 void Unit::Update()
 {
-    if (!isAlive)
-        return;
-
     if (GAME_STATE_PAUSED_DRAWING(game->GetGameState()))
     {
         Draw();
@@ -41,6 +39,23 @@ void Unit::Update()
 
     if (game->GetGameState() == STATE_MENU)
         return;
+
+    if (!isAlive)
+    {
+        if (canFly && GetPositionY() > 0)
+        {
+            SetPositionY(GetPositionY() + fallSpeed);
+            fallSpeed++;
+
+            sf::Texture imageDeadSprite;
+            imageDeadSprite.loadFromFile("Graphics/Enemies/fly_dead.png");
+            sf::Sprite sprite(imageDeadSprite);
+            sprite.setPosition(GetPositionX(), GetPositionY());
+            Draw(&sprite);
+        }
+
+        return;
+    }
 
     if (hasBounced)
     {

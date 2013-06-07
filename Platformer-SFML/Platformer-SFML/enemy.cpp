@@ -33,6 +33,9 @@ void Enemy::Update()
 {
     Unit::Update();
 
+    if (IsDead())
+        return;
+
     if (CollidesWithGameobjects(GetPositionX() + GetMoveSpeed(), GetPositionY()))
         return;
         //movingToLeft = !movingToLeft;

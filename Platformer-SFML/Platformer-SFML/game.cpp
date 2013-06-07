@@ -69,8 +69,22 @@ int Game::Update()
     }
 
     Enemy* enemy1 = new Enemy(this, &window, 166.0f, 345.0f, 400.0f, 345.0f, spriteEnemiesLeft, spriteEnemiesRight, TYPEID_ENEMY, 3, 1, 80, true);
-    Enemy* enemy2 = new Enemy(this, &window, 445.0f, 190.0f, 650.0f, 190.0f, spriteEnemiesLeft, spriteEnemiesRight, TYPEID_ENEMY, 3, 1, 80, true);
-    Enemy* enemy3 = new Enemy(this, &window, 845.0f, 240.0f, 1250.0f, 250.0f, spriteEnemiesLeft, spriteEnemiesRight, TYPEID_ENEMY, 3, 1, 80, true);
+    Enemy* enemy2 = new Enemy(this, &window, 845.0f, 240.0f, 1250.0f, 250.0f, spriteEnemiesLeft, spriteEnemiesRight, TYPEID_ENEMY, 3, 1, 80, true);
+
+    spriteEnemiesLeft.clear();
+    spriteEnemiesRight.clear();
+
+    for (int j = 0; j < 2; ++j)
+    {
+        for (int i = 0; i < 2; ++i)
+        {
+            imageEnemy.loadFromFile("Graphics/Enemies/slime_" + std::string(i ? "walk_" : "normal_") + (j ? "l" : "r") + ".png");
+            j ? spriteEnemiesRight.push_back(std::make_pair(i, imageEnemy)) : spriteEnemiesLeft.push_back(std::make_pair(i, imageEnemy));
+        }
+    }
+
+    Enemy* enemy3 = new Enemy(this, &window, 450.0f, 190.0f, 650.0f, 190.0f, spriteEnemiesLeft, spriteEnemiesRight, TYPEID_ENEMY, 3, 1, 200, false);
+
     allEnemies.push_back(enemy1);
     allEnemies.push_back(enemy2);
     allEnemies.push_back(enemy3);
@@ -150,8 +164,7 @@ int Game::Update()
                 player->DrawHearts(window, view);
 
                 for (std::vector<Enemy*>::iterator itr = allEnemies.begin(); itr != allEnemies.end(); ++itr)
-                    if (!(*itr)->IsDead())
-                        (*itr)->Update();
+                    (*itr)->Update();
 
                 if (player->GetPositionX() > window.getSize().x / 2.f)
                     view.setCenter(player->GetPositionX(), view.getCenter().y);
@@ -185,8 +198,7 @@ int Game::Update()
                 player->DrawHearts(window, view);
 
                 for (std::vector<Enemy*>::iterator itr = allEnemies.begin(); itr != allEnemies.end(); ++itr)
-                    if (!(*itr)->IsDead())
-                        (*itr)->Update();
+                    (*itr)->Update();
 
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
                 {
