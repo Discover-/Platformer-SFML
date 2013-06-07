@@ -47,12 +47,12 @@ int Game::Update()
     {
         for (int i = 0; i < 10; ++i)
         {
-            imageCharacter.loadFromFile("Graphics/Character/walk_" + std::to_string(long double(i)) + "_" + (j ? "l" : "r") + ".png");
+            imageCharacter.loadFromFile("Graphics/Character/walk_" + std::to_string(static_cast<long long>(i)) + "_" + (j ? "l" : "r") + ".png");
             j ? spriteCharactersRight.push_back(std::make_pair(i, imageCharacter)) : spriteCharactersLeft.push_back(std::make_pair(i, imageCharacter));
         }
     }
 
-    player = new Player(this, &window, 500, 70, spriteCharactersLeft, spriteCharactersRight, TYPEID_PLAYER, 5, 9, 30, false);
+    player = new Player(this, &window, 1300.0f, 0.0f, spriteCharactersLeft, spriteCharactersRight, TYPEID_PLAYER, 5, 9, 30, false);
 
     sf::Texture imageEnemy;
     std::vector<std::pair<int, sf::Texture>> spriteEnemiesLeft;
@@ -99,10 +99,16 @@ int Game::Update()
     sf::Vector2f tileStart2(900.0f, 50.0f);
     sf::Vector2f tileDesti2(1100.0f, 250.0f);
     MovingTile* movingTile2 = new MovingTile(this, &window, textureTile, 3, tileStart2, tileDesti2);
+
+    sf::Vector2f tileStart3(1505.0f, 145.0f);
+    sf::Vector2f tileDesti3(1695.0f, 145.0f);
+    MovingTile* movingTile3 = new MovingTile(this, &window, textureTile, 3, tileStart3, tileDesti3);
     movingTiles.push_back(movingTile1);
     movingTiles.push_back(movingTile2);
+    movingTiles.push_back(movingTile3);
     gameObjectsCollidable.push_back(movingTile1->GetSprite());
     gameObjectsCollidable.push_back(movingTile2->GetSprite());
+    gameObjectsCollidable.push_back(movingTile3->GetSprite());
 
     sf::Font font;
     font.loadFromFile("Fonts/Market_Deco.ttf");
@@ -145,7 +151,7 @@ int Game::Update()
             if (_event.type == sf::Event::GainedFocus && gameState == STATE_PAUSED_FOCUS)
             {
                 //window.setMouseCursorVisible(false);
-                //gameState = STATE_PLAYING;
+                gameState = STATE_PLAYING;
             }
 
             //if (_event.type == sf::Event::KeyReleased)
@@ -251,7 +257,7 @@ int Game::Update()
 
         if (gameState != STATE_MENU)
         {
-            sf::Text text("Position X: " + std::to_string(long double(int(player->GetPositionX()))) + "\nPosition Y: " + std::to_string(long double(int(player->GetPositionY()))), font, 15);
+            sf::Text text("Position X: " + std::to_string(static_cast<long long>(player->GetPositionX())) + "\nPosition Y: " + std::to_string(static_cast<long long>(player->GetPositionY())), font, 15);
             text.setColor(GAME_STATE_DRAW_GAME(gameState) ? sf::Color::Black : sf::Color::White);
             text.setPosition(view.getCenter().x + 375.0f, view.getCenter().y - 300.0f);
             window.draw(text);
@@ -259,7 +265,7 @@ int Game::Update()
 
         float fps = 1 / fpsClock.getElapsedTime().asSeconds();
 
-        sf::Text text2("FPS: " + std::to_string(long double(int(fps))), font, 15);
+        sf::Text text2("FPS: " + std::to_string(static_cast<long long>(fps)), font, 15);
         text2.setColor(GAME_STATE_DRAW_GAME(gameState) ? sf::Color::Black : sf::Color::White);
         text2.setPosition(view.getCenter().x + 375.0f, view.getCenter().y - 265.0f);
         window.draw(text2);
