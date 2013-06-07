@@ -21,6 +21,7 @@
 #include "menu.h"
 #include "enemy.h"
 #include "movingtile.h"
+#include "coin.h"
 
 Game::Game()
 {
@@ -37,6 +38,7 @@ int Game::Update()
 {
     isRunning = true;
     sf::RenderWindow window(sf::VideoMode(1000, 600), "Platformer C++ SFML");
+
     //window.setKeyRepeatEnabled(false);
 
     sf::Texture imageCharacter;
@@ -52,7 +54,7 @@ int Game::Update()
         }
     }
 
-    player = new Player(this, &window, 1300.0f, 0.0f, spriteCharactersLeft, spriteCharactersRight, TYPEID_PLAYER, 5, 9, 30, false);
+    player = new Player(this, &window, 165.0f, 135.0f, spriteCharactersLeft, spriteCharactersRight, TYPEID_PLAYER, 5, 9, 30, false);
 
     sf::Texture imageEnemy;
     std::vector<std::pair<int, sf::Texture>> spriteEnemiesLeft;
@@ -90,15 +92,8 @@ int Game::Update()
     allEnemies.push_back(enemy3);
     allEnemies.push_back(enemy4);
 
-    sf::Texture textureTile;
-    textureTile.loadFromFile("Graphics/Tiles/plank.png");
-    sf::Vector2f tileStart(200.0f, 250.0f);
-    sf::Vector2f tileDesti(400.0f, 250.0f);
-    MovingTile* movingTile1 = new MovingTile(this, &window, textureTile, 3, tileStart, tileDesti);
-
-    sf::Vector2f tileStart2(1500.0f, 150.0f);
-    sf::Vector2f tileDesti2(1700.0f, 150.0f);
-    MovingTile* movingTile2 = new MovingTile(this, &window, textureTile, 3, tileStart2, tileDesti2);
+    MovingTile* movingTile1 = new MovingTile(this, &window, 3, sf::Vector2f(200.0f, 250.0f), sf::Vector2f(400.0f, 250.0f));
+    MovingTile* movingTile2 = new MovingTile(this, &window, 3, sf::Vector2f(1500.0f, 150.0f), sf::Vector2f(1700.0f, 150.0f));
     movingTiles.push_back(movingTile1);
     movingTiles.push_back(movingTile2);
     gameObjectsCollidable.push_back(movingTile1->GetSprite());
@@ -110,8 +105,7 @@ int Game::Update()
     window.setFramerateLimit(30);
 
     sf::View view(window.getDefaultView());
-    sf::Clock clock;
-    sf::Clock fpsClock;
+    sf::Clock clock, fpsClock;
 
     currLevel = new Level(this);
     Menu* menu = new Menu(this);
@@ -129,7 +123,7 @@ int Game::Update()
 
         //! Reload map
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::F1))
-            currLevel->LoadMap("Levels/level1.txt");
+            currLevel->LoadMap("Levels/level1.txt", window);
 
         while (window.pollEvent(_event))
         {
@@ -187,13 +181,17 @@ int Game::Update()
             {
                 currLevel->DrawMap(window);
                 player->Update();
-                player->DrawHearts(window, view);
+                player->DrawAccessoires(window, view);
 
                 for (std::vector<MovingTile*>::iterator itr = movingTiles.begin(); itr != movingTiles.end(); ++itr)
                     (*itr)->Update();
 
                 for (std::vector<Enemy*>::iterator itr = allEnemies.begin(); itr != allEnemies.end(); ++itr)
                     (*itr)->Update();
+
+                for (std::vector<Coin*>::iterator itr = allCoins.begin(); itr != allCoins.end(); ++itr)
+                    if (!(*itr)->IsTaken())
+                        (*itr)->Update();
 
                 if (player->GetPositionX() > window.getSize().x / 2.f)
                     view.setCenter(player->GetPositionX(), view.getCenter().y);
@@ -224,13 +222,17 @@ int Game::Update()
             {
                 currLevel->DrawMap(window);
                 player->Update();
-                player->DrawHearts(window, view);
+                player->DrawAccessoires(window, view);
 
                 for (std::vector<MovingTile*>::iterator itr = movingTiles.begin(); itr != movingTiles.end(); ++itr)
                     (*itr)->Update();
 
                 for (std::vector<Enemy*>::iterator itr = allEnemies.begin(); itr != allEnemies.end(); ++itr)
                     (*itr)->Update();
+
+                for (std::vector<Coin*>::iterator itr = allCoins.begin(); itr != allCoins.end(); ++itr)
+                    if (!(*itr)->IsTaken())
+                        (*itr)->Update();
 
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
                 {
@@ -285,7 +287,7 @@ void Game::HandleTimers(sf::Int32 diff_time)
 void Game::StartActualGame(sf::RenderWindow &window)
 {
     gameState = STATE_PLAYING;
-    currLevel->LoadMap("Levels/level1.txt");
+    currLevel->LoadMap("Levels/level1.txt", window);
     //window.setMouseCursorVisible(false);
 }
 

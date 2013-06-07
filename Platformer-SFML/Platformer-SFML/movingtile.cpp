@@ -2,10 +2,10 @@
 #include "shareddefines.h"
 #include "game.h"
 
-MovingTile::MovingTile(Game* _game, sf::RenderWindow* _window, sf::Texture _image, int _velocity, sf::Vector2f _startPosition, sf::Vector2f _destination)
+MovingTile::MovingTile(Game* _game, sf::RenderWindow* _window, int _velocity, sf::Vector2f _startPosition, sf::Vector2f _destination)
 {
     game = _game;
-    image = _image;
+    image.loadFromFile("Graphics/Tiles/plank.png");
     window = _window;
     velocity = _velocity;
     movingToLeft = true;

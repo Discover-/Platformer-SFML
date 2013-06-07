@@ -12,7 +12,7 @@ class Level
         Level(Game* _game);
         ~Level();
 
-        void LoadMap(char const* filename);
+        void LoadMap(char const* filename, sf::RenderWindow &window);
         void DrawMap(sf::RenderWindow &window);
 
     private:

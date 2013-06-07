@@ -19,25 +19,24 @@
 
 class Game;
 
-class MovingTile : public Position
+class Coin : public Position
 {
     public:
-        MovingTile(Game* _game, sf::RenderWindow* _window, int _velocity, sf::Vector2f startPosition, sf::Vector2f _destination);
-        ~MovingTile();
+        Coin(Game* _game, sf::RenderWindow* _window, sf::Vector2f _startPosition);
+        ~Coin();
 
         void Update();
-        void AddPassenger(Unit* unit);
-        void RemovePassenger(Unit* unit);
-        bool HasPassenger(Unit* unit);
-        void Draw(sf::Sprite spriteTile, bool updatePos = false);
+        void Draw(sf::Sprite spriteCoin, bool updatePos = false);
         sf::Sprite GetSprite();
+
+        bool IsTaken() { return isTaken; }
+        void SetIsTaken(bool val) { isTaken = val; }
 
     private:
         Game* game;
-        int velocity;
+        bool isTaken;
+        bool movingUp;
         sf::Texture image;
-        bool movingToLeft;
         sf::RenderWindow* window;
-        std::list<Unit*> passengers;
-        sf::Vector2f startPosition, destination;
+        sf::Vector2f startPosition;
 };

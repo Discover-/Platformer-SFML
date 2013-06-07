@@ -7,6 +7,7 @@
 #include "shareddefines.h"
 #include "player.h"
 #include "game.h"
+#include "coin.h"
 
 Level::Level(Game* _game)
 {
@@ -18,7 +19,7 @@ Level::~Level()
     
 }
 
-void Level::LoadMap(char const* filename)
+void Level::LoadMap(char const* filename, sf::RenderWindow &window)
 {
     std::vector<std::vector<std::string>> tilesInfoLayers;
     std::vector<std::string> tilesInfoBlocks;
@@ -45,6 +46,7 @@ void Level::LoadMap(char const* filename)
     game->ClearGameObjects();
     game->ClearGameObjectCollidables();
     sprites.clear();
+    game->ClearCoins();
 
     for (int i = 0; i < tilesInfoLayers.size(); i++)
     {
@@ -52,6 +54,12 @@ void Level::LoadMap(char const* filename)
         {
             if (tilesInfoLayers[i][j] == "_")
                 continue;
+
+            if (tilesInfoLayers[i][j] == "P")
+            {
+                game->AddCoin(new Coin(game, &window, sf::Vector2f(j * 50.0f, i * 50.0f - 20.0f)));
+                continue;
+            }
 
             bool isCollidable = false;
             std::string fileName = "";

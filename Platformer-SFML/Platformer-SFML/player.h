@@ -28,12 +28,14 @@ class Player : public Unit
         void Update();
         void SetKeysDown(sf::Uint8 index, bool value);
         void HandleTimers(sf::Int32 diff_time);
-        void DrawHearts(sf::RenderWindow &window, sf::View &view);
+        void DrawAccessoires(sf::RenderWindow &window, sf::View &view);
         std::vector<std::pair<int /* id */, bool /* full */>> &GetHearts() { return hearts; }
 
     private:
         bool keysDown[4];
+        int coinAmount;
         std::vector<std::pair<int /* id */, bool /* full */>> hearts;
         sf::Texture imageHeartEmpty;
         sf::Texture imageHeartFull;
+        sf::Texture imageSmallCoin;
 };

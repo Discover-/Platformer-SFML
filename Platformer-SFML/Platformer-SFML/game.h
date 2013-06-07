@@ -3,12 +3,13 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 #include "shareddefines.h"
-#include "movingtile.h"
 
 class Player;
 class Bullet;
 class Level;
 class Enemy;
+class MovingTile;
+class Coin;
 
 class Game
 {
@@ -48,6 +49,9 @@ class Game
 
         std::vector<Enemy*> &GetEnemies() { return allEnemies; }
         std::vector<MovingTile*> &GetMovingTiles() { return movingTiles; }
+        std::vector<Coin*> &GetCoins() { return allCoins; }
+        void ClearCoins() { allCoins.clear(); }
+        void AddCoin(Coin* coin) { allCoins.push_back(coin); }
 
         bool IsQuickSandArea(float x, float y, float h, float w);
         bool IsInWaterArea(float x, float y, float h, float w);
@@ -66,6 +70,6 @@ class Game
         GameState gameState;
         Level* currLevel;
         std::vector<MovingTile*> movingTiles;
+        std::vector<Coin*> allCoins;
 };
-
 

@@ -18,6 +18,8 @@
 #include "bullet.h"
 #include "enemy.h"
 #include "game.h"
+#include "coin.h"
+#include <math.h>
 
 Player::Player(Game* _game, sf::RenderWindow* _window, float x, float y, std::vector<std::pair<int, sf::Texture>> _spritesLeft, std::vector<std::pair<int, sf::Texture>> _spritesRight, TypeId _typeId, int _life, int _totalMoveFrames, int _frameInterval, bool _canFly) :
 Unit(_game, _window, x, y, _spritesLeft, _spritesRight, _typeId, _life, _totalMoveFrames, _frameInterval, _canFly)
@@ -27,6 +29,8 @@ Unit(_game, _window, x, y, _spritesLeft, _spritesRight, _typeId, _life, _totalMo
 
     imageHeartEmpty.loadFromFile("Graphics/Other/heart_empty.png");
     imageHeartFull.loadFromFile("Graphics/Other/heart_full.png");
+    imageSmallCoin.loadFromFile("Graphics/Tiles/coin_gold_small.png");
+    coinAmount = 0;
 
     for (int i = 0; i < 5; ++i)
         hearts.push_back(std::make_pair(i, true));
@@ -92,6 +96,27 @@ void Player::Update()
         }
     }
 
+    std::vector<Coin*> coins = GetGame()->GetCoins();
+
+    for (std::vector<Coin*>::iterator itr = coins.begin(); itr != coins.end(); ++itr)
+    {
+        if ((*itr)->IsTaken())
+            continue;
+
+        if (IsInRange(GetPositionX(), (*itr)->GetPositionX(), GetPositionY(), (*itr)->GetPositionY(), 150.0f))
+        {
+            sf::FloatRect boundsCoin = (*itr)->GetSprite().getGlobalBounds();
+            sf::FloatRect boundsPlayer = GetSpriteBody().getGlobalBounds();
+
+            if (WillCollision(GetPositionX(), GetPositionY(), boundsPlayer.height, boundsPlayer.width, (*itr)->GetPositionX(), (*itr)->GetPositionY(), boundsCoin.height, boundsCoin.width))
+            {
+                (*itr)->SetIsTaken(true);
+                coinAmount++;
+                break;
+            }
+        }
+    }
+
     if (GetPositionX() > 4000.0f)
         SetPositionX(4000.0f);
 }
@@ -131,7 +156,7 @@ void Player::SetKeysDown(sf::Uint8 index, bool value)
     //}
 }
 
-void Player::DrawHearts(sf::RenderWindow &window, sf::View &view)
+void Player::DrawAccessoires(sf::RenderWindow &window, sf::View &view)
 {
     for (std::vector<std::pair<int /* id */, bool /* full */>>::iterator itr = hearts.begin(); itr != hearts.end(); ++itr)
     {
@@ -143,5 +168,20 @@ void Player::DrawHearts(sf::RenderWindow &window, sf::View &view)
             spriteHeart.setColor(sf::Color(255, 255, 255, 128));
 
         window.draw(spriteHeart);
+    }
+    
+    if (coinAmount > 0)
+    {
+        sf::Sprite spriteSmallCoin(imageSmallCoin);
+
+        for (int i = 0; i < coinAmount; ++i)
+        {
+            spriteSmallCoin.setPosition(view.getCenter().x - 492.0f + (i * 18.0f), view.getCenter().y - 272.0f);
+
+            if (GAME_STATE_PAUSED_DRAWING(GetGame()->GetGameState()))
+                spriteSmallCoin.setColor(sf::Color(255, 255, 255, 128));
+
+            window.draw(spriteSmallCoin);
+        }
     }
 }
