@@ -80,8 +80,8 @@ inline std::string GetTileFilename(std::string tileString, bool &isCollidable)
         isCollidable = true;
         return "Graphics/Tiles/bridge.png";
     }
-    else if (tileString == "5")
-        return "Graphics/Tiles/grass.png";
+    //else if (tileString == "5")
+    //    return "Graphics/Tiles/.png";
     else if (tileString == "6")
         return "Graphics/Tiles/hill_short.png";
     else if (tileString == "7")
@@ -90,8 +90,30 @@ inline std::string GetTileFilename(std::string tileString, bool &isCollidable)
         return "Graphics/Tiles/fence_normal.png";
     else if (tileString == "9")
         return "Graphics/Tiles/fence_broken.png";
-    else if (tileString == "x")
+    else if (tileString == "L")
         return "Graphics/Tiles/lava.png";
+    else if (tileString == "W")
+        return "Graphics/Tiles/water.png";
+    else if (tileString == "B")
+        return "Graphics/Tiles/bush.png";
+    else if (tileString == "G")
+        return "Graphics/Tiles/grass.png";
+    else if (tileString == "R")
+        return "Graphics/Tiles/rock.png";
+    else if (tileString == "S")
+        return "Graphics/Tiles/shroom.png";
+    else if (tileString == "C")
+        return "Graphics/Tiles/crate.png";
+    else if (tileString == "Z")
+    {
+        isCollidable = true;
+        return "Graphics/Tiles/bonus.png";
+    }
+    else if (tileString == "D")
+    {
+        isCollidable = true;
+        return "Graphics/Tiles/ground_sand.png";
+    }
 
     return "";
 }

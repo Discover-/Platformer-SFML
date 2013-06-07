@@ -91,24 +91,18 @@ int Game::Update()
     allEnemies.push_back(enemy4);
 
     sf::Texture textureTile;
-    textureTile.loadFromFile("Graphics/Tiles/shroom.png");
-    sf::Vector2f tileStart(700.0f, 250.0f);
-    sf::Vector2f tileDesti(900.0f, 450.0f);
+    textureTile.loadFromFile("Graphics/Tiles/plank.png");
+    sf::Vector2f tileStart(200.0f, 250.0f);
+    sf::Vector2f tileDesti(400.0f, 250.0f);
     MovingTile* movingTile1 = new MovingTile(this, &window, textureTile, 3, tileStart, tileDesti);
 
-    sf::Vector2f tileStart2(900.0f, 50.0f);
-    sf::Vector2f tileDesti2(1100.0f, 250.0f);
+    sf::Vector2f tileStart2(1500.0f, 150.0f);
+    sf::Vector2f tileDesti2(1700.0f, 150.0f);
     MovingTile* movingTile2 = new MovingTile(this, &window, textureTile, 3, tileStart2, tileDesti2);
-
-    sf::Vector2f tileStart3(1505.0f, 145.0f);
-    sf::Vector2f tileDesti3(1695.0f, 145.0f);
-    MovingTile* movingTile3 = new MovingTile(this, &window, textureTile, 3, tileStart3, tileDesti3);
     movingTiles.push_back(movingTile1);
     movingTiles.push_back(movingTile2);
-    movingTiles.push_back(movingTile3);
     gameObjectsCollidable.push_back(movingTile1->GetSprite());
     gameObjectsCollidable.push_back(movingTile2->GetSprite());
-    gameObjectsCollidable.push_back(movingTile3->GetSprite());
 
     sf::Font font;
     font.loadFromFile("Fonts/Market_Deco.ttf");

@@ -91,6 +91,9 @@ void Player::Update()
             }
         }
     }
+
+    if (GetPositionX() > 4000.0f)
+        SetPositionX(4000.0f);
 }
 
 void Player::HandleTimers(sf::Int32 diff_time)
