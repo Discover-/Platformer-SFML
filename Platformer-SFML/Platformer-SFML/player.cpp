@@ -69,12 +69,6 @@ void Player::Update()
         if (CanShoot())
             Shoot();
 
-    //! F3 = to left, F4 = to right, both = to left
-    // (*itr)->IsMovingToLeft())
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::F3) || sf::Keyboard::isKeyPressed(sf::Keyboard::F4))
-        if (!IsBouncing())
-            BounceAway(sf::Keyboard::isKeyPressed(sf::Keyboard::F3));
-
     std::vector<Enemy*> enemies = GetGame()->GetEnemies();
 
     for (std::vector<Enemy*>::iterator itr = enemies.begin(); itr != enemies.end(); ++itr)
