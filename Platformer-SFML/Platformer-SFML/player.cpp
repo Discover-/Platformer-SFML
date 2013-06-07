@@ -78,14 +78,15 @@ void Player::Update()
 
         float enemyX, enemyY;
         (*itr)->GetPosition(enemyX, enemyY);
+
         if (IsInRange(GetPositionX(), enemyX, GetPositionY(), enemyY, 150.0f))
         {
             sf::FloatRect boundsEnemy = (*itr)->GetSpriteBody().getGlobalBounds();
-            sf::Vector2f posEnemy = (*itr)->GetSpriteBody().getPosition();
+            sf::FloatRect boundsPlayer = GetSpriteBody().getGlobalBounds();
 
-            if (WillCollision(posEnemy.x, posEnemy.y, boundsEnemy.height, boundsEnemy.width, enemyX, enemyY, boundsEnemy.height, boundsEnemy.width))
+            if (WillCollision(GetPositionX(), GetPositionY(), boundsPlayer.height, boundsPlayer.width, enemyX, enemyY, boundsEnemy.height, boundsEnemy.width))
             {
-                BounceAway((*itr)->IsMovingToLeft());
+                BounceAway(!(*itr)->IsMovingToLeft());
                 break;
             }
         }
