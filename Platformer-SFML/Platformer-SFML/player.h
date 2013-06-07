@@ -14,7 +14,6 @@
 #include <SFML/Network.hpp>
 #include <SFML/OpenGL.hpp>
 #include <SFML/Window.hpp>
-#include "Windows.h"
 #include "unit.h"
 #include "game.h"
 
@@ -33,7 +32,6 @@ class Player : public Unit
         std::vector<std::pair<int /* id */, bool /* full */>> &GetHearts() { return hearts; }
 
     private:
-        Game* game;
         bool keysDown[4];
         std::vector<std::pair<int /* id */, bool /* full */>> hearts;
         sf::Texture imageHeartEmpty;

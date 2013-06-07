@@ -13,7 +13,6 @@ class Enemy : public Unit
         void HandleTimers(sf::Int32 diff_time);
 
     private:
-        Game* game;
         float destinationX1, destinationY1;
         float destinationX2, destinationY2;
 };

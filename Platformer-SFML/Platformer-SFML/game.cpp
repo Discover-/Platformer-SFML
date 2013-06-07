@@ -13,7 +13,6 @@
 #include <SFML/Network.hpp>
 #include <SFML/OpenGL.hpp>
 #include <SFML/Window.hpp>
-#include "Windows.h"
 #include "game.h"
 #include "player.h"
 #include "bullet.h"
@@ -48,7 +47,6 @@ int Game::Update()
     {
         for (int i = 0; i < 10; ++i)
         {
-            std::string str = "Graphics/Character/walk_" + std::to_string(long double(i)) + "_" + (j ? "l" : "r") + ".png";
             imageCharacter.loadFromFile("Graphics/Character/walk_" + std::to_string(long double(i)) + "_" + (j ? "l" : "r") + ".png");
             j ? spriteCharactersRight.push_back(std::make_pair(i, imageCharacter)) : spriteCharactersLeft.push_back(std::make_pair(i, imageCharacter));
         }

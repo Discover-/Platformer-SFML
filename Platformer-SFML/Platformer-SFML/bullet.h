@@ -14,7 +14,6 @@
 #include <SFML/Network.hpp>
 #include <SFML/OpenGL.hpp>
 #include <SFML/Window.hpp>
-#include "Windows.h"
 #include "game.h"
 
 class Bullet

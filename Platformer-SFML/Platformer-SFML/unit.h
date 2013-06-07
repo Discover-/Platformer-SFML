@@ -14,7 +14,6 @@
 #include <SFML/Network.hpp>
 #include <SFML/OpenGL.hpp>
 #include <SFML/Window.hpp>
-#include "Windows.h"
 #include "position.h"
 #include "shareddefines.h"
 
@@ -29,8 +28,6 @@ class Unit : public Position
         virtual void Update();
         virtual void HandleTimers(sf::Int32 diff_time);
         void Draw(sf::Sprite* _spriteBody = NULL, bool updatePos = false);
-
-        //void SetSpriteBody(sf::Sprite sprite) { spriteCharacters[moveFrame].second = sprite; }
         sf::Sprite GetSpriteBody();
 
         /* MOVEMENT */
@@ -54,6 +51,8 @@ class Unit : public Position
 
         bool IsOnMovingTile() { return isOnMovingTile; }
         void SetIsOnMovingTile(bool val) { isOnMovingTile = val; }
+
+        Game* &GetGame() { return game; }
 
         /* MECHANICS */
         void Shoot();

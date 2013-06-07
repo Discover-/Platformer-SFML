@@ -20,8 +20,8 @@ class Game
         bool IsRunning() { return isRunning; }
         void StartActualGame(sf::RenderWindow &window);
 
-        std::vector<sf::Sprite> GetGameObjects() { return gameObjects; }
-        std::vector<sf::Sprite> GetGameObjectsCollidable() { return gameObjectsCollidable; }
+        std::vector<sf::Sprite> &GetGameObjects() { return gameObjects; }
+        std::vector<sf::Sprite> &GetGameObjectsCollidable() { return gameObjectsCollidable; }
         void AddGameObject(sf::Sprite gameobject) { gameObjects.push_back(gameobject); }
         void AddGameObjectCollidable(sf::Sprite gameobject) { gameObjectsCollidable.push_back(gameobject); }
         void ClearGameObjects() { gameObjects.clear(); }
@@ -32,13 +32,13 @@ class Game
         Player* GetPlayer() { return player; }
 
         void AddBullet(Bullet* bullet) { allBullets.push_back(bullet); }
-        std::vector<Bullet*> GetBullets() { return allBullets; }
+        std::vector<Bullet*> &GetBullets() { return allBullets; }
 
-        GameState GetGameState() { return STATE_PLAYING; }
+        GameState GetGameState() { return gameState; }
         void SetGameState(GameState state) { gameState = state; }
 
-        std::vector<Enemy*> GetEnemies() { return allEnemies; }
-        std::vector<MovingTile*> GetMovingTiles() { return movingTiles; }
+        std::vector<Enemy*> &GetEnemies() { return allEnemies; }
+        std::vector<MovingTile*> &GetMovingTiles() { return movingTiles; }
 
     private:
         bool isRunning;

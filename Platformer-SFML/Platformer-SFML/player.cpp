@@ -12,7 +12,6 @@
 #include <SFML/Network.hpp>
 #include <SFML/OpenGL.hpp>
 #include <SFML/Window.hpp>
-#include "Windows.h"
 #include "player.h"
 #include "collision.h"
 #include "shareddefines.h"
@@ -37,7 +36,7 @@ void Player::Update()
 {
     Unit::Update();
 
-    if (game->GetGameState() != STATE_PLAYING)
+    if (GetGame()->GetGameState() != STATE_PLAYING)
         return;
 
     SetIsMoving(false);
@@ -76,32 +75,32 @@ void Player::Update()
         if (!IsBouncing())
             BounceAway(sf::Keyboard::isKeyPressed(sf::Keyboard::F3));
 
-    //std::vector<Enemy*> enemies = game->GetEnemies();
+    std::vector<Enemy*> enemies = GetGame()->GetEnemies();
 
-    //for (std::vector<Enemy*>::iterator itr = enemies.begin(); itr != enemies.end(); ++itr)
-    //{
-    //    if ((*itr)->IsDead())
-    //        continue;
+    for (std::vector<Enemy*>::iterator itr = enemies.begin(); itr != enemies.end(); ++itr)
+    {
+        if ((*itr)->IsDead())
+            continue;
 
-    //    float enemyX, enemyY;
-    //    (*itr)->GetPosition(enemyX, enemyY);
-    //    if (IsInRange(GetPositionX(), enemyX, GetPositionY(), enemyY, 150.0f))
-    //    {
-    //        sf::FloatRect boundsEnemy = (*itr)->GetSpriteBody().getGlobalBounds();
-    //        sf::Vector2f posEnemy = (*itr)->GetSpriteBody().getPosition();
+        float enemyX, enemyY;
+        (*itr)->GetPosition(enemyX, enemyY);
+        if (IsInRange(GetPositionX(), enemyX, GetPositionY(), enemyY, 150.0f))
+        {
+            sf::FloatRect boundsEnemy = (*itr)->GetSpriteBody().getGlobalBounds();
+            sf::Vector2f posEnemy = (*itr)->GetSpriteBody().getPosition();
 
-    //        if (WillCollision(posEnemy.x, posEnemy.y, boundsEnemy.height, boundsEnemy.width, enemyX, enemyY, boundsEnemy.height, boundsEnemy.width))
-    //        {
-    //            BounceAway((*itr)->IsMovingToLeft());
-    //            break;
-    //        }
-    //    }
-    //}
+            if (WillCollision(posEnemy.x, posEnemy.y, boundsEnemy.height, boundsEnemy.width, enemyX, enemyY, boundsEnemy.height, boundsEnemy.width))
+            {
+                BounceAway((*itr)->IsMovingToLeft());
+                break;
+            }
+        }
+    }
 }
 
 void Player::HandleTimers(sf::Int32 diff_time)
 {
-    if (game->GetGameState() != STATE_PLAYING)
+    if (GetGame()->GetGameState() != STATE_PLAYING)
         return;
 
     Unit::HandleTimers(diff_time);
@@ -142,7 +141,7 @@ void Player::DrawHearts(sf::RenderWindow &window, sf::View &view)
         sf::Sprite spriteHeart(imageHeart);
         spriteHeart.setPosition(view.getCenter().x - 420.0f - ((*itr).first * 18.0f), view.getCenter().y - 295.0f);
 
-        if (GAME_STATE_PAUSED_DRAWING(game->GetGameState()))
+        if (GAME_STATE_PAUSED_DRAWING(GetGame()->GetGameState()))
             spriteHeart.setColor(sf::Color(255, 255, 255, 128));
 
         window.draw(spriteHeart);
