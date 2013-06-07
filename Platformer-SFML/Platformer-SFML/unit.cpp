@@ -216,6 +216,7 @@ void Unit::BounceAway(bool toLeft)
     bounceToLeft = toLeft;
     bounceSpeed = 15;
     fallSpeed = 0;
+    DropLife();
 }
 
 sf::Sprite Unit::GetSpriteBody()
