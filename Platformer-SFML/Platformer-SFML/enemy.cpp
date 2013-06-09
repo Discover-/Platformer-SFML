@@ -19,13 +19,13 @@
 #include "bullet.h"
 #include "unit.h"
 
-Enemy::Enemy(Game* _game, sf::RenderWindow* _window, float x1, float y1, float x2, float y2, std::vector<std::pair<int, sf::Texture>> _spritesLeft, std::vector<std::pair<int, sf::Texture>> _spritesRight, TypeId _typeId, int _life, int _totalMoveFrames, int _frameInterval, bool _canFly) :
-Unit(_game, _window, x1, y1, _spritesLeft, _spritesRight, _typeId, _life, _totalMoveFrames, _frameInterval, _canFly)
+Enemy::Enemy(Game* _game, sf::RenderWindow* _window, sf::Vector2f position1, sf::Vector2f position2, std::vector<std::pair<int, sf::Texture>> _spritesLeft, std::vector<std::pair<int, sf::Texture>> _spritesRight, TypeId _typeId, int _life, int _totalMoveFrames, int _frameInterval, bool _canFly) :
+Unit(_game, _window, position1, _spritesLeft, _spritesRight, _typeId, _life, _totalMoveFrames, _frameInterval, _canFly)
 {
-    destinationX1 = x1;
-    destinationY1 = y1;
-    destinationX2 = x2;
-    destinationY2 = y2;
+    destinationX1 = position1.x;
+    destinationY1 = position1.y;
+    destinationX2 = position2.x;
+    destinationY2 = position2.y;
 }
 
 void Enemy::Update()
