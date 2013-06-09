@@ -8,6 +8,7 @@
 #include <unordered_map>
 #include <set>
 #include <string>
+#include <list>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <SFML/Config.hpp>
