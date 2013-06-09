@@ -74,37 +74,12 @@ void Menu::Update(sf::RenderWindow &window)
         sf::Sprite sprite((*itr).image);
         sprite.setPosition((*itr).posX, (*itr).posY);
 
-        if (WillCollision(mouseX, mouseY, 10.0f, 10.0f, sprite.getPosition().x, sprite.getPosition().y, sprite.getLocalBounds().height, sprite.getLocalBounds().width))
+        if (WillCollision(mouseX, mouseY, 16.0f, 16.0f, sprite.getPosition().x, sprite.getPosition().y, sprite.getLocalBounds().height, sprite.getLocalBounds().width))
         {
             selectedOption = (*itr).id;
             break;
         }
     }
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-        selectedOption--;
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-        selectedOption++;
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return) || sf::Mouse::isButtonPressed(sf::Mouse::Left))
-    {
-        switch (selectedOption)
-        {
-            case 1:
-                game->StartActualGame(window);
-                break;
-            case 2:
-                window.close();
-                break;
-            case 3:
-                // NYI
-                break;
-            default:
-                break;
-        }
-    }
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-        window.close();
 
     Draw(window);
 }
@@ -132,5 +107,23 @@ void Menu::Draw(sf::RenderWindow &window)
             sprite.setPosition((*itr).posX, (*itr).posY);
             window.draw(sprite);
         }
+    }
+}
+
+void Menu::PressedEnterOrMouse(sf::RenderWindow &window)
+{
+    switch (selectedOption)
+    {
+        case 0:
+            break;
+        case 1:
+            game->StartActualGame(window);
+            break;
+        case 2:
+            window.close();
+            break;
+        case 3:
+            //! NYI!
+            break;
     }
 }

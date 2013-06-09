@@ -69,10 +69,6 @@ void Player::Update()
         if (!IsJumping() && /*!IsBouncing() &&*/ !IsFalling())
             SetIsJumping(true);
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-        if (CanShoot())
-            Shoot();
-
     std::vector<Enemy*> enemies = GetGame()->GetEnemies();
 
     for (std::vector<Enemy*>::iterator itr = enemies.begin(); itr != enemies.end(); ++itr)

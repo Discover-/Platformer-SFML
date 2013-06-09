@@ -108,20 +108,16 @@ int Game::Update()
     {
         sf::Event _event;
 
-        if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
-        {
-            std::cout << "Mouse X: " << sf::Mouse::getPosition(window).x << std::endl;
-            std::cout << "Mouse Y: " << sf::Mouse::getPosition(window).y << std::endl;
-        }
-
-        //! Reload map
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::F1))
-            currLevel->LoadMap("Levels/level1.txt", window);
-
         while (window.pollEvent(_event))
         {
             if (_event.type == sf::Event::Closed)
                 window.close();
+
+            if (_event.type == sf::Event::MouseButtonReleased && _event.mouseButton.button == sf::Mouse::Left && sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
+            {
+                std::cout << "Mouse X: " << sf::Mouse::getPosition(window).x << std::endl;
+                std::cout << "Mouse Y: " << sf::Mouse::getPosition(window).y << std::endl;
+            }
 
             if (_event.type == sf::Event::LostFocus && gameState == STATE_PLAYING)
             {
@@ -135,8 +131,60 @@ int Game::Update()
                 gameState = STATE_PLAYING;
             }
 
-            //if (_event.type == sf::Event::KeyReleased)
-            //    if (_event.key.code)
+            if (_event.type == sf::Event::KeyReleased)
+            {
+                switch (_event.key.code)
+                {
+                    //! Reload map
+                    case sf::Keyboard::F1:
+                        currLevel->LoadMap("Levels/level1.txt", window);
+                        break;
+                    //! Pause or un-pause game based on current gamestate.
+                    case sf::Keyboard::Escape:
+                        if (gameState != STATE_MENU)
+                        {
+                            gameState = gameState == STATE_PLAYING ? STATE_PAUSED : STATE_PLAYING;
+                            //window.setMouseCursorVisible(gameState == STATE_PLAYING);
+                        }
+                        else
+                            window.close();
+                        break;
+                    //! Move menu option selection up
+                    case sf::Keyboard::Up:
+                        if (gameState == STATE_MENU)
+                            menu->SetSelectedOption(menu->GetSelectedOption() + 1);
+                        break;
+                    //! Move menu option selection down
+                    case sf::Keyboard::Down:
+                        if (gameState == STATE_MENU)
+                            menu->SetSelectedOption(menu->GetSelectedOption() - 1);
+                        break;
+                    //! Select menu option
+                    case sf::Keyboard::Return:
+                    case sf::Mouse::Left:
+                        if (gameState == STATE_MENU)
+                            menu->PressedEnterOrMouse(window);
+                        break;
+                    case sf::Keyboard::Space:
+                        if (gameState == STATE_PLAYING && player->CanShoot())
+                            player->Shoot();
+                        break;
+                }
+            }
+
+            if (_event.type == sf::Event::MouseButtonPressed)
+            {
+                switch (_event.mouseButton.button)
+                {
+                    //! Select menu option
+                    case sf::Mouse::Left:
+                        if (gameState == STATE_MENU)
+                            menu->PressedEnterOrMouse(window);
+                        break;
+                    case sf::Mouse::Right:
+                        break;
+                }
+            }
 
         }
 
@@ -202,12 +250,6 @@ int Game::Update()
                     if (!(*itr)->IsRemoved())
                         (*itr)->Update();
 
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-                {
-                    //window.setMouseCursorVisible(true);
-                    gameState = STATE_PAUSED;
-                }
-
                 break;
             }
             case STATE_PAUSED:
@@ -226,12 +268,6 @@ int Game::Update()
                 for (std::vector<Coin*>::iterator itr = allCoins.begin(); itr != allCoins.end(); ++itr)
                     if (!(*itr)->IsTaken())
                         (*itr)->Update();
-
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-                {
-                    //window.setMouseCursorVisible(false);
-                    gameState = STATE_PLAYING;
-                }
                 
                 sf::Text textPaused("Paused", font, 80);
                 textPaused.setColor(sf::Color::White);

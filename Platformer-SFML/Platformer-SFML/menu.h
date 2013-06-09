@@ -16,6 +16,11 @@ class Menu
         void Update(sf::RenderWindow &window);
         void Draw(sf::RenderWindow &window);
 
+        int GetSelectedOption() { return selectedOption; }
+        void SetSelectedOption(int val) { selectedOption = val; }
+
+        void PressedEnterOrMouse(sf::RenderWindow &window);
+
     private:
         Game* game;
         std::vector<MenuSpriteInfo> sprites;
