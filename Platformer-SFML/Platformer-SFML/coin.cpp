@@ -47,7 +47,7 @@ void Coin::Draw(sf::Sprite spriteCoin, bool updatePos /* = false */)
     if (updatePos)
         spriteCoin.setPosition(GetPositionX(), GetPositionY());
 
-    if (game->GetGameState() == STATE_PAUSED || game->GetGameState() == STATE_PAUSED_FOCUS)
+    if (GAME_STATE_PAUSED_DRAWING(game->GetGameState()))
         spriteCoin.setColor(sf::Color(255, 255, 255, 128));
 
     window->draw(spriteCoin);

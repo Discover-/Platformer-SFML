@@ -75,7 +75,7 @@ void MovingTile::Draw(sf::Sprite spriteTile, bool updatePos /* = false */)
     if (updatePos)
         spriteTile.setPosition(GetPositionX(), GetPositionY());
 
-    if (game->GetGameState() == STATE_PAUSED || game->GetGameState() == STATE_PAUSED_FOCUS)
+    if (GAME_STATE_PAUSED_DRAWING(game->GetGameState()))
         spriteTile.setColor(sf::Color(255, 255, 255, 128));
 
     window->draw(spriteTile);

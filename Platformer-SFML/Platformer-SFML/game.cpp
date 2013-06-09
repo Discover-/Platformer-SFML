@@ -271,7 +271,7 @@ int Game::Update()
                 
                 sf::Text textPaused("Paused", font, 80);
                 textPaused.setColor(sf::Color::White);
-                textPaused.setPosition(view.getCenter().x, view.getCenter().y);
+                textPaused.setPosition(view.getCenter().x - (textPaused.getLocalBounds().width / 2.0f), view.getCenter().y - (textPaused.getLocalBounds().height / 2.0f));
                 window.draw(textPaused);
                 break;
             }
@@ -286,14 +286,12 @@ int Game::Update()
             text.setColor(GAME_STATE_DRAW_GAME(gameState) ? sf::Color::Black : sf::Color::White);
             text.setPosition(view.getCenter().x + 375.0f, view.getCenter().y - 300.0f);
             window.draw(text);
+
+            sf::Text text2("FPS: " + std::to_string(static_cast<long long>(fpsClock.getElapsedTime().asSeconds())), font, 15);
+            text2.setColor(GAME_STATE_DRAW_GAME(gameState) ? sf::Color::Black : sf::Color::White);
+            text2.setPosition(view.getCenter().x + 375.0f, view.getCenter().y - 265.0f);
+            window.draw(text2);
         }
-
-        float fps = 1 / fpsClock.getElapsedTime().asSeconds();
-
-        sf::Text text2("FPS: " + std::to_string(static_cast<long long>(fps)), font, 15);
-        text2.setColor(GAME_STATE_DRAW_GAME(gameState) ? sf::Color::Black : sf::Color::White);
-        text2.setPosition(view.getCenter().x + 375.0f, view.getCenter().y - 265.0f);
-        window.draw(text2);
 
         window.display();
     }
