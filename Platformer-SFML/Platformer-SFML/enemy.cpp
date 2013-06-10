@@ -32,7 +32,7 @@ void Enemy::Update()
 {
     Unit::Update();
 
-    if (GAME_STATE_PAUSED_DRAWING(GetGame()->GetGameState()) || IsDead())
+    if (GAME_STATE_PAUSED(GetGame()->GetGameState()) || IsDead())
         return;
 
     if (CollidesWithGameobjects(GetPositionX() + GetMoveSpeed(), GetPositionY()))
@@ -57,8 +57,8 @@ void Enemy::Update()
 
 void Enemy::HandleTimers(sf::Int32 diff_time)
 {
-    //if (game->IsPaused() || game->IsInMenu())
-    //    return;
+    if (GetGame()->GetGameState() != STATE_PLAYING)
+        return;
 
     Unit::HandleTimers(diff_time);
 }

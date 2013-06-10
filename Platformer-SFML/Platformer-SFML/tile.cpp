@@ -18,7 +18,7 @@ Tile::Tile(Game* _game, sf::RenderWindow* _window, sf::Texture _image, sf::Vecto
 
 void Tile::Update()
 {
-    if (GAME_STATE_PAUSED_DRAWING(game->GetGameState()) && !isRemoved)
+    if (GAME_STATE_PAUSED(game->GetGameState()) && !isRemoved)
     {
         Draw();
         return;
@@ -42,7 +42,7 @@ void Tile::Draw(sf::Texture* _textureTile /* = NULL */, bool updatePos /* = fals
     if (updatePos)
         spriteToDraw.setPosition(GetPositionX(), GetPositionY());
 
-    if (GAME_STATE_PAUSED_DRAWING(game->GetGameState()))
+    if (GAME_STATE_PAUSED(game->GetGameState()))
         spriteToDraw.setColor(sf::Color(255, 255, 255, 128));
 
     window->draw(spriteToDraw);

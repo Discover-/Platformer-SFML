@@ -21,7 +21,7 @@ void MovingTile::Update()
 {
     Tile::Update();
 
-    if (GAME_STATE_PAUSED_DRAWING(GetGame()->GetGameState()))
+    if (GAME_STATE_PAUSED(GetGame()->GetGameState()))
         return;
 
     if (movesVertical)

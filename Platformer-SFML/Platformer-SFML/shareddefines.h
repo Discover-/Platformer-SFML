@@ -14,7 +14,7 @@ enum GameState
 };
 
 #define GAME_STATE_DRAW_GAME(x) (x == STATE_PAUSED || x == STATE_PAUSED_FOCUS || x == STATE_PLAYING)
-#define GAME_STATE_PAUSED_DRAWING(x) (x == STATE_PAUSED || x == STATE_PAUSED_FOCUS)
+#define GAME_STATE_PAUSED(x) (x == STATE_PAUSED || x == STATE_PAUSED_FOCUS)
 
 enum UnitTypeId
 {

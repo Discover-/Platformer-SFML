@@ -40,7 +40,7 @@ void Player::Update()
 {
     Unit::Update();
 
-    if (GAME_STATE_PAUSED_DRAWING(GetGame()->GetGameState()))
+    if (GAME_STATE_PAUSED(GetGame()->GetGameState()))
         return;
 
     SetIsMoving(false);
@@ -160,7 +160,7 @@ void Player::DrawAccessoires(sf::RenderWindow &window, sf::View &view)
         sf::Sprite spriteHeart(imageHeart);
         spriteHeart.setPosition(view.getCenter().x - 420.0f - ((*itr).first * 18.0f), view.getCenter().y - 295.0f);
 
-        if (GAME_STATE_PAUSED_DRAWING(GetGame()->GetGameState()))
+        if (GAME_STATE_PAUSED(GetGame()->GetGameState()))
             spriteHeart.setColor(sf::Color(255, 255, 255, 128));
 
         window.draw(spriteHeart);
@@ -174,7 +174,7 @@ void Player::DrawAccessoires(sf::RenderWindow &window, sf::View &view)
         {
             spriteSmallCoin.setPosition(view.getCenter().x - 492.0f + (i * 18.0f), view.getCenter().y - 272.0f);
 
-            if (GAME_STATE_PAUSED_DRAWING(GetGame()->GetGameState()))
+            if (GAME_STATE_PAUSED(GetGame()->GetGameState()))
                 spriteSmallCoin.setColor(sf::Color(255, 255, 255, 128));
 
             window.draw(spriteSmallCoin);

@@ -35,7 +35,7 @@ Unit::Unit(Game* _game, sf::RenderWindow* _window, sf::Vector2f position, std::v
 
 void Unit::Update()
 {
-    if (GAME_STATE_PAUSED_DRAWING(game->GetGameState()) && isAlive)
+    if (GAME_STATE_PAUSED(game->GetGameState()) && isAlive)
     {
         Draw();
         return;
@@ -174,7 +174,7 @@ void Unit::Draw(sf::Sprite* _spriteBody /* = NULL */, bool updatePos /* = false 
     if (updatePos)
         spriteToDraw.setPosition(GetPositionX(), GetPositionY());
 
-    if (GAME_STATE_PAUSED_DRAWING(game->GetGameState()))
+    if (GAME_STATE_PAUSED(game->GetGameState()))
         spriteToDraw.setColor(sf::Color(255, 255, 255, 128));
 
     window->draw(spriteToDraw);
@@ -196,7 +196,7 @@ void Unit::HandleTimers(sf::Int32 diff_time)
             shootCooldown -= diff_time;
     }
 
-    if (!GAME_STATE_PAUSED_DRAWING(game->GetGameState()))
+    if (!GAME_STATE_PAUSED(game->GetGameState()))
     {
         if (isMoving)
         {

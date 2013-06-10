@@ -32,7 +32,7 @@ void Bullet::Update()
     if (isRemoved || !game || !game->IsRunning() || !player)
         return;
 
-    bool isPaused = GAME_STATE_PAUSED_DRAWING(game->GetGameState());
+    bool isPaused = GAME_STATE_PAUSED(game->GetGameState());
 
     if (!isPaused)
         posX = movingToLeft ? posX + velocity : posX - velocity;
@@ -113,7 +113,7 @@ void Bullet::Draw(sf::Sprite* spriteBullet /* = NULL */, bool updatePos /* = fal
     if (updatePos)
         spriteBullet->setPosition(posX, posY);
 
-    if (GAME_STATE_PAUSED_DRAWING(game->GetGameState()))
+    if (GAME_STATE_PAUSED(game->GetGameState()))
         spriteBullet->setColor(sf::Color(255, 255, 255, 128));
 
     window->draw(*spriteBullet);
