@@ -185,11 +185,11 @@ void Level::LoadMap(char const* filename, sf::RenderWindow &window)
             if (isCollidable)
                 game->AddGameObjectCollidable(tmpSprite);
 
-            if (tilesInfoLayers[i][j] == "D")
+            if (tilesInfoLayers[i][j] == "Y")
                 game->AddQuickSandObject(tmpSprite);
-            else if (tilesInfoLayers[i][j] == "W")
+            else if (tilesInfoLayers[i][j] == "S")
                 game->AddWaterObject(tmpSprite);
-            else if (tilesInfoLayers[i][j] == "L")
+            else if (tilesInfoLayers[i][j] == "R")
                 game->AddLavaObject(tmpSprite);
 
             game->AddGameObject(tmpSprite);
