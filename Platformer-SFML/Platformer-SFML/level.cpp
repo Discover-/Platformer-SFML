@@ -10,6 +10,7 @@
 #include "coin.h"
 #include "movingtile.h"
 #include "bouncetile.h"
+#include "bonustile.h"
 
 Level::Level(Game* _game)
 {
@@ -58,6 +59,9 @@ void Level::LoadMap(char const* filename, sf::RenderWindow &window)
             if (tilesInfoLayers[i][j] == "_")
                 continue;
 
+            sf::Sprite tmpSprite;
+            tmpSprite.setPosition(j * 50.0f, i * 50.0f);
+
             if (tilesInfoLayers[i][j] == "P")
             {
                 game->AddCoin(new Coin(game, &window, sf::Vector2f(j * 50.0f, i * 50.0f - 20.0f)));
@@ -79,13 +83,25 @@ void Level::LoadMap(char const* filename, sf::RenderWindow &window)
                 sf::Texture image;
                 image.loadFromFile("Graphics/Tiles/plank.png");
                 game->AddTile(new MovingTile(game, &window, image, 3, startPos, destiPos, tilesInfoLayers[i][j] == "Y"));
+                //tmpSprite.setTexture(image);
+                //game->AddGameObjectCollidable(tmpSprite);
+                continue;
+            }
+            else if (tilesInfoLayers[i][j] == "E")
+            {
+                sf::Vector2f startPos(j * 50.0f, i * 50.0f);
+                sf::Vector2f destiPos = startPos;
+                sf::Texture image;
+                image.loadFromFile("Graphics/Tiles/bonus.png");
+                game->AddTile(new BonusTile(game, &window, image, startPos));
+                tmpSprite.setTexture(image);
+                game->AddGameObjectCollidable(tmpSprite);
                 continue;
             }
             else if (tilesInfoLayers[i][j] == "Q" || tilesInfoLayers[i][j] == "H" || tilesInfoLayers[i][j] == "U" || tilesInfoLayers[i][j] == "R")
             {
                 sf::Vector2f startPos(j * 50.0f, i * 50.0f);
                 sf::Vector2f destiPos = startPos;
-
                 std::string tileColor = GetBounceTileColor(tilesInfoLayers[i][j]);
                 sf::Texture image;
                 image.loadFromFile("Graphics/Tiles/switch_" + tileColor + "_off.png");
@@ -147,11 +163,6 @@ void Level::LoadMap(char const* filename, sf::RenderWindow &window)
                 fileName = "Graphics/Tiles/shroom.png";
             else if (tilesInfoLayers[i][j] == "C")
                 fileName = "Graphics/Tiles/crate.png";
-            else if (tilesInfoLayers[i][j] == "Z")
-            {
-                isCollidable = true;
-                fileName = "Graphics/Tiles/bonus.png";
-            }
             else if (tilesInfoLayers[i][j] == "D")
             {
                 isCollidable = true;
@@ -169,7 +180,7 @@ void Level::LoadMap(char const* filename, sf::RenderWindow &window)
             tileInfo.posY = i * 50.0f;
             sprites.push_back(tileInfo);
 
-            sf::Sprite tmpSprite(image);
+            tmpSprite.setTexture(image);
             tmpSprite.setPosition(j * 50.0f, i * 50.0f);
 
             if (isCollidable)

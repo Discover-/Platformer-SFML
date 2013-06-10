@@ -22,6 +22,7 @@
 #include "enemy.h"
 #include "movingtile.h"
 #include "bouncetile.h"
+#include "bonustile.h"
 #include "coin.h"
 
 Game::Game()
@@ -205,30 +206,41 @@ int Game::Update()
 
             if (WillCollision((*itr)->GetPositionX(), (*itr)->GetPositionY(), tileRect.height, tileRect.width, player->GetPositionX(), player->GetPositionY(), playerRect.height, playerRect.width))
             {
-                if ((*itr)->GetTypeId() == TYPEID_MOVING_TILE)
+                switch ((*itr)->GetTypeId())
                 {
-                    if (!((MovingTile*)(*itr))->HasPassenger(player))
-                        ((MovingTile*)(*itr))->AddPassenger(player);
-                }
-                else if ((*itr)->GetTypeId() == TYPEID_BOUNCE_TILE)
-                {
-                    if (!((BounceTile*)(*itr))->IsUsed())
-                    {
-                        ((BounceTile*)(*itr))->SetIsUsed(true);
-                        player->Jump(30);
-                    }
+                    case TYPEID_MOVING_TILE:
+                        if (!((MovingTile*)(*itr))->HasPassenger(player))
+                            ((MovingTile*)(*itr))->AddPassenger(player);
+                        break;
+                    case TYPEID_BOUNCE_TILE:
+                        if (!((BounceTile*)(*itr))->IsUsed())
+                        {
+                            ((BounceTile*)(*itr))->SetIsUsed(true);
+                            player->Jump(30);
+                        }
+                        break;
+                    case TYPEID_BONUS_TILE:
+                        if (!((BonusTile*)(*itr))->IsUsed())
+                            ((BonusTile*)(*itr))->SetIsUsed(true);
+                        break;
+                    default:
+                        break;
                 }
             }
             else
             {
-                if ((*itr)->GetTypeId() == TYPEID_MOVING_TILE)
+                switch ((*itr)->GetTypeId())
                 {
-                    if (((MovingTile*)(*itr))->HasPassenger(player))
-                        ((MovingTile*)(*itr))->RemovePassenger(player);
-                }
-                else if ((*itr)->GetTypeId() == TYPEID_BOUNCE_TILE)
-                {
-
+                    case TYPEID_MOVING_TILE:
+                        if (((MovingTile*)(*itr))->HasPassenger(player))
+                            ((MovingTile*)(*itr))->RemovePassenger(player);
+                        break;
+                    case TYPEID_BOUNCE_TILE:
+                        break;
+                    case TYPEID_BONUS_TILE:
+                        break;
+                    default:
+                        break;
                 }
             }
         }

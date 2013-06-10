@@ -26,6 +26,7 @@ enum TileTypeId
 {
     TYPEID_MOVING_TILE   = 0,
     TYPEID_BOUNCE_TILE   = 1,
+    TYPEID_BONUS_TILE    = 2,
 };
 
 struct SpriteInfo
