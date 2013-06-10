@@ -208,7 +208,7 @@ int Game::Update()
 
         HandleTimers(clock.restart().asMilliseconds());
         fpsClock.restart();
-        window.clear(gameState == STATE_MENU ? sf::Color()::Black : sf::Color(136, 247, 255));
+        window.clear(gameState == STATE_MENU ? sf::Color::Black : sf::Color(136, 247, 255));
 
         switch (gameState)
         {
