@@ -81,7 +81,7 @@ void Level::LoadMap(char const* filename, sf::RenderWindow &window)
                 game->AddTile(new MovingTile(game, &window, image, 3, startPos, destiPos, tilesInfoLayers[i][j] == "Y"));
                 continue;
             }
-            else if (tilesInfoLayers[i][j] == "Q" || tilesInfoLayers[i][j] == "H" || tilesInfoLayers[i][j] == "U" || tilesInfoLayers[i][j] == "W")
+            else if (tilesInfoLayers[i][j] == "Q" || tilesInfoLayers[i][j] == "H" || tilesInfoLayers[i][j] == "U" || tilesInfoLayers[i][j] == "R")
             {
                 sf::Vector2f startPos(j * 50.0f, i * 50.0f);
                 sf::Vector2f destiPos = startPos;

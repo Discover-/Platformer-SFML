@@ -85,7 +85,7 @@ inline std::string GetBounceTileColor(std::string letter)
         return "red";
     else if (letter == "U")
         return "green";
-    else if (letter == "W")
+    else if (letter == "R")
         return "yellow";
 
     std::cout << "Unkown bounce tile color letter received. ('" + letter + "')" << std::endl;
