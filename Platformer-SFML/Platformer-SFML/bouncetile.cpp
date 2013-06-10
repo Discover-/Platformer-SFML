@@ -22,7 +22,10 @@ void BounceTile::Update()
     Tile::Update();
 
     if (GAME_STATE_PAUSED(GetGame()->GetGameState()))
+    {
+        Draw(isUsed ? &imageUsed : NULL, true);
         return;
+    }
 
     Draw(isUsed ? &imageUsed : NULL, true);
 }
