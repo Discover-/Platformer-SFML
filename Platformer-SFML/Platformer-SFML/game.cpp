@@ -38,6 +38,9 @@ Game::~Game()
 
 int Game::Update()
 {
+    sf::Clock clockStart;
+    clockStart.restart();
+
     isRunning = true;
     sf::RenderWindow window(sf::VideoMode(1000, 600), "Platformer C++ SFML");
 
@@ -106,6 +109,8 @@ int Game::Update()
     Menu* menu = new Menu(this);
     menu->Load();
 
+    std::cout << "Time in milliseconds taken to load everything before entering while-loop: " << clockStart.restart().asMilliseconds() << std::endl;
+
     while (window.isOpen())
     {
         sf::Event _event;
@@ -139,8 +144,12 @@ int Game::Update()
                 {
                     //! Reload map
                     case sf::Keyboard::F1:
+                    {
+                        sf::Clock _clock; _clock.restart();
                         currLevel->LoadMap("Levels/level1.txt", window);
+                        std::cout << "Time in milliseconds taken to load level: " << _clock.restart().asMilliseconds() << std::endl;
                         break;
+                    }
                     //! Pause or un-pause game based on current gamestate.
                     case sf::Keyboard::Escape:
                         if (gameState != STATE_MENU)
@@ -177,11 +186,7 @@ int Game::Update()
                                 if (!(*itr)->IsDead())
                                     (*itr)->JustDied();
                         break;
-                    case sf::Keyboard::R:
-                        if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
-                            for (std::vector<Enemy*>::iterator itr = allEnemies.begin(); itr != allEnemies.end(); ++itr)
-                                if (!(*itr)->IsDead())
-                                    (*itr)->JustRespawned();
+                    default:
                         break;
                 }
             }
@@ -199,17 +204,11 @@ int Game::Update()
                         break;
                 }
             }
-
         }
 
         HandleTimers(clock.restart().asMilliseconds());
         fpsClock.restart();
-
-        sf::Color colorSky;
-        colorSky.r = 136;
-        colorSky.g = 247;
-        colorSky.b = 255;
-        window.clear(gameState == STATE_MENU ? sf::Color() : colorSky);
+        window.clear(gameState == STATE_MENU ? sf::Color()::Black : sf::Color(136, 247, 255));
 
         switch (gameState)
         {
