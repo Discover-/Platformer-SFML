@@ -21,6 +21,7 @@
 #include "menu.h"
 #include "enemy.h"
 #include "movingtile.h"
+#include "bouncetile.h"
 #include "coin.h"
 
 Game::Game()
@@ -197,18 +198,39 @@ int Game::Update()
         colorSky.b = 255;
         window.clear(gameState == STATE_MENU ? sf::Color() : colorSky);
 
-        for (std::vector<MovingTile*>::iterator itr = movingTiles.begin(); itr != movingTiles.end(); ++itr)
+        for (std::vector<Tile*>::iterator itr = allTiles.begin(); itr != allTiles.end(); ++itr)
         {
-            sf::FloatRect movingTileRect = (*itr)->GetSprite().getGlobalBounds();
+            sf::FloatRect tileRect = (*itr)->GetSpriteTile().getGlobalBounds();
             sf::FloatRect playerRect = player->GetSpriteBody().getGlobalBounds();
 
-            if (WillCollision((*itr)->GetPositionX(), (*itr)->GetPositionY(), movingTileRect.height, movingTileRect.width, player->GetPositionX(), player->GetPositionY(), playerRect.height, playerRect.width))
+            if (WillCollision((*itr)->GetPositionX(), (*itr)->GetPositionY(), tileRect.height, tileRect.width, player->GetPositionX(), player->GetPositionY(), playerRect.height, playerRect.width))
             {
-                if (!(*itr)->HasPassenger(player))
-                    (*itr)->AddPassenger(player);
+                if ((*itr)->GetTypeId() == TYPEID_MOVING_TILE)
+                {
+                    if (!((MovingTile*)(*itr))->HasPassenger(player))
+                        ((MovingTile*)(*itr))->AddPassenger(player);
+                }
+                else if ((*itr)->GetTypeId() == TYPEID_BOUNCE_TILE)
+                {
+                    if (!((BounceTile*)(*itr))->IsUsed())
+                    {
+                        ((BounceTile*)(*itr))->SetIsUsed(true);
+                        player->Jump(30);
+                    }
+                }
             }
-            else if ((*itr)->HasPassenger(player))
-                (*itr)->RemovePassenger(player);
+            else
+            {
+                if ((*itr)->GetTypeId() == TYPEID_MOVING_TILE)
+                {
+                    if (((MovingTile*)(*itr))->HasPassenger(player))
+                        ((MovingTile*)(*itr))->RemovePassenger(player);
+                }
+                else if ((*itr)->GetTypeId() == TYPEID_BOUNCE_TILE)
+                {
+
+                }
+            }
         }
 
         switch (gameState)
@@ -221,18 +243,23 @@ int Game::Update()
             case STATE_PLAYING:
             {
                 currLevel->DrawMap(window);
-                player->Update();
-                player->DrawAccessoires(window, view);
 
-                for (std::vector<MovingTile*>::iterator itr = movingTiles.begin(); itr != movingTiles.end(); ++itr)
-                    (*itr)->Update();
-
-                for (std::vector<Enemy*>::iterator itr = allEnemies.begin(); itr != allEnemies.end(); ++itr)
+                for (std::vector<Tile*>::iterator itr = allTiles.begin(); itr != allTiles.end(); ++itr)
                     (*itr)->Update();
 
                 for (std::vector<Coin*>::iterator itr = allCoins.begin(); itr != allCoins.end(); ++itr)
                     if (!(*itr)->IsTaken())
                         (*itr)->Update();
+
+                for (std::vector<Enemy*>::iterator itr = allEnemies.begin(); itr != allEnemies.end(); ++itr)
+                    (*itr)->Update();
+
+                for (std::vector<Bullet*>::iterator itr = allBullets.begin(); itr != allBullets.end(); ++itr)
+                    if (!(*itr)->IsRemoved())
+                        (*itr)->Update();
+
+                player->Update();
+                player->DrawAccessoires(window, view);
 
                 if (player->GetPositionX() > window.getSize().x / 2.f)
                     view.setCenter(player->GetPositionX(), view.getCenter().y);
@@ -246,10 +273,6 @@ int Game::Update()
 
                 window.setView(view);
 
-                for (std::vector<Bullet*>::iterator itr = allBullets.begin(); itr != allBullets.end(); ++itr)
-                    if (!(*itr)->IsRemoved())
-                        (*itr)->Update();
-
                 break;
             }
             case STATE_PAUSED:
@@ -259,14 +282,18 @@ int Game::Update()
                 player->Update();
                 player->DrawAccessoires(window, view);
 
-                for (std::vector<MovingTile*>::iterator itr = movingTiles.begin(); itr != movingTiles.end(); ++itr)
-                    (*itr)->Update();
-
-                for (std::vector<Enemy*>::iterator itr = allEnemies.begin(); itr != allEnemies.end(); ++itr)
+                for (std::vector<Tile*>::iterator itr = allTiles.begin(); itr != allTiles.end(); ++itr)
                     (*itr)->Update();
 
                 for (std::vector<Coin*>::iterator itr = allCoins.begin(); itr != allCoins.end(); ++itr)
                     if (!(*itr)->IsTaken())
+                        (*itr)->Update();
+
+                for (std::vector<Enemy*>::iterator itr = allEnemies.begin(); itr != allEnemies.end(); ++itr)
+                    (*itr)->Update();
+
+                for (std::vector<Bullet*>::iterator itr = allBullets.begin(); itr != allBullets.end(); ++itr)
+                    if (!(*itr)->IsRemoved())
                         (*itr)->Update();
                 
                 sf::Text textPaused("Paused", font, 80);
@@ -309,6 +336,10 @@ void Game::HandleTimers(sf::Int32 diff_time)
 
     for (std::vector<Enemy*>::iterator itr = allEnemies.begin(); itr != allEnemies.end(); ++itr)
         if (!(*itr)->IsDead())
+            (*itr)->HandleTimers(diff_time);
+
+    for (std::vector<Tile*>::iterator itr = allTiles.begin(); itr != allTiles.end(); ++itr)
+        if (!(*itr)->IsRemoved())
             (*itr)->HandleTimers(diff_time);
 }
 

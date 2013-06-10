@@ -8,7 +8,7 @@ class Player;
 class Bullet;
 class Level;
 class Enemy;
-class MovingTile;
+class Tile;
 class Coin;
 
 class Game
@@ -48,9 +48,9 @@ class Game
         void SetGameState(GameState state) { gameState = state; }
 
         std::vector<Enemy*> &GetEnemies() { return allEnemies; }
-        std::vector<MovingTile*> &GetMovingTiles() { return movingTiles; }
-        void ClearMovingTiles() { movingTiles.clear(); }
-        void AddMovingTile(MovingTile* movingTile) { movingTiles.push_back(movingTile); }
+        std::vector<Tile*> &GetTiles() { return allTiles; }
+        void ClearAllTiles() { allTiles.clear(); }
+        void AddTile(Tile* tile) { allTiles.push_back(tile); }
         std::vector<Coin*> &GetCoins() { return allCoins; }
         void ClearCoins() { allCoins.clear(); }
         void AddCoin(Coin* coin) { allCoins.push_back(coin); }
@@ -71,7 +71,6 @@ class Game
         std::vector<Enemy*> allEnemies;
         GameState gameState;
         Level* currLevel;
-        std::vector<MovingTile*> movingTiles;
+        std::vector<Tile*> allTiles;
         std::vector<Coin*> allCoins;
 };
-

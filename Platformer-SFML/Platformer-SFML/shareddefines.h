@@ -16,10 +16,16 @@ enum GameState
 #define GAME_STATE_DRAW_GAME(x) (x == STATE_PAUSED || x == STATE_PAUSED_FOCUS || x == STATE_PLAYING)
 #define GAME_STATE_PAUSED_DRAWING(x) (x == STATE_PAUSED || x == STATE_PAUSED_FOCUS)
 
-enum TypeId
+enum UnitTypeId
 {
     TYPEID_ENEMY    = 0,
     TYPEID_PLAYER   = 1,
+};
+
+enum TileTypeId
+{
+    TYPEID_MOVING_TILE   = 0,
+    TYPEID_BOUNCE_TILE   = 1,
 };
 
 struct SpriteInfo

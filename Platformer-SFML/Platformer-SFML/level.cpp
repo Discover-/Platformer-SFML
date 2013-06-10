@@ -9,6 +9,7 @@
 #include "game.h"
 #include "coin.h"
 #include "movingtile.h"
+#include "bouncetile.h"
 
 Level::Level(Game* _game)
 {
@@ -48,7 +49,7 @@ void Level::LoadMap(char const* filename, sf::RenderWindow &window)
     game->ClearGameObjectCollidables();
     sprites.clear();
     game->ClearCoins();
-    game->ClearMovingTiles();
+    game->ClearAllTiles();
 
     for (int i = 0; i < tilesInfoLayers.size(); i++)
     {
@@ -75,7 +76,19 @@ void Level::LoadMap(char const* filename, sf::RenderWindow &window)
                     destiPos.y -= 200.0f;
                 }
 
-                game->AddMovingTile(new MovingTile(game, &window, 3, startPos, destiPos, tilesInfoLayers[i][j] == "Y"));
+                sf::Texture image;
+                image.loadFromFile("Graphics/Tiles/plank.png");
+                game->AddTile(new MovingTile(game, &window, image, 3, startPos, destiPos, tilesInfoLayers[i][j] == "Y"));
+                continue;
+            }
+            else if (tilesInfoLayers[i][j] == "Q")
+            {
+                sf::Vector2f startPos(j * 50.0f, i * 50.0f);
+                sf::Vector2f destiPos = startPos;
+
+                sf::Texture image;
+                image.loadFromFile("Graphics/Tiles/switch_blue_off.png");
+                game->AddTile(new BounceTile(game, &window, image, 3, startPos, destiPos, "blue"));
                 continue;
             }
 

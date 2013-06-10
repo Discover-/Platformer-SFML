@@ -5,7 +5,7 @@
 #include "collision.h"
 #include "game.h"
 
-Unit::Unit(Game* _game, sf::RenderWindow* _window, sf::Vector2f position, std::vector<std::pair<int, sf::Texture>> _spritesLeft, std::vector<std::pair<int, sf::Texture>> _spritesRight, TypeId _typeId, int _life, int _totalMoveFrames, int _frameInterval, bool _canFly)
+Unit::Unit(Game* _game, sf::RenderWindow* _window, sf::Vector2f position, std::vector<std::pair<int, sf::Texture>> _spritesLeft, std::vector<std::pair<int, sf::Texture>> _spritesRight, UnitTypeId _typeId, int _life, int _totalMoveFrames, int _frameInterval, bool _canFly)
 {
     window = _window;
     SetPosition(position.x, position.y);
@@ -255,7 +255,7 @@ void Unit::Shoot()
 
 void Unit::BounceAway(bool toLeft)
 {
-    SetIsJumping(true);
+    Jump();
     hasBounced = true;
     bounceToLeft = toLeft;
     bounceSpeed = 15;
@@ -312,4 +312,11 @@ bool Unit::DropLife()
      }
 
      return !life;
+}
+
+void Unit::Jump(int _jumpSpeed /* = 15 */)
+{
+    isJumping = true;
+    fallSpeed = 0;
+    jumpSpeed = _jumpSpeed;
 }

@@ -21,22 +21,20 @@
 
 class Game;
 
-class MovingTile : public Tile
+class BounceTile : public Tile
 {
     public:
-        MovingTile(Game* _game, sf::RenderWindow* _window, sf::Texture _image, int _velocity, sf::Vector2f startPosition, sf::Vector2f _destination, bool _movesVertical);
-        ~MovingTile();
+        BounceTile(Game* _game, sf::RenderWindow* _window, sf::Texture _image, int _velocity, sf::Vector2f startPosition, sf::Vector2f _destination, std::string color);
+        ~BounceTile();
 
         void Update();
         void HandleTimers(sf::Int32 diff_time);
 
-        void AddPassenger(Unit* unit);
-        void RemovePassenger(Unit* unit);
-        bool HasPassenger(Unit* unit);
+        bool IsUsed() { return isUsed; }
+        void SetIsUsed(bool val) { isUsed = val; }
 
     private:
-        int velocity;
-        bool movesVertical, movingToActualDest;
-        std::list<Unit*> passengers;
+        bool isUsed;
+        sf::Texture imageUsed;
         sf::Vector2f startPosition, destination;
 };

@@ -22,7 +22,7 @@ class Game;
 class Unit : public Position
 {
     public:
-        Unit(Game* _game, sf::RenderWindow* _window, sf::Vector2f position, std::vector<std::pair<int, sf::Texture>> _spritesLeft, std::vector<std::pair<int, sf::Texture>> _spritesRight, TypeId _typeId, int _life, int _totalMoveFrames, int _frameInterval, bool _canFly);
+        Unit(Game* _game, sf::RenderWindow* _window, sf::Vector2f position, std::vector<std::pair<int, sf::Texture>> _spritesLeft, std::vector<std::pair<int, sf::Texture>> _spritesRight, UnitTypeId _typeId, int _life, int _totalMoveFrames, int _frameInterval, bool _canFly);
         //~Unit();
 
         virtual void Update();
@@ -38,7 +38,7 @@ class Unit : public Position
         void SetIsMoving(bool val) { isMoving = val; }
         bool IsMoving() { return isMoving; }
 
-        void SetIsJumping(bool val) { isJumping = val; fallSpeed = 0; }
+        void Jump(int jumpSpeed = 15);
         bool IsJumping() { return isJumping; }
         bool IsFalling() { return isFalling; }
         bool IsBouncing() { return hasBounced; }
@@ -82,7 +82,7 @@ class Unit : public Position
 
     private:
         Game* game;
-        TypeId typeId;
+        UnitTypeId typeId;
         bool isAlive;
         std::vector<std::pair<int, sf::Texture>> spriteBodiesLeft;
         std::vector<std::pair<int, sf::Texture>> spriteBodiesRight;
