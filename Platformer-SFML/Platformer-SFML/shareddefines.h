@@ -80,13 +80,13 @@ inline bool HitTopSide(float x1, float y1, float h1, float w1, float x2, float y
 
 inline std::string GetBounceTileColor(std::string letter)
 {
-    if (letter == "Q")
+    if (letter == "E")
         return "blue";
-    else if (letter == "H")
+    else if (letter == "F")
         return "red";
-    else if (letter == "U")
+    else if (letter == "G")
         return "green";
-    else if (letter == "R")
+    else if (letter == "H")
         return "yellow";
 
     std::cout << "Unkown bounce tile color letter received. ('" + letter + "')" << std::endl;

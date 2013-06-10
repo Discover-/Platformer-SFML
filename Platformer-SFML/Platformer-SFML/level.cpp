@@ -52,6 +52,7 @@ void Level::LoadMap(char const* filename, sf::RenderWindow &window)
     game->ClearCoins();
     game->ClearAllTiles();
 
+    //! Last used letter: 
     for (int i = 0; i < tilesInfoLayers.size(); i++)
     {
         for (int j = 0; j < tilesInfoLayers[i].size(); j++)
@@ -62,17 +63,17 @@ void Level::LoadMap(char const* filename, sf::RenderWindow &window)
             sf::Sprite tmpSprite;
             tmpSprite.setPosition(j * 50.0f, i * 50.0f);
 
-            if (tilesInfoLayers[i][j] == "P")
+            if (tilesInfoLayers[i][j] == "A")
             {
                 game->AddCoin(new Coin(game, &window, sf::Vector2f(j * 50.0f, i * 50.0f - 20.0f + float(urand(0, 9)))));
                 continue;
             }
-            else if (tilesInfoLayers[i][j] == "Y" || tilesInfoLayers[i][j] == "R")
+            else if (tilesInfoLayers[i][j] == "B" || tilesInfoLayers[i][j] == "C")
             {
                 sf::Vector2f startPos(j * 50.0f, i * 50.0f);
                 sf::Vector2f destiPos = startPos;
 
-                if (tilesInfoLayers[i][j] == "Y")
+                if (tilesInfoLayers[i][j] == "B")
                     destiPos.x += 200.0f;
                 else
                 {
@@ -82,12 +83,12 @@ void Level::LoadMap(char const* filename, sf::RenderWindow &window)
 
                 sf::Texture image;
                 image.loadFromFile("Graphics/Tiles/plank.png");
-                game->AddTile(new MovingTile(game, &window, image, 3, startPos, destiPos, tilesInfoLayers[i][j] == "Y"));
+                game->AddTile(new MovingTile(game, &window, image, 3, startPos, destiPos, tilesInfoLayers[i][j] == "B"));
                 //tmpSprite.setTexture(image);
                 //game->AddGameObjectCollidable(tmpSprite);
                 continue;
             }
-            else if (tilesInfoLayers[i][j] == "E")
+            else if (tilesInfoLayers[i][j] == "D")
             {
                 sf::Vector2f startPos(j * 50.0f, i * 50.0f);
                 sf::Vector2f destiPos = startPos;
@@ -96,7 +97,7 @@ void Level::LoadMap(char const* filename, sf::RenderWindow &window)
                 game->AddTile(new BonusTile(game, &window, image, startPos));
                 continue;
             }
-            else if (tilesInfoLayers[i][j] == "Q" || tilesInfoLayers[i][j] == "H" || tilesInfoLayers[i][j] == "U" || tilesInfoLayers[i][j] == "R")
+            else if (tilesInfoLayers[i][j] == "E" || tilesInfoLayers[i][j] == "F" || tilesInfoLayers[i][j] == "G" || tilesInfoLayers[i][j] == "H")
             {
                 sf::Vector2f startPos(j * 50.0f, i * 50.0f);
                 sf::Vector2f destiPos = startPos;
@@ -110,62 +111,62 @@ void Level::LoadMap(char const* filename, sf::RenderWindow &window)
             bool isCollidable = false;
             std::string fileName = "";
 
-            if (tilesInfoLayers[i][j] == "0")
+            if (tilesInfoLayers[i][j] == "I")
             {
                 if (urand(0, 20) > 18)
                     fileName = "Graphics/Tiles/cloud_" + std::to_string(static_cast<long long>(urand(0, 2))) + ".png";
                 else
                     continue;
             }
-            else if (tilesInfoLayers[i][j] == "1")
+            else if (tilesInfoLayers[i][j] == "J")
             {
                 isCollidable = true;
                 fileName = "Graphics/Tiles/block.png";
             }
-            else if (tilesInfoLayers[i][j] == "2")
+            else if (tilesInfoLayers[i][j] == "K")
             {
                 isCollidable = true;
                 fileName = "Graphics/Tiles/ground.png";
             }
-            else if (tilesInfoLayers[i][j] == "3")
+            else if (tilesInfoLayers[i][j] == "L")
             {
                 isCollidable = true;
                 fileName = "Graphics/Tiles/ground_dirt.png";
             }
-            else if (tilesInfoLayers[i][j] == "4")
+            else if (tilesInfoLayers[i][j] == "M")
             {
                 isCollidable = true;
                 fileName = "Graphics/Tiles/bridge.png";
             }
-            //else if (tilesInfoLayers[i][j] == "5")
-            //    fileName = "Graphics/Tiles/.png";
-            else if (tilesInfoLayers[i][j] == "6")
+            else if (tilesInfoLayers[i][j] == "N")
                 fileName = "Graphics/Tiles/hill_short.png";
-            else if (tilesInfoLayers[i][j] == "7")
+            else if (tilesInfoLayers[i][j] == "O")
                 fileName = "Graphics/Tiles/hill_long.png";
-            else if (tilesInfoLayers[i][j] == "8")
+            else if (tilesInfoLayers[i][j] == "P")
                 fileName = "Graphics/Tiles/fence_normal.png";
-            else if (tilesInfoLayers[i][j] == "9")
+            else if (tilesInfoLayers[i][j] == "Q")
                 fileName = "Graphics/Tiles/fence_broken.png";
-            else if (tilesInfoLayers[i][j] == "L")
-                fileName = "Graphics/Tiles/lava.png";
-            else if (tilesInfoLayers[i][j] == "W")
-                fileName = "Graphics/Tiles/water.png";
-            else if (tilesInfoLayers[i][j] == "B")
-                fileName = "Graphics/Tiles/bush.png";
-            else if (tilesInfoLayers[i][j] == "G")
-                fileName = "Graphics/Tiles/grass.png";
             else if (tilesInfoLayers[i][j] == "R")
-                fileName = "Graphics/Tiles/rock.png";
+                fileName = "Graphics/Tiles/lava.png";
             else if (tilesInfoLayers[i][j] == "S")
+                fileName = "Graphics/Tiles/water.png";
+            else if (tilesInfoLayers[i][j] == "T")
+                fileName = "Graphics/Tiles/bush.png";
+            else if (tilesInfoLayers[i][j] == "U")
+                fileName = "Graphics/Tiles/grass.png";
+            else if (tilesInfoLayers[i][j] == "V")
+                fileName = "Graphics/Tiles/rock.png";
+            else if (tilesInfoLayers[i][j] == "W")
                 fileName = "Graphics/Tiles/shroom.png";
-            else if (tilesInfoLayers[i][j] == "C")
+            else if (tilesInfoLayers[i][j] == "X")
                 fileName = "Graphics/Tiles/crate.png";
-            else if (tilesInfoLayers[i][j] == "D")
+            else if (tilesInfoLayers[i][j] == "Y")
             {
                 isCollidable = true;
                 fileName = "Graphics/Tiles/ground_sand.png";
             }
+            else
+                std::cout << "Unkown type ID found in '" + fileName + "', letter '" + tilesInfoLayers[i][j] + "'." << std::endl;
 
             if (fileName == "")
                 continue;
