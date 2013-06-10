@@ -42,7 +42,12 @@ void MovingTile::Update()
             }
 
             for (std::list<Unit*>::iterator itr = passengers.begin(); itr != passengers.end(); ++itr)
-                (*itr)->SetPositionX(movingToActualDest ? (*itr)->GetPositionX() + velocity : (*itr)->GetPositionX() - velocity);
+            {
+                float newPosX = movingToActualDest ? (*itr)->GetPositionX() + velocity : (*itr)->GetPositionX() - velocity;
+
+                if (!(*itr)->CollidesWithGameobjects(newPosX, (*itr)->GetPositionY()))
+                    (*itr)->SetPositionX(newPosX);
+            }
         }
         else
         {

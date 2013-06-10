@@ -50,3 +50,23 @@ inline bool WillCollision(float x1, float y1, float h1, float w1, float x2, floa
 {
     return !(y1 >= y2 + h2 || x1 >= x2 + w2 || y1 + h1 <= y2 || x1 + w1 <= x2);
 }
+
+inline bool HitLeftSide(float x1, float y1, float h1, float w1, float x2, float y2, float h2, float w2)
+{
+    return x1 + w1 <= x2;
+}
+
+inline bool HitRightSide(float x1, float y1, float h1, float w1, float x2, float y2, float h2, float w2)
+{
+    return x2 + w2 <= x1;
+}
+
+inline bool HitBottomSide(float x1, float y1, float h1, float w1, float x2, float y2, float h2, float w2)
+{
+    return y1 + h1 >= y2;
+}
+
+inline bool HitTopSide(float x1, float y1, float h1, float w1, float x2, float y2, float h2, float w2)
+{
+    return y2 + h2 >= y1;
+}

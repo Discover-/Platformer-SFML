@@ -202,7 +202,7 @@ int Game::Update()
             sf::FloatRect movingTileRect = (*itr)->GetSprite().getGlobalBounds();
             sf::FloatRect playerRect = player->GetSpriteBody().getGlobalBounds();
 
-            if (WillCollision(player->GetPositionX(), player->GetPositionY(), playerRect.height, playerRect.width, (*itr)->GetPositionX(), (*itr)->GetPositionY(), movingTileRect.height, movingTileRect.width))
+            if (WillCollision((*itr)->GetPositionX(), (*itr)->GetPositionY(), movingTileRect.height, movingTileRect.width, player->GetPositionX(), player->GetPositionY(), playerRect.height, playerRect.width))
             {
                 if (!(*itr)->HasPassenger(player))
                     (*itr)->AddPassenger(player);
@@ -287,7 +287,8 @@ int Game::Update()
             text.setPosition(view.getCenter().x + 375.0f, view.getCenter().y - 300.0f);
             window.draw(text);
 
-            sf::Text text2("FPS: " + std::to_string(static_cast<long long>(fpsClock.getElapsedTime().asSeconds())), font, 15);
+            float fps = 1 / fpsClock.getElapsedTime().asSeconds();
+            sf::Text text2("FPS: " + std::to_string(static_cast<long long>(fps)), font, 15);
             text2.setColor(GAME_STATE_DRAW_GAME(gameState) ? sf::Color::Black : sf::Color::White);
             text2.setPosition(view.getCenter().x + 375.0f, view.getCenter().y - 265.0f);
             window.draw(text2);
