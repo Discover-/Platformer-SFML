@@ -31,5 +31,5 @@ void BounceTile::HandleTimers(sf::Int32 diff_time)
     if (IsRemoved())
         return;
 
-
+    Tile::HandleTimers(diff_time);
 }

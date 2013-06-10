@@ -78,7 +78,7 @@ void MovingTile::HandleTimers(sf::Int32 diff_time)
     if (IsRemoved())
         return;
 
-
+    Tile::HandleTimers(diff_time);
 }
 
 void MovingTile::AddPassenger(Unit* unit)
