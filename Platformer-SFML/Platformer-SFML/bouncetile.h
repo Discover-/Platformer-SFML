@@ -29,6 +29,7 @@ class BounceTile : public Tile
 
         void Update();
         void HandleTimers(sf::Int32 diff_time);
+        bool OnCollision(Unit* unit = NULL); //! Return true if we should stop movement of player when colliding
 
         bool IsUsed() { return isUsed; }
         void SetIsUsed(bool val) { isUsed = val; }

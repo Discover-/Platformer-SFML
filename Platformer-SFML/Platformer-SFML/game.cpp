@@ -171,6 +171,18 @@ int Game::Update()
                         if (gameState == STATE_PLAYING && player->CanShoot())
                             player->Shoot();
                         break;
+                    case sf::Keyboard::T:
+                        if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
+                            for (std::vector<Enemy*>::iterator itr = allEnemies.begin(); itr != allEnemies.end(); ++itr)
+                                if (!(*itr)->IsDead())
+                                    (*itr)->JustDied();
+                        break;
+                    case sf::Keyboard::R:
+                        if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
+                            for (std::vector<Enemy*>::iterator itr = allEnemies.begin(); itr != allEnemies.end(); ++itr)
+                                if (!(*itr)->IsDead())
+                                    (*itr)->JustRespawned();
+                        break;
                 }
             }
 
@@ -198,52 +210,6 @@ int Game::Update()
         colorSky.g = 247;
         colorSky.b = 255;
         window.clear(gameState == STATE_MENU ? sf::Color() : colorSky);
-
-        for (std::vector<Tile*>::iterator itr = allTiles.begin(); itr != allTiles.end(); ++itr)
-        {
-            sf::FloatRect tileRect = (*itr)->GetSpriteTile().getGlobalBounds();
-            sf::FloatRect playerRect = player->GetSpriteBody().getGlobalBounds();
-
-            if (WillCollision((*itr)->GetPositionX(), (*itr)->GetPositionY(), tileRect.height, tileRect.width, player->GetPositionX(), player->GetPositionY(), playerRect.height, playerRect.width))
-            {
-                switch ((*itr)->GetTypeId())
-                {
-                    case TYPEID_MOVING_TILE:
-                        if (!((MovingTile*)(*itr))->HasPassenger(player))
-                            ((MovingTile*)(*itr))->AddPassenger(player);
-                        break;
-                    case TYPEID_BOUNCE_TILE:
-                        if (!((BounceTile*)(*itr))->IsUsed())
-                        {
-                            ((BounceTile*)(*itr))->SetIsUsed(true);
-                            player->Jump(30);
-                        }
-                        break;
-                    case TYPEID_BONUS_TILE:
-                        if (!((BonusTile*)(*itr))->IsUsed())
-                            ((BonusTile*)(*itr))->SetIsUsed(true);
-                        break;
-                    default:
-                        break;
-                }
-            }
-            else
-            {
-                switch ((*itr)->GetTypeId())
-                {
-                    case TYPEID_MOVING_TILE:
-                        if (((MovingTile*)(*itr))->HasPassenger(player))
-                            ((MovingTile*)(*itr))->RemovePassenger(player);
-                        break;
-                    case TYPEID_BOUNCE_TILE:
-                        break;
-                    case TYPEID_BONUS_TILE:
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
 
         switch (gameState)
         {

@@ -64,7 +64,7 @@ void Level::LoadMap(char const* filename, sf::RenderWindow &window)
 
             if (tilesInfoLayers[i][j] == "P")
             {
-                game->AddCoin(new Coin(game, &window, sf::Vector2f(j * 50.0f, i * 50.0f - 20.0f)));
+                game->AddCoin(new Coin(game, &window, sf::Vector2f(j * 50.0f, i * 50.0f - 20.0f + float(urand(0, 9)))));
                 continue;
             }
             else if (tilesInfoLayers[i][j] == "Y" || tilesInfoLayers[i][j] == "R")
@@ -94,8 +94,6 @@ void Level::LoadMap(char const* filename, sf::RenderWindow &window)
                 sf::Texture image;
                 image.loadFromFile("Graphics/Tiles/bonus.png");
                 game->AddTile(new BonusTile(game, &window, image, startPos));
-                tmpSprite.setTexture(image);
-                game->AddGameObjectCollidable(tmpSprite);
                 continue;
             }
             else if (tilesInfoLayers[i][j] == "Q" || tilesInfoLayers[i][j] == "H" || tilesInfoLayers[i][j] == "U" || tilesInfoLayers[i][j] == "R")

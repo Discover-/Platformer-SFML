@@ -1,14 +1,16 @@
-#include "BonusTile.h"
+#include "bonustile.h"
 #include "shareddefines.h"
 #include "game.h"
+#include "coin.h"
 
 BonusTile::BonusTile(Game* _game, sf::RenderWindow* _window, sf::Texture _image, sf::Vector2f _startPosition) :
 Tile(_game, _window, _image, _startPosition, TYPEID_BONUS_TILE)
 {
+    window = _window;
     isUsed = false;
     animating = false;
     animationFinished = false;
-    movingUp = false;
+    movingUp = true;
     startPosition = _startPosition;
     imageUsed.loadFromFile("Graphics/Tiles/bonus_used.png");
 }
@@ -20,10 +22,16 @@ BonusTile::~BonusTile()
 
 void BonusTile::Update()
 {
-    Tile::Update();
+    if (IsRemoved())
+        return;
 
     if (GAME_STATE_PAUSED(GetGame()->GetGameState()))
+    {
+        Draw(animationFinished ? &imageUsed : NULL, true);
         return;
+    }
+
+    Tile::Update();
 
     if (isUsed && animating && !animationFinished)
     {
@@ -31,25 +39,51 @@ void BonusTile::Update()
 
         if (movingUp)
         {
-            SetPositionX(GetPositionX() - 2.0f);
+            SetPositionY(GetPositionY() - 9.0f);
 
-            if (GetPositionX() < startPosition.x - 10.0f)
-                movingUp = true;
+            if (GetPositionY() < startPosition.y - 40.0f)
+                movingUp = false;
         }
         else
         {
-            SetPositionX(GetPositionX() + 2.0f);
+            SetPositionY(GetPositionY() + 9.0f);
 
-            if (GetPositionX() > startPosition.x + 10.0f)
+            if (GetPositionY() >= startPosition.y)
             {
-                movingUp = false;
+                SetPositionY(startPosition.y);
+                movingUp = true;
                 animating = false;
                 animationFinished = true;
+
+                switch (urand(0, 1))
+                {
+                    case 0:
+                        GetGame()->AddCoin(new Coin(GetGame(), window, sf::Vector2f(GetPositionX(), GetPositionY() - 70.0f)));
+                        break;
+                    case 1:
+                        GetGame()->AddCoin(new Coin(GetGame(), window, sf::Vector2f(GetPositionX(), GetPositionY() - 70.0f)));
+                        break;
+                    default:
+                        std::cout << "Typo in BonusTile::Update switch (urand)" << std::endl;
+                        break;
+                }
             }
         }
     }
 
-    Draw(isUsed ? &imageUsed : NULL, true);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::F2))
+    {
+        SetPosition(startPosition.x, startPosition.y);
+        animationFinished = false;
+        movingUp = true;
+    }
+
+    Draw(animationFinished ? &imageUsed : NULL, true);
+}
+
+void BonusTile::SetIsUsed(bool val)
+{
+    isUsed = val;
 }
 
 void BonusTile::HandleTimers(sf::Int32 diff_time)
@@ -60,13 +94,14 @@ void BonusTile::HandleTimers(sf::Int32 diff_time)
     Tile::HandleTimers(diff_time);
 }
 
-void BonusTile::SetIsUsed(bool val)
+bool BonusTile::OnCollision(Unit* unit /* = NULL */) //! Return true if we should stop movement
 {
-    isUsed = val;
-
-    if (val)
+    if (!isUsed && unit && unit->GetTypeId() == TYPEID_PLAYER)
     {
-        animating = true;
         animationFinished = false;
+        animating = true;
+        isUsed = true;
     }
+
+    return true;
 }

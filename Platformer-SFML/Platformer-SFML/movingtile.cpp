@@ -1,6 +1,7 @@
 #include "movingtile.h"
 #include "shareddefines.h"
 #include "game.h"
+#include "player.h"
 
 MovingTile::MovingTile(Game* _game, sf::RenderWindow* _window, sf::Texture _image, int _velocity, sf::Vector2f _startPosition, sf::Vector2f _destination, bool _movesVertical) :
 Tile(_game, _window, _image, _startPosition, TYPEID_MOVING_TILE)
@@ -23,6 +24,21 @@ void MovingTile::Update()
 
     if (GAME_STATE_PAUSED(GetGame()->GetGameState()))
         return;
+    
+    for (std::list<Unit*>::iterator itr = passengers.begin(); itr != passengers.end();)
+    {
+        sf::FloatRect tileRect = GetSpriteTile().getGlobalBounds();
+        sf::FloatRect playerRect = (*itr)->GetSpriteBody().getGlobalBounds();
+
+        if (!WillCollision((*itr)->GetPositionX(), (*itr)->GetPositionY(), playerRect.height, playerRect.width, GetPositionX(), GetPositionY(), tileRect.height, tileRect.width))
+        {
+            (*itr)->SetIsOnMovingTile(false);
+            passengers.erase(itr);
+            itr = passengers.begin();
+        }
+        else
+            ++itr;
+    }
 
     if (movesVertical)
     {
@@ -97,4 +113,13 @@ bool MovingTile::HasPassenger(Unit* unit)
 {
     std::list<Unit*>::iterator itr = std::find(passengers.begin(), passengers.end(), unit);
     return itr != passengers.end();
+}
+
+bool MovingTile::OnCollision(Unit* unit /* = NULL */)
+{
+    if (Unit* unitToTarget = unit ? unit : GetGame()->GetPlayer())
+        if (!HasPassenger(unitToTarget))
+            AddPassenger(unitToTarget);
+
+    return false;
 }

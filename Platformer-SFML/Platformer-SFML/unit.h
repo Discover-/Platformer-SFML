@@ -34,6 +34,8 @@ class Unit : public Position
 
         Game* &GetGame() { return game; }
 
+        UnitTypeId GetTypeId() { return typeId; }
+
         /* MOVEMENT */
         void SetIsMoving(bool val) { isMoving = val; }
         bool IsMoving() { return isMoving; }
@@ -75,6 +77,7 @@ class Unit : public Position
         int GetLife() { return life; }
 
         void JustDied() { isAlive = false; }
+        void JustRespawned() { isAlive = true; }
         bool IsDead() { return !isAlive; }
 
         void SetCanFly(bool val) { canFly = val; }

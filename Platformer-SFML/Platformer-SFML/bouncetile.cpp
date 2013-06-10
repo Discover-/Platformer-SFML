@@ -1,6 +1,7 @@
-#include "BounceTile.h"
+#include "bouncetile.h"
 #include "shareddefines.h"
 #include "game.h"
+#include "player.h"
 
 BounceTile::BounceTile(Game* _game, sf::RenderWindow* _window, sf::Texture _image, int _velocity, sf::Vector2f _startPosition, sf::Vector2f _destination, std::string color) :
 Tile(_game, _window, _image, _startPosition, TYPEID_BOUNCE_TILE)
@@ -32,4 +33,15 @@ void BounceTile::HandleTimers(sf::Int32 diff_time)
         return;
 
     Tile::HandleTimers(diff_time);
+}
+
+bool BounceTile::OnCollision(Unit* unit /* = NULL */)
+{
+    if (!isUsed && unit && unit->GetTypeId() == TYPEID_PLAYER)
+    {
+        isUsed = true;
+        unit->Jump(30);
+    }
+
+    return false;
 }

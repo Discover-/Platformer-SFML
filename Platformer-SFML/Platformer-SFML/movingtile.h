@@ -29,6 +29,7 @@ class MovingTile : public Tile
 
         void Update();
         void HandleTimers(sf::Int32 diff_time);
+        bool OnCollision(Unit* unit = NULL); //! Return true if we should stop movement of player when colliding
 
         void AddPassenger(Unit* unit);
         void RemovePassenger(Unit* unit);

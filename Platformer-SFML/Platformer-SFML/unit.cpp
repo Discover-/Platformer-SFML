@@ -4,6 +4,10 @@
 #include "bullet.h"
 #include "collision.h"
 #include "game.h"
+#include "tile.h"
+#include "movingtile.h"
+#include "bouncetile.h"
+#include "bonustile.h"
 
 Unit::Unit(Game* _game, sf::RenderWindow* _window, sf::Vector2f position, std::vector<std::pair<int, sf::Texture>> _spritesLeft, std::vector<std::pair<int, sf::Texture>> _spritesRight, UnitTypeId _typeId, int _life, int _totalMoveFrames, int _frameInterval, bool _canFly)
 {
@@ -225,6 +229,17 @@ bool Unit::CollidesWithGameobjects(float newPosX /* = 0.0f */, float newPosY /* 
 
     sf::Vector2f spritePos = spriteBody.getPosition();
     sf::FloatRect spriteRect = spriteBody.getGlobalBounds();
+
+    std::vector<Tile*> allTiles = game->GetTiles();
+
+    for (std::vector<Tile*>::iterator itr = allTiles.begin(); itr != allTiles.end(); ++itr)
+    {
+        sf::FloatRect tileRect = (*itr)->GetSpriteTile().getGlobalBounds();
+
+        if (WillCollision(spritePos.x, spritePos.y, spriteRect.height, spriteRect.width, (*itr)->GetPositionX(), (*itr)->GetPositionY(), tileRect.height, tileRect.width))
+            if ((*itr)->OnCollision(this))
+                return true;
+    }
 
     std::vector<sf::Sprite> gameObjects = game->GetGameObjectsCollidable();
     for (std::vector<sf::Sprite>::iterator itr = gameObjects.begin(); itr != gameObjects.end(); ++itr)
