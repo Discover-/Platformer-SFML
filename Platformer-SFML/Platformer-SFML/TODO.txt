@@ -1,3 +1,4 @@
+* Implement button like F3 to enable debug information (position, FPS, etc.)
 * Order repository files
 * Implement cannon like in Mario
 * Finish implementatation of the crate object which you can push away so it can help you

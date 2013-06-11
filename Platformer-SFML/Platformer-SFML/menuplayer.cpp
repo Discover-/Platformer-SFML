@@ -22,7 +22,7 @@
 #include <math.h>
 
 MenuPlayer::MenuPlayer(Game* _game, sf::RenderWindow* _window, sf::Vector2f position, std::vector<std::pair<int, sf::Texture>> _spritesRight, int _totalMoveFrames, int _frameInterval) :
-Unit(_game, _window, position, _spritesRight, _spritesRight, TYPEID_MENU_PLAYER, 1, _totalMoveFrames, _frameInterval, true)
+Unit(_game, _window, position, _spritesRight, _spritesRight, TYPEID_MENU_PLAYER, 1, _totalMoveFrames, _frameInterval, false)
 {
 
 }

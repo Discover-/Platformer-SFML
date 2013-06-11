@@ -61,7 +61,7 @@ int Game::Update()
     }
 
     player = new Player(this, &window, sf::Vector2f(165.0f, 85.0f), spriteCharactersLeft, spriteCharactersRight, 5, 9, 30, false);
-    menuPlayer = new MenuPlayer(this, &window, sf::Vector2f(165.0f, 295.0f), spriteCharactersLeft, 9, 30);
+    menuPlayer = new MenuPlayer(this, &window, sf::Vector2f(165.0f, 285.0f), spriteCharactersLeft, 9, 30);
 
     sf::Texture imageEnemy;
     std::vector<std::pair<int, sf::Texture>> spriteEnemiesLeft;
