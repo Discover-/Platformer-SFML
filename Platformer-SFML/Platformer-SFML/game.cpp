@@ -24,6 +24,7 @@
 #include "bouncetile.h"
 #include "bonustile.h"
 #include "coin.h"
+#include "menuplayer.h"
 
 Game::Game()
 {
@@ -60,6 +61,7 @@ int Game::Update()
     }
 
     player = new Player(this, &window, sf::Vector2f(165.0f, 85.0f), spriteCharactersLeft, spriteCharactersRight, TYPEID_PLAYER, 5, 9, 30, false);
+    MenuPlayer* menuPlayer = new MenuPlayer(this, &window, sf::Vector2f(165.0f, 85.0f), spriteCharactersRight, TYPEID_MENU_PLAYER, 9, 30);
 
     sf::Texture imageEnemy;
     std::vector<std::pair<int, sf::Texture>> spriteEnemiesLeft;
@@ -97,6 +99,12 @@ int Game::Update()
     allEnemies.push_back(enemy3);
     allEnemies.push_back(enemy4);
 
+    for (std::vector<Enemy*>::iterator itr = allEnemies.begin(); itr != allEnemies.end(); ++itr)
+        allUnits.push_back(*itr);
+
+    allUnits.push_back(player);
+    allUnits.push_back(menuPlayer);
+
     sf::Font font;
     font.loadFromFile("Fonts/Market_Deco.ttf");
 
@@ -113,12 +121,14 @@ int Game::Update()
     {
         sf::Event _event;
 
+        bool shiftPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::LShift);
+
         while (window.pollEvent(_event))
         {
             if (_event.type == sf::Event::Closed)
                 window.close();
 
-            if (_event.type == sf::Event::MouseButtonReleased && _event.mouseButton.button == sf::Mouse::Left && sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
+            if (_event.type == sf::Event::MouseButtonReleased && _event.mouseButton.button == sf::Mouse::Left && shiftPressed)
             {
                 std::cout << "Mouse X: " << sf::Mouse::getPosition(window).x << std::endl;
                 std::cout << "Mouse Y: " << sf::Mouse::getPosition(window).y << std::endl;
@@ -144,7 +154,9 @@ int Game::Update()
                     case sf::Keyboard::F1:
                     {
                         sf::Clock _clock; _clock.restart();
-                        currLevel->LoadMap("Levels/level1.txt", window);
+                        std::string levelFilename = "Levels/level";
+                        levelFilename += shiftPressed ? "_menu.txt" : "1.txt";
+                        currLevel->LoadMap(levelFilename.c_str(), window);
                         std::cout << "Time in milliseconds taken to load level: " << _clock.restart().asMilliseconds() << std::endl;
                         break;
                     }
@@ -179,7 +191,7 @@ int Game::Update()
                             player->Shoot();
                         break;
                     case sf::Keyboard::T:
-                        if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
+                        if (shiftPressed)
                             for (std::vector<Enemy*>::iterator itr = allEnemies.begin(); itr != allEnemies.end(); ++itr)
                                 if (!(*itr)->IsDead())
                                     (*itr)->JustDied();
@@ -206,7 +218,7 @@ int Game::Update()
 
         HandleTimers(clock.restart().asMilliseconds());
         fpsClock.restart();
-        window.clear(gameState == STATE_MENU ? sf::Color::Black : sf::Color(136, 247, 255));
+        window.clear(sf::Color(136, 247, 255));
 
         switch (gameState)
         {
@@ -226,14 +238,14 @@ int Game::Update()
                     if (!(*itr)->IsTaken())
                         (*itr)->Update();
 
-                for (std::vector<Enemy*>::iterator itr = allEnemies.begin(); itr != allEnemies.end(); ++itr)
+                for (std::vector<Unit*>::iterator itr = allUnits.begin(); itr != allUnits.end(); ++itr)
                     (*itr)->Update();
 
                 for (std::vector<Bullet*>::iterator itr = allBullets.begin(); itr != allBullets.end(); ++itr)
                     if (!(*itr)->IsRemoved())
                         (*itr)->Update();
 
-                player->Update();
+                //player->Update();
                 player->DrawAccessoires(window, view);
 
                 if (player->GetPositionX() > window.getSize().x / 2.f)
@@ -254,7 +266,7 @@ int Game::Update()
             case STATE_PAUSED_FOCUS:
             {
                 currLevel->DrawMap(window);
-                player->Update();
+                //player->Update();
                 player->DrawAccessoires(window, view);
 
                 for (std::vector<Tile*>::iterator itr = allTiles.begin(); itr != allTiles.end(); ++itr)
@@ -264,7 +276,7 @@ int Game::Update()
                     if (!(*itr)->IsTaken())
                         (*itr)->Update();
 
-                for (std::vector<Enemy*>::iterator itr = allEnemies.begin(); itr != allEnemies.end(); ++itr)
+                for (std::vector<Unit*>::iterator itr = allUnits.begin(); itr != allUnits.end(); ++itr)
                     (*itr)->Update();
 
                 for (std::vector<Bullet*>::iterator itr = allBullets.begin(); itr != allBullets.end(); ++itr)
@@ -307,9 +319,7 @@ void Game::HandleTimers(sf::Int32 diff_time)
     //if (gameState != STATE_PLAYING)
     //    return;
 
-    player->HandleTimers(diff_time);
-
-    for (std::vector<Enemy*>::iterator itr = allEnemies.begin(); itr != allEnemies.end(); ++itr)
+    for (std::vector<Unit*>::iterator itr = allUnits.begin(); itr != allUnits.end(); ++itr)
         if (!(*itr)->IsDead())
             (*itr)->HandleTimers(diff_time);
 

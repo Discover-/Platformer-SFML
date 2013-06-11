@@ -109,8 +109,14 @@ void Bullet::Draw(sf::Sprite* spriteBullet /* = NULL */, bool updatePos /* = fal
     if (isRemoved)
         return;
 
+    sf::Vector2f position = GetPosition();
+    sf::Vector2f positionPlr = game->GetPlayer()->GetPosition();
+
+    if (!IsInRange(position.x, positionPlr.x, position.y, positionPlr.y, 1000.0f))
+        return;
+
     if (updatePos)
-        spriteBullet->setPosition(GetPosition());
+        spriteBullet->setPosition(position);
 
     if (GAME_STATE_PAUSED(game->GetGameState()))
         spriteBullet->setColor(sf::Color(255, 255, 255, 128));

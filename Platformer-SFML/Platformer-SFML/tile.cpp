@@ -32,6 +32,12 @@ void Tile::Update()
 
 void Tile::Draw(sf::Texture* _textureTile /* = NULL */, bool updatePos /* = false */)
 {
+    sf::Vector2f position = GetPosition();
+    sf::Vector2f positionPlr = game->GetPlayer()->GetPosition();
+
+    if (!IsInRange(position.x, positionPlr.x, position.y, positionPlr.y, 1000.0f))
+        return;
+
     sf::Sprite spriteToDraw;
 
     if (!_textureTile)

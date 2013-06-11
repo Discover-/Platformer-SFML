@@ -18,11 +18,9 @@ Unit::Unit(Game* _game, sf::RenderWindow* _window, sf::Vector2f position, std::v
     spriteBodiesRight = _spritesRight;
     typeId = _typeId;
     isJumping = false;
-    isMoving = _typeId == TYPEID_ENEMY;
     fallSpeed = 0;
     jumpSpeed = 15;
     bounceSpeed = 15;
-    moveSpeed = _typeId == TYPEID_PLAYER ? 7.0f : 3.0f;
     life = _life;
     moveFrame = 0;
     totalMoveFrames = _totalMoveFrames;
@@ -31,17 +29,33 @@ Unit::Unit(Game* _game, sf::RenderWindow* _window, sf::Vector2f position, std::v
     canFly = _canFly;
     hasBounced = false;
     isOnMovingTile = false;
-    imageDeadSprite.loadFromFile("Graphics/Enemies/" + std::string(canFly ? "fly_dead" : "slime_dead") + ".png");
     isInQuickSandArea = false;
     isInWaterArea = false;
     isInLavaArea = false;
+
+    switch (_typeId)
+    {
+        case TYPEID_PLAYER:
+            moveSpeed = 7.0f;
+            isMoving = false;
+            break;
+        case TYPEID_ENEMY:
+            imageDeadSprite.loadFromFile("Graphics/Enemies/" + std::string(canFly ? "fly_dead" : "slime_dead") + ".png");
+            moveSpeed = 3.0f;
+            isMoving = true;
+            break;
+        case TYPEID_MENU_PLAYER:
+            moveSpeed = 7.0f;
+            isMoving = true;
+            break;
+    }
 }
 
 void Unit::Update()
 {
-    if (GAME_STATE_PAUSED(game->GetGameState()) && isAlive)
+    if (typeId == TYPEID_MENU_PLAYER || (GAME_STATE_PAUSED(game->GetGameState()) && isAlive))
     {
-        Draw();
+        Draw(NULL, typeId == TYPEID_MENU_PLAYER);
         return;
     }
 
@@ -222,6 +236,9 @@ void Unit::HandleTimers(sf::Int32 diff_time)
 
 bool Unit::CollidesWithGameobjects(float newPosX /* = 0.0f */, float newPosY /* = 0.0f */)
 {
+    if (typeId == TYPEID_MENU_PLAYER)
+        return false;
+
     sf::Sprite spriteBody = GetSpriteBody();
 
     if (newPosX != 0.0f && newPosY != 0.0f)
@@ -256,7 +273,7 @@ bool Unit::CollidesWithGameobjects(float newPosX /* = 0.0f */, float newPosY /* 
 
 void Unit::Shoot()
 {
-    if (!isAlive)
+    if (!isAlive || typeId == TYPEID_MENU_PLAYER)
         return;
 
     shootCooldown = 400;
@@ -270,6 +287,9 @@ void Unit::Shoot()
 
 void Unit::BounceAway(bool toLeft)
 {
+    if (typeId == TYPEID_MENU_PLAYER)
+        return;
+
     Jump();
     hasBounced = true;
     bounceToLeft = toLeft;
@@ -280,7 +300,7 @@ void Unit::BounceAway(bool toLeft)
 
 sf::Sprite Unit::GetSpriteBody()
 {
-    if (movingToLeft)
+    if (movingToLeft && typeId != TYPEID_MENU_PLAYER)
     {
         for (std::vector<std::pair<int, sf::Texture>>::iterator itr = spriteBodiesLeft.begin(); itr != spriteBodiesLeft.end(); ++itr)
         {

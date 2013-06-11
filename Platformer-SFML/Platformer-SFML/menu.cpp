@@ -96,6 +96,7 @@ void Menu::Draw(sf::RenderWindow &window)
                 {
                     sf::Sprite sprite((*itr2).image);
                     sprite.setPosition((*itr2).posX, (*itr2).posY);
+                    sprite.setColor(sf::Color(255, 255, 255, 128));
                     window.draw(sprite);
                     break;
                 }
@@ -105,6 +106,7 @@ void Menu::Draw(sf::RenderWindow &window)
         {
             sf::Sprite sprite((*itr).image);
             sprite.setPosition((*itr).posX, (*itr).posY);
+            sprite.setColor(sf::Color(255, 255, 255, 128));
             window.draw(sprite);
         }
     }

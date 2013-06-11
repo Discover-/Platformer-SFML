@@ -10,6 +10,7 @@ class Level;
 class Enemy;
 class Tile;
 class Coin;
+class Unit;
 
 class Game
 {
@@ -69,6 +70,7 @@ class Game
         std::vector<sf::Sprite> lavaGameobjects;
         std::vector<Bullet*> allBullets;
         std::vector<Enemy*> allEnemies;
+        std::vector<Unit*> allUnits;
         GameState gameState;
         Level* currLevel;
         std::vector<Tile*> allTiles;

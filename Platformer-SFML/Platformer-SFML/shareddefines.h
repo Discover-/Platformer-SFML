@@ -18,8 +18,9 @@ enum GameState
 
 enum UnitTypeId
 {
-    TYPEID_ENEMY    = 0,
-    TYPEID_PLAYER   = 1,
+    TYPEID_ENEMY        = 0,
+    TYPEID_PLAYER       = 1,
+    TYPEID_MENU_PLAYER  = 2,
 };
 
 enum TileTypeId

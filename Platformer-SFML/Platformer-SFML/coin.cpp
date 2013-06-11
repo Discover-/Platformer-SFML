@@ -1,6 +1,7 @@
 #include "coin.h"
 #include "shareddefines.h"
 #include "game.h"
+#include "player.h"
 
 Coin::Coin(Game* _game, sf::RenderWindow* _window, sf::Vector2f _startPosition)
 {
@@ -44,6 +45,12 @@ void Coin::Update()
 
 void Coin::Draw(sf::Sprite spriteCoin, bool updatePos /* = false */)
 {
+    sf::Vector2f position = GetPosition();
+    sf::Vector2f positionPlr = game->GetPlayer()->GetPosition();
+
+    if (!IsInRange(position.x, positionPlr.x, position.y, positionPlr.y, 1000.0f))
+        return;
+
     if (updatePos)
         spriteCoin.setPosition(GetPositionX(), GetPositionY());
 
