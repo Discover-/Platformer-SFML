@@ -1,6 +1,6 @@
 #include "game.h"
 
-int WinMain()
+int main()
 {
     Game* game = new Game();
     return game->Update();

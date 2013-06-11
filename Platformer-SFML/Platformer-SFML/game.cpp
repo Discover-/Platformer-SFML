@@ -60,8 +60,8 @@ int Game::Update()
         }
     }
 
-    player = new Player(this, &window, sf::Vector2f(165.0f, 85.0f), spriteCharactersLeft, spriteCharactersRight, TYPEID_PLAYER, 5, 9, 30, false);
-    MenuPlayer* menuPlayer = new MenuPlayer(this, &window, sf::Vector2f(165.0f, 85.0f), spriteCharactersRight, TYPEID_MENU_PLAYER, 9, 30);
+    player = new Player(this, &window, sf::Vector2f(165.0f, 85.0f), spriteCharactersLeft, spriteCharactersRight, 5, 9, 30, false);
+    MenuPlayer* menuPlayer = new MenuPlayer(this, &window, sf::Vector2f(165.0f, 300.0f), spriteCharactersRight, 9, 30);
 
     sf::Texture imageEnemy;
     std::vector<std::pair<int, sf::Texture>> spriteEnemiesLeft;
@@ -76,9 +76,9 @@ int Game::Update()
         }
     }
 
-    Enemy* enemy1 = new Enemy(this, &window, sf::Vector2f(166.0f, 295.0f), sf::Vector2f(400.0f, 295.0f), spriteEnemiesLeft, spriteEnemiesRight, TYPEID_ENEMY, 3, 1, 80, true);
-    Enemy* enemy2 = new Enemy(this, &window, sf::Vector2f(845.0f, 180.0f), sf::Vector2f(1250.0f, 180.0f), spriteEnemiesLeft, spriteEnemiesRight, TYPEID_ENEMY, 3, 1, 80, true);
-    Enemy* enemy3 = new Enemy(this, &window, sf::Vector2f(235.0f, 39.0f), sf::Vector2f(620.0f, 39.0f), spriteEnemiesLeft, spriteEnemiesRight, TYPEID_ENEMY, 3, 1, 80, true);
+    Enemy* enemy1 = new Enemy(this, &window, sf::Vector2f(166.0f, 295.0f), sf::Vector2f(400.0f, 295.0f), spriteEnemiesLeft, spriteEnemiesRight, 3, 1, 80, true);
+    Enemy* enemy2 = new Enemy(this, &window, sf::Vector2f(845.0f, 180.0f), sf::Vector2f(1250.0f, 180.0f), spriteEnemiesLeft, spriteEnemiesRight, 3, 1, 80, true);
+    Enemy* enemy3 = new Enemy(this, &window, sf::Vector2f(235.0f, 39.0f), sf::Vector2f(620.0f, 39.0f), spriteEnemiesLeft, spriteEnemiesRight, 3, 1, 80, true);
 
     spriteEnemiesLeft.clear();
     spriteEnemiesRight.clear();
@@ -92,7 +92,7 @@ int Game::Update()
         }
     }
 
-    Enemy* enemy4 = new Enemy(this, &window, sf::Vector2f(450.0f, 140.0f), sf::Vector2f(650.0f, 140.0f), spriteEnemiesLeft, spriteEnemiesRight, TYPEID_ENEMY, 3, 1, 200, false);
+    Enemy* enemy4 = new Enemy(this, &window, sf::Vector2f(450.0f, 140.0f), sf::Vector2f(650.0f, 140.0f), spriteEnemiesLeft, spriteEnemiesRight, 3, 1, 200, false);
 
     allEnemies.push_back(enemy1);
     allEnemies.push_back(enemy2);
@@ -225,6 +225,10 @@ int Game::Update()
             case STATE_MENU:
             {
                 menu->Update(window);
+
+                for (std::vector<Unit*>::iterator itr = allUnits.begin(); itr != allUnits.end(); ++itr)
+                    if ((*itr)->GetTypeId() == TYPEID_MENU_PLAYER)
+                        (*itr)->Update();
                 break;
             }
             case STATE_PLAYING:
@@ -239,7 +243,8 @@ int Game::Update()
                         (*itr)->Update();
 
                 for (std::vector<Unit*>::iterator itr = allUnits.begin(); itr != allUnits.end(); ++itr)
-                    (*itr)->Update();
+                    if ((*itr)->GetTypeId() != TYPEID_MENU_PLAYER)
+                        (*itr)->Update();
 
                 for (std::vector<Bullet*>::iterator itr = allBullets.begin(); itr != allBullets.end(); ++itr)
                     if (!(*itr)->IsRemoved())
@@ -277,7 +282,8 @@ int Game::Update()
                         (*itr)->Update();
 
                 for (std::vector<Unit*>::iterator itr = allUnits.begin(); itr != allUnits.end(); ++itr)
-                    (*itr)->Update();
+                    if ((*itr)->GetTypeId() != TYPEID_MENU_PLAYER)
+                        (*itr)->Update();
 
                 for (std::vector<Bullet*>::iterator itr = allBullets.begin(); itr != allBullets.end(); ++itr)
                     if (!(*itr)->IsRemoved())
