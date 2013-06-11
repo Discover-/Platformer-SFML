@@ -59,7 +59,7 @@ int Game::Update()
         }
     }
 
-    player = new Player(this, &window, sf::Vector2f(165.0f, 135.0f), spriteCharactersLeft, spriteCharactersRight, TYPEID_PLAYER, 5, 9, 30, false);
+    player = new Player(this, &window, sf::Vector2f(165.0f, 85.0f), spriteCharactersLeft, spriteCharactersRight, TYPEID_PLAYER, 5, 9, 30, false);
 
     sf::Texture imageEnemy;
     std::vector<std::pair<int, sf::Texture>> spriteEnemiesLeft;
@@ -74,9 +74,9 @@ int Game::Update()
         }
     }
 
-    Enemy* enemy1 = new Enemy(this, &window, sf::Vector2f(166.0f, 345.0f), sf::Vector2f(400.0f, 345.0f), spriteEnemiesLeft, spriteEnemiesRight, TYPEID_ENEMY, 3, 1, 80, true);
-    Enemy* enemy2 = new Enemy(this, &window, sf::Vector2f(845.0f, 230.0f), sf::Vector2f(1250.0f, 230.0f), spriteEnemiesLeft, spriteEnemiesRight, TYPEID_ENEMY, 3, 1, 80, true);
-    Enemy* enemy3 = new Enemy(this, &window, sf::Vector2f(235.0f, 89.0f), sf::Vector2f(620.0f, 89.0f), spriteEnemiesLeft, spriteEnemiesRight, TYPEID_ENEMY, 3, 1, 80, true);
+    Enemy* enemy1 = new Enemy(this, &window, sf::Vector2f(166.0f, 295.0f), sf::Vector2f(400.0f, 295.0f), spriteEnemiesLeft, spriteEnemiesRight, TYPEID_ENEMY, 3, 1, 80, true);
+    Enemy* enemy2 = new Enemy(this, &window, sf::Vector2f(845.0f, 180.0f), sf::Vector2f(1250.0f, 180.0f), spriteEnemiesLeft, spriteEnemiesRight, TYPEID_ENEMY, 3, 1, 80, true);
+    Enemy* enemy3 = new Enemy(this, &window, sf::Vector2f(235.0f, 39.0f), sf::Vector2f(620.0f, 39.0f), spriteEnemiesLeft, spriteEnemiesRight, TYPEID_ENEMY, 3, 1, 80, true);
 
     spriteEnemiesLeft.clear();
     spriteEnemiesRight.clear();
@@ -90,7 +90,7 @@ int Game::Update()
         }
     }
 
-    Enemy* enemy4 = new Enemy(this, &window, sf::Vector2f(450.0f, 190.0f), sf::Vector2f(650.0f, 190.0f), spriteEnemiesLeft, spriteEnemiesRight, TYPEID_ENEMY, 3, 1, 200, false);
+    Enemy* enemy4 = new Enemy(this, &window, sf::Vector2f(450.0f, 140.0f), sf::Vector2f(650.0f, 140.0f), spriteEnemiesLeft, spriteEnemiesRight, TYPEID_ENEMY, 3, 1, 200, false);
 
     allEnemies.push_back(enemy1);
     allEnemies.push_back(enemy2);
