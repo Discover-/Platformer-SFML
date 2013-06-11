@@ -1,0 +1,33 @@
+* Order repository files
+* Implement cannon like in Mario
+* Finish implementatation of the crate object which you can push away so it can help you
+* Update menu
+  - Have a view of a walking player move on the background with a repeated level design
+  - Replace graphics in current menu with something a lot better
+  - 
+* Add more 'surprises' to the bonus block: plant growing out, star jumping out, mushroom ontop moves out, etc.
+* Implement coins of all colors
+* Add sounds and music
+* Add timer of how long the level was played
+* Add level indicator (level 1 / 5)
+* Implement move animation while jumping
+* Implement running (walking faster)
+* Add mini menu in-game rather than just 'PAUSED'
+* Add lifebar above enemy
+* Move all positions to Position struct or sf::Vector2f
+* When hitting an enemy, bounce away based on which side you hit it not on enemy's current direction
+* Implement proper falling logic (currently you fall straight down after letting go move button in air)
+* Make startpos of player be loaded in level file so it's different for each level
+* Proper collision detection op movingtile
+* Get rid of the small 'bounce' when you hit the ground after jumping
+* Fix collision on X 0.0 coord
+* Make bullets go faster
+* Add proper graphics for bullets
+* Implement keys and locks to access new level
+* Implement spikes
+* Implement rocks
+* Check 'timestep' rather than FPS limit (http://www.cppforum.nl/index.php/topic,2531.msg16014.html#msg16014)
+* Implement zooming out (MouseWheelMoved)
+* Add more IsInRange calls
+* Implement climbing to clouds like mario
+* Implement turtle enemy and when killing it, pushing it kills all enemies on its path
