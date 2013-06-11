@@ -69,10 +69,12 @@ void Menu::Update(sf::RenderWindow &window)
     float mouseX = float(sf::Mouse::getPosition(window).x);
     float mouseY = float(sf::Mouse::getPosition(window).y);
 
+    sf::View view = window.getView();
+
     for (std::vector<MenuSpriteInfo>::iterator itr = sprites.begin(); itr != sprites.end(); ++itr)
     {
         sf::Sprite sprite((*itr).image);
-        sprite.setPosition((*itr).posX, (*itr).posY);
+        sprite.setPosition(view.getCenter().x - (sprite.getLocalBounds().width / 2.0f), view.getCenter().y - (sprite.getLocalBounds().height / 2.0f) + ((*itr).id * 150.0f) - 300.0f);
 
         if (WillCollision(mouseX, mouseY, 16.0f, 16.0f, sprite.getPosition().x, sprite.getPosition().y, sprite.getLocalBounds().height, sprite.getLocalBounds().width))
         {
@@ -86,6 +88,8 @@ void Menu::Update(sf::RenderWindow &window)
 
 void Menu::Draw(sf::RenderWindow &window)
 {
+    sf::View view = window.getView();
+
     for (std::vector<MenuSpriteInfo>::iterator itr = sprites.begin(); itr != sprites.end(); ++itr)
     {
         if (selectedOption != 0 && selectedOption == (*itr).id)
@@ -95,8 +99,8 @@ void Menu::Draw(sf::RenderWindow &window)
                 if ((*itr2).id == (*itr).id)
                 {
                     sf::Sprite sprite((*itr2).image);
-                    sprite.setPosition((*itr2).posX, (*itr2).posY);
-                    sprite.setColor(sf::Color(255, 255, 255, 128));
+                    sprite.setPosition(view.getCenter().x - (sprite.getLocalBounds().width / 2.0f), view.getCenter().y - (sprite.getLocalBounds().height / 2.0f) + ((*itr).id * 150.0f) - 300.0f);
+                    sprite.setColor(sf::Color(255, 255, 255, 300));
                     window.draw(sprite);
                     break;
                 }
@@ -105,8 +109,8 @@ void Menu::Draw(sf::RenderWindow &window)
         else
         {
             sf::Sprite sprite((*itr).image);
-            sprite.setPosition((*itr).posX, (*itr).posY);
-            sprite.setColor(sf::Color(255, 255, 255, 128));
+            sprite.setPosition(view.getCenter().x - (sprite.getLocalBounds().width / 2.0f), view.getCenter().y - (sprite.getLocalBounds().height / 2.0f) + ((*itr).id * 150.0f) - 300.0f);
+            sprite.setColor(sf::Color(255, 255, 255, 300));
             window.draw(sprite);
         }
     }

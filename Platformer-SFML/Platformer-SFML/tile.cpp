@@ -24,7 +24,7 @@ void Tile::Update()
         return;
     }
 
-    if (game->GetGameState() == STATE_MENU)
+    if (game->GetGameState() == STATE_MAIN_MENU)
         return;
 
     //Draw(NULL, true);

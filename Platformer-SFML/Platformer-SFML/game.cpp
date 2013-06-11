@@ -29,7 +29,7 @@
 Game::Game()
 {
     isRunning = true;
-    gameState = STATE_MENU;
+    gameState = STATE_MAIN_MENU;
 }
 
 Game::~Game()
@@ -61,7 +61,7 @@ int Game::Update()
     }
 
     player = new Player(this, &window, sf::Vector2f(165.0f, 85.0f), spriteCharactersLeft, spriteCharactersRight, 5, 9, 30, false);
-    MenuPlayer* menuPlayer = new MenuPlayer(this, &window, sf::Vector2f(165.0f, 300.0f), spriteCharactersRight, 9, 30);
+    menuPlayer = new MenuPlayer(this, &window, sf::Vector2f(165.0f, 295.0f), spriteCharactersLeft, 9, 30);
 
     sf::Texture imageEnemy;
     std::vector<std::pair<int, sf::Texture>> spriteEnemiesLeft;
@@ -111,7 +111,7 @@ int Game::Update()
     sf::View view(window.getDefaultView());
     sf::Clock clock, fpsClock;
 
-    currLevel = new Level(this);
+    currLevel = new Level(this, window);
     Menu* menu = new Menu(this);
     menu->Load();
 
@@ -157,12 +157,19 @@ int Game::Update()
                         std::string levelFilename = "Levels/level";
                         levelFilename += shiftPressed ? "_menu.txt" : "1.txt";
                         currLevel->LoadMap(levelFilename.c_str(), window);
-                        std::cout << "Time in milliseconds taken to load level: " << _clock.restart().asMilliseconds() << std::endl;
+                        break;
+                    }
+                    //! Back to menu
+                    case sf::Keyboard::F2:
+                    {
+                        gameState = STATE_MAIN_MENU;
+                        currLevel->LoadMap("Levels/level_menu.txt", window);
+                        menuPlayer->SetPosition(165.0f, 300.0f);
                         break;
                     }
                     //! Pause or un-pause game based on current gamestate.
                     case sf::Keyboard::Escape:
-                        if (gameState != STATE_MENU)
+                        if (gameState != STATE_MAIN_MENU)
                         {
                             gameState = gameState == STATE_PLAYING ? STATE_PAUSED : STATE_PLAYING;
                             //window.setMouseCursorVisible(gameState == STATE_PLAYING);
@@ -172,18 +179,18 @@ int Game::Update()
                         break;
                     //! Move menu option selection up
                     case sf::Keyboard::Up:
-                        if (gameState == STATE_MENU)
-                            menu->SetSelectedOption(menu->GetSelectedOption() + 1);
+                        if (gameState == STATE_MAIN_MENU)
+                            menu->SetSelectedOption(menu->GetSelectedOption() - 1);
                         break;
                     //! Move menu option selection down
                     case sf::Keyboard::Down:
-                        if (gameState == STATE_MENU)
-                            menu->SetSelectedOption(menu->GetSelectedOption() - 1);
+                        if (gameState == STATE_MAIN_MENU)
+                            menu->SetSelectedOption(menu->GetSelectedOption() + 1);
                         break;
                     //! Select menu option
                     case sf::Keyboard::Return:
                     case sf::Mouse::Left:
-                        if (gameState == STATE_MENU)
+                        if (gameState == STATE_MAIN_MENU)
                             menu->PressedEnterOrMouse(window);
                         break;
                     case sf::Keyboard::Space:
@@ -207,7 +214,7 @@ int Game::Update()
                 {
                     //! Select menu option
                     case sf::Mouse::Left:
-                        if (gameState == STATE_MENU)
+                        if (gameState == STATE_MAIN_MENU)
                             menu->PressedEnterOrMouse(window);
                         break;
                     case sf::Mouse::Right:
@@ -219,22 +226,45 @@ int Game::Update()
         HandleTimers(clock.restart().asMilliseconds());
         fpsClock.restart();
         window.clear(sf::Color(136, 247, 255));
+        currLevel->DrawMap(window, gameState == STATE_MAIN_MENU);
+
+        //! Temporarily commented out because it brings weird behavior to objects with Tile class
+        //sf::Vector2f cameraPos = gameState == STATE_MAIN_MENU ? menuPlayer->GetPosition() : player->GetPosition();
+
+        //if (cameraPos.x > window.getSize().x / 2.f)
+        //    view.setCenter(cameraPos.x, view.getCenter().y);
+        //else
+        //    view.setCenter(window.getSize().x / 2.f, view.getCenter().y);
+
+        //if (cameraPos.y > window.getSize().y / 2.f)
+        //    view.setCenter(view.getCenter().x, cameraPos.y);
+        //else
+        //    view.setCenter(view.getCenter().x, window.getSize().y / 2.f);
+
+        //window.setView(view);
 
         switch (gameState)
         {
-            case STATE_MENU:
+            case STATE_MAIN_MENU:
             {
+                menuPlayer->Update();
                 menu->Update(window);
 
-                for (std::vector<Unit*>::iterator itr = allUnits.begin(); itr != allUnits.end(); ++itr)
-                    if ((*itr)->GetTypeId() == TYPEID_MENU_PLAYER)
-                        (*itr)->Update();
+                if (menuPlayer->GetPositionX() > window.getSize().x / 2.f)
+                    view.setCenter(menuPlayer->GetPositionX(), view.getCenter().y);
+                else
+                    view.setCenter(window.getSize().x / 2.f, view.getCenter().y);
+
+                if (menuPlayer->GetPositionY() > window.getSize().y / 2.f)
+                    view.setCenter(view.getCenter().x, menuPlayer->GetPositionY());
+                else
+                    view.setCenter(view.getCenter().x, window.getSize().y / 2.f);
+
+                window.setView(view);
                 break;
             }
             case STATE_PLAYING:
             {
-                currLevel->DrawMap(window);
-
                 for (std::vector<Tile*>::iterator itr = allTiles.begin(); itr != allTiles.end(); ++itr)
                     (*itr)->Update();
 
@@ -264,13 +294,11 @@ int Game::Update()
                     view.setCenter(view.getCenter().x, window.getSize().y / 2.f);
 
                 window.setView(view);
-
                 break;
             }
             case STATE_PAUSED:
             case STATE_PAUSED_FOCUS:
             {
-                currLevel->DrawMap(window);
                 //player->Update();
                 player->DrawAccessoires(window, view);
 
@@ -300,7 +328,7 @@ int Game::Update()
                 break;
         }
 
-        if (gameState != STATE_MENU)
+        if (gameState != STATE_MAIN_MENU)
         {
             sf::Text text("Position X: " + std::to_string(static_cast<long long>(player->GetPositionX())) + "\nPosition Y: " + std::to_string(static_cast<long long>(player->GetPositionY())), font, 15);
             text.setColor(GAME_STATE_DRAW_GAME(gameState) ? sf::Color::Black : sf::Color::White);

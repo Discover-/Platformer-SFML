@@ -7,7 +7,7 @@
 
 enum GameState
 {
-    STATE_MENU          = 0,
+    STATE_MAIN_MENU     = 0,
     STATE_PAUSED        = 1,
     STATE_PAUSED_FOCUS  = 2,
     STATE_PLAYING       = 3,

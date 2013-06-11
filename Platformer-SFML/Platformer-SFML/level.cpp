@@ -6,15 +6,17 @@
 #include "level.h"
 #include "shareddefines.h"
 #include "player.h"
+#include "menuplayer.h"
 #include "game.h"
 #include "coin.h"
 #include "movingtile.h"
 #include "bouncetile.h"
 #include "bonustile.h"
 
-Level::Level(Game* _game)
+Level::Level(Game* _game, sf::RenderWindow &window)
 {
     game = _game;
+    LoadMap("Levels/level_menu.txt", window);
 }
 
 Level::~Level()
@@ -24,6 +26,8 @@ Level::~Level()
 
 void Level::LoadMap(char const* filename, sf::RenderWindow &window)
 {
+    sf::Clock _clock;
+    _clock.restart();
     std::vector<std::vector<std::string>> tilesInfoLayers;
     std::vector<std::string> tilesInfoBlocks;
     std::ifstream openfile(filename);
@@ -46,9 +50,9 @@ void Level::LoadMap(char const* filename, sf::RenderWindow &window)
         tilesInfoBlocks.clear();
     }
 
+    sprites.clear();
     game->ClearGameObjects();
     game->ClearGameObjectCollidables();
-    sprites.clear();
     game->ClearCoins();
     game->ClearAllTiles();
 
@@ -195,16 +199,18 @@ void Level::LoadMap(char const* filename, sf::RenderWindow &window)
             game->AddGameObject(tmpSprite);
         }
     }
+
+    std::cout << "Time in milliseconds taken to load level: " << _clock.restart().asMilliseconds() << std::endl;
 }
 
-void Level::DrawMap(sf::RenderWindow &window)
+void Level::DrawMap(sf::RenderWindow &window, bool menuLevel /* = false */)
 {
-    Player* player = game->GetPlayer();
+    sf::Vector2f cameraPos = menuLevel ? game->GetMenuPlayer()->GetPosition() : game->GetPlayer()->GetPosition();
 
     for (std::vector<SpriteInfo>::iterator itr = sprites.begin(); itr != sprites.end(); ++itr)
     {
         //! ONLY draw the images if the player is within visibility distance, else there's no point in wasting performance.
-        if (IsInRange(player->GetPositionX(), (*itr).posX, player->GetPositionY(), (*itr).posY, 950.0f))
+        if (IsInRange(cameraPos.x, (*itr).posX, cameraPos.y, (*itr).posY, 950.0f))
         {
             sf::Sprite sprite((*itr).image);
             sprite.setPosition((*itr).posX, (*itr).posY);

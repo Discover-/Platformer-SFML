@@ -59,7 +59,7 @@ void Unit::Update()
         return;
     }
 
-    if (game->GetGameState() == STATE_MENU)
+    if (game->GetGameState() == STATE_MAIN_MENU)
         return;
 
     if (!isAlive)
@@ -214,7 +214,7 @@ void Unit::HandleTimers(sf::Int32 diff_time)
             shootCooldown -= diff_time;
     }
 
-    if (!GAME_STATE_PAUSED(game->GetGameState()))
+    if (typeId == TYPEID_MENU_PLAYER || !GAME_STATE_PAUSED(game->GetGameState()))
     {
         if (isMoving)
         {

@@ -9,11 +9,11 @@
 class Level
 {
     public:
-        Level(Game* _game);
+        Level(Game* _game, sf::RenderWindow &window);
         ~Level();
 
         void LoadMap(char const* filename, sf::RenderWindow &window);
-        void DrawMap(sf::RenderWindow &window);
+        void DrawMap(sf::RenderWindow &window, bool menuLevel = false);
 
     private:
         Game* game;

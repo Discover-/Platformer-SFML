@@ -29,20 +29,23 @@ Unit(_game, _window, position, _spritesRight, _spritesRight, TYPEID_MENU_PLAYER,
 
 void MenuPlayer::Update()
 {
-    Unit::Update();
-
-    if (GetGame()->GetGameState() == STATE_MENU)
+    if (GetGame()->GetGameState() != STATE_MAIN_MENU)
         return;
+
+    Unit::Update();
 
     SetIsMoving(true);
     SetIsMovingToLeft(false);
     SetPosition(GetPositionX() + GetMoveSpeed(), GetPositionY());
+
+    if (GetPositionX() > 1600.0f)
+        SetPositionX(600.0f);
 }
 
 void MenuPlayer::HandleTimers(sf::Int32 diff_time)
 {
-    //if (GetGame()->GetGameState() != STATE_MENU)
-    //    return;
+    if (GetGame()->GetGameState() != STATE_MAIN_MENU)
+        return;
 
     Unit::HandleTimers(diff_time);
 }

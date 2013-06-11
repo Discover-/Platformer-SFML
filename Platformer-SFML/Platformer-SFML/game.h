@@ -11,6 +11,7 @@ class Enemy;
 class Tile;
 class Coin;
 class Unit;
+class MenuPlayer;
 
 class Game
 {
@@ -41,6 +42,7 @@ class Game
         void HandleTimers(sf::Int32 diff_time);
 
         Player* GetPlayer() { return player; }
+        MenuPlayer* GetMenuPlayer() { return menuPlayer; }
 
         void AddBullet(Bullet* bullet) { allBullets.push_back(bullet); }
         std::vector<Bullet*> &GetBullets() { return allBullets; }
@@ -63,6 +65,7 @@ class Game
     private:
         bool isRunning;
         Player* player;
+        MenuPlayer* menuPlayer;
         std::vector<sf::Sprite> gameObjects;
         std::vector<sf::Sprite> gameObjectsCollidable;
         std::vector<sf::Sprite> quickSandGameobjects;
