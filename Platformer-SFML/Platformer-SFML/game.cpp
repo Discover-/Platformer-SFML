@@ -41,8 +41,8 @@ int Game::Update()
     sf::Clock clockStart;
     clockStart.restart();
 
-    isRunning = true;
     sf::RenderWindow window(sf::VideoMode(1000, 600), "Platformer C++ SFML");
+    window.setFramerateLimit(30);
 
     //window.setKeyRepeatEnabled(false);
 
@@ -99,8 +99,6 @@ int Game::Update()
 
     sf::Font font;
     font.loadFromFile("Fonts/Market_Deco.ttf");
-
-    window.setFramerateLimit(30);
 
     sf::View view(window.getDefaultView());
     sf::Clock clock, fpsClock;

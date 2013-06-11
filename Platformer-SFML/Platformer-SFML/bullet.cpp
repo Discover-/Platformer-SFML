@@ -13,8 +13,7 @@ Bullet::Bullet(Game* _game, sf::RenderWindow* _window, float _x, float _y, sf::T
     game = _game;
     velocity = _velocity;
     isRemoved = false;
-    posX = _x;
-    posY = _y;
+    SetPosition(_x, _y);
     window = _window;
     imageBullet = _imageBullet;
     movingToLeft = _movingToLeft;
@@ -35,10 +34,10 @@ void Bullet::Update()
     bool isPaused = GAME_STATE_PAUSED(game->GetGameState());
 
     if (!isPaused)
-        posX = movingToLeft ? posX + velocity : posX - velocity;
+        SetPositionX(movingToLeft ? GetPositionX() + velocity : GetPositionX() - velocity);
 
     sf::Sprite spriteBullet(imageBullet);
-    spriteBullet.setPosition(posX, posY);
+    spriteBullet.setPosition(GetPosition());
 
     if (!isPaused)
     {
@@ -48,7 +47,7 @@ void Bullet::Update()
         sf::FloatRect boundsBullet = spriteBullet.getGlobalBounds();
         sf::FloatRect boundsChar = spriteChar.getGlobalBounds();
 
-        if (WillCollision(posX, posY, boundsBullet.height, boundsBullet.width, posChar.x, posChar.y, boundsChar.height, boundsChar.width))
+        if (WillCollision(GetPositionX(), GetPositionY(), boundsBullet.height, boundsBullet.width, posChar.x, posChar.y, boundsChar.height, boundsChar.width))
         {
             Explode();
             player->DropLife();
@@ -66,7 +65,7 @@ void Bullet::Update()
                 (*itr)->GetPosition(enemyX, enemyY);
                 sf::FloatRect boundsEnemy = (*itr)->GetSpriteBody().getGlobalBounds();
 
-                if (IsInRange(posX, enemyX, posY, enemyY, 200.0f))
+                if (IsInRange(GetPositionX(), enemyX, GetPositionY(), enemyY, 200.0f))
                 {
                     if (WillCollision(posBullet.x, posBullet.y, boundsBullet.height, boundsBullet.width, enemyX, enemyY, boundsEnemy.height, boundsEnemy.width))
                     {
@@ -87,7 +86,7 @@ void Bullet::Update()
                 sf::Vector2f posGameobject = (*itr).getPosition();
                 sf::FloatRect boundsGameobject = (*itr).getGlobalBounds();
 
-                if (IsInRange(posX, posGameobject.x, posY, posGameobject.y, 200.0f))
+                if (IsInRange(GetPositionX(), posGameobject.x, GetPositionY(), posGameobject.y, 200.0f))
                 {
                     if (WillCollision(posBullet.x, posBullet.y, boundsBullet.height, boundsBullet.width, posGameobject.x, posGameobject.y, boundsGameobject.height, boundsGameobject.width))
                     {
@@ -98,7 +97,7 @@ void Bullet::Update()
             }
         }
 
-        if (posX < 0 || posY < 0)
+        if (GetPositionX() < 0 || GetPositionY() < 0)
             Explode();
     }
 
@@ -111,7 +110,7 @@ void Bullet::Draw(sf::Sprite* spriteBullet /* = NULL */, bool updatePos /* = fal
         return;
 
     if (updatePos)
-        spriteBullet->setPosition(posX, posY);
+        spriteBullet->setPosition(GetPosition());
 
     if (GAME_STATE_PAUSED(game->GetGameState()))
         spriteBullet->setColor(sf::Color(255, 255, 255, 128));
@@ -122,20 +121,4 @@ void Bullet::Draw(sf::Sprite* spriteBullet /* = NULL */, bool updatePos /* = fal
 void Bullet::Explode()
 {
     isRemoved = true;
-}
-
-void Bullet::SetPosX(float val)
-{
-    SetPosXY(val, posY);
-}
-
-void Bullet::SetPosY(float val)
-{
-    SetPosXY(posX, val);
-}
-
-void Bullet::SetPosXY(float valX, float valY)
-{
-    posX = valX;
-    posY = valY;
 }
