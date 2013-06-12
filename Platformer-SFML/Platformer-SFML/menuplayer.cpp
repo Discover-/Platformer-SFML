@@ -38,7 +38,7 @@ void MenuPlayer::Update()
     SetIsMovingToLeft(false);
     SetPosition(GetPositionX() + GetMoveSpeed(), GetPositionY());
 
-    if (GetPositionX() > 1600.0f)
+    if (GetPositionX() > 1800.0f)
         SetPositionX(600.0f);
 }
 

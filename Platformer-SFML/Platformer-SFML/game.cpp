@@ -29,6 +29,7 @@
 Game::Game()
 {
     isRunning = true;
+    showDebugInfo = false;
     gameState = STATE_MAIN_MENU;
 }
 
@@ -165,6 +166,12 @@ int Game::Update()
                         gameState = STATE_MAIN_MENU;
                         currLevel->LoadMap("Levels/level_menu.txt", window);
                         menuPlayer->SetPosition(165.0f, 300.0f);
+                        break;
+                    }
+                    //! Turn on/off debug information
+                    case sf::Keyboard::F3:
+                    {
+                        showDebugInfo = !showDebugInfo;
                         break;
                     }
                     //! Pause or un-pause game based on current gamestate.
@@ -328,16 +335,18 @@ int Game::Update()
                 break;
         }
 
-        if (gameState != STATE_MAIN_MENU)
+        if (showDebugInfo)
         {
-            sf::Text text("Position X: " + std::to_string(static_cast<long long>(player->GetPositionX())) + "\nPosition Y: " + std::to_string(static_cast<long long>(player->GetPositionY())), font, 15);
-            text.setColor(GAME_STATE_DRAW_GAME(gameState) ? sf::Color::Black : sf::Color::White);
+            sf::Vector2f cameraPos = gameState == STATE_MAIN_MENU ? menuPlayer->GetPosition() : player->GetPosition();
+
+            sf::Text text("Position X: " + std::to_string(static_cast<long long>(cameraPos.x)) + "\nPosition Y: " + std::to_string(static_cast<long long>(cameraPos.y)), font, 15);
+            text.setColor(GAME_STATE_DRAW_GAME(gameState) || gameState == STATE_MAIN_MENU ? sf::Color::Black : sf::Color::White);
             text.setPosition(view.getCenter().x + 375.0f, view.getCenter().y - 300.0f);
             window.draw(text);
 
             float fps = 1 / fpsClock.getElapsedTime().asSeconds();
             sf::Text text2("FPS: " + std::to_string(static_cast<long long>(fps)), font, 15);
-            text2.setColor(GAME_STATE_DRAW_GAME(gameState) ? sf::Color::Black : sf::Color::White);
+            text2.setColor(GAME_STATE_DRAW_GAME(gameState) || gameState == STATE_MAIN_MENU ? sf::Color::Black : sf::Color::White);
             text2.setPosition(view.getCenter().x + 375.0f, view.getCenter().y - 265.0f);
             window.draw(text2);
         }

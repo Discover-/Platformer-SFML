@@ -63,7 +63,7 @@ class Game
         bool IsInLavaArea(float x, float y, float h, float w);
 
     private:
-        bool isRunning;
+        bool isRunning, showDebugInfo;
         Player* player;
         MenuPlayer* menuPlayer;
         std::vector<sf::Sprite> gameObjects;
