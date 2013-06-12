@@ -10,6 +10,10 @@ Menu::Menu(Game* _game)
 {
     game = _game;
     selectedOption = 1;
+    currentMenu = 0;
+    newMenu = -1;
+    movingCurrMenuOut = false;
+    movingNewMenuIn = false;
 }
 
 Menu::~Menu()
@@ -19,6 +23,7 @@ Menu::~Menu()
 
 void Menu::Load()
 {
+    std::vector<MenuButtonInfo> menuButtonsInfo;
     MenuButtonInfo menuButtonInfo;
 
     font.loadFromFile("Fonts/Market_Deco.ttf");
@@ -29,7 +34,7 @@ void Menu::Load()
     menuButtonInfo.rectShape = rectangleBackground;
     menuButtonInfo.textShape = sf::Text("", font, 15);
     menuButtonInfo.id = 0;
-    menuButtons.push_back(menuButtonInfo);
+    menuButtonsInfo.push_back(menuButtonInfo);
 
     sf::RectangleShape rectangleButtons(sf::Vector2f(300.0f, 50.0f));
     sf::Text textButtons("", font, 30);
@@ -44,7 +49,7 @@ void Menu::Load()
     menuButtonInfo.rectShape = rectangleButtons;
     menuButtonInfo.textShape = textButtons;
     menuButtonInfo.id++;
-    menuButtons.push_back(menuButtonInfo);
+    menuButtonsInfo.push_back(menuButtonInfo);
 
     rectangleButtons.setPosition(rectangleButtons.getLocalBounds().width / 2.0f, rectangleButtons.getLocalBounds().height / 2.0f + 50.0f);
     textButtons.setPosition(rectangleButtons.getLocalBounds().width / 2.0f - 15.0f, rectangleButtons.getLocalBounds().height / 2.0f + 45.0f);
@@ -52,7 +57,7 @@ void Menu::Load()
     menuButtonInfo.rectShape = rectangleButtons;
     menuButtonInfo.textShape = textButtons;
     menuButtonInfo.id++;
-    menuButtons.push_back(menuButtonInfo);
+    menuButtonsInfo.push_back(menuButtonInfo);
 
     rectangleButtons.setPosition(rectangleButtons.getLocalBounds().width / 2.0f, rectangleButtons.getLocalBounds().height / 2.0f - 50.0f);
     textButtons.setPosition(rectangleButtons.getLocalBounds().width / 2.0f - 92.0f, rectangleButtons.getLocalBounds().height / 2.0f - 55.0f);
@@ -60,7 +65,7 @@ void Menu::Load()
     menuButtonInfo.rectShape = rectangleButtons;
     menuButtonInfo.textShape = textButtons;
     menuButtonInfo.id++;
-    menuButtons.push_back(menuButtonInfo);
+    menuButtonsInfo.push_back(menuButtonInfo);
 
     rectangleButtons.setPosition(rectangleButtons.getLocalBounds().width / 2.0f, rectangleButtons.getLocalBounds().height / 2.0f - 150.0f);
     textButtons.setPosition(rectangleButtons.getLocalBounds().width / 2.0f - 80.0f, rectangleButtons.getLocalBounds().height / 2.0f - 155.0f);
@@ -68,7 +73,124 @@ void Menu::Load()
     menuButtonInfo.rectShape = rectangleButtons;
     menuButtonInfo.textShape = textButtons;
     menuButtonInfo.id++;
-    menuButtons.push_back(menuButtonInfo);
+    menuButtonsInfo.push_back(menuButtonInfo);
+
+    MenuInfo menuInfo;
+    menuInfo.id = 0;
+    menuInfo.draw = true;
+    menus.push_back(std::make_pair(menuInfo, menuButtonsInfo));
+    menuButtonsInfo.clear();
+
+    //rectangleBackground.setSize(sf::Vector2f(600.0f, 600.0f));
+    //rectangleBackground.setFillColor(sf::Color(255, 255, 255, 128));
+    //rectangleBackground.setPosition(rectangleBackground.getLocalBounds().width / 2.0f, rectangleBackground.getLocalBounds().height / 2.0f);
+    //menuButtonInfo.rectShape = rectangleBackground;
+    //menuButtonInfo.textShape = sf::Text("", font, 15);
+    //menuButtonInfo.id = 0;
+    //menuButtonsInfo.push_back(menuButtonInfo);
+
+    //rectangleButtons.setPosition(rectangleButtons.getLocalBounds().width / 2.0f, rectangleButtons.getLocalBounds().height / 2.0f - 350.0f);
+    //textButtons.setPosition(rectangleButtons.getLocalBounds().width / 2.0f - 80.0f, rectangleButtons.getLocalBounds().height / 2.0f - 345.0f);
+    //textButtons.setString("Herp");
+    //menuButtonInfo.rectShape = rectangleButtons;
+    //menuButtonInfo.textShape = textButtons;
+    //menuButtonInfo.id++;
+    //menuButtonsInfo.push_back(menuButtonInfo);
+
+    //rectangleButtons.setPosition(rectangleButtons.getLocalBounds().width / 2.0f, rectangleButtons.getLocalBounds().height / 2.0f - 350.0f);
+    //textButtons.setPosition(rectangleButtons.getLocalBounds().width / 2.0f - 15.0f, rectangleButtons.getLocalBounds().height / 2.0f - 345.0f);
+    //textButtons.setString("Derp");
+    //menuButtonInfo.rectShape = rectangleButtons;
+    //menuButtonInfo.textShape = textButtons;
+    //menuButtonInfo.id++;
+    //menuButtonsInfo.push_back(menuButtonInfo);
+
+    //menuInfo.id++;
+    //menuInfo.draw = false;
+    //menus.push_back(std::make_pair(menuInfo, menuButtonsInfo));
+    //menuButtonsInfo.clear();
+
+    
+
+    rectangleButtons.setPosition(rectangleButtons.getLocalBounds().width / 2.0f, rectangleButtons.getLocalBounds().height / 2.0f + 150.0f);
+    textButtons.setPosition(rectangleButtons.getLocalBounds().width / 2.0f - 80.0f, rectangleButtons.getLocalBounds().height / 2.0f + 145.0f);
+    textButtons.setString("Play Game2");
+    menuButtonInfo.rectShape = rectangleButtons;
+    menuButtonInfo.textShape = textButtons;
+    menuButtonInfo.id = 0;
+    menuButtonsInfo.push_back(menuButtonInfo);
+
+    rectangleButtons.setPosition(rectangleButtons.getLocalBounds().width / 2.0f, rectangleButtons.getLocalBounds().height / 2.0f + 50.0f);
+    textButtons.setPosition(rectangleButtons.getLocalBounds().width / 2.0f - 15.0f, rectangleButtons.getLocalBounds().height / 2.0f + 45.0f);
+    textButtons.setString("More Information2");
+    menuButtonInfo.rectShape = rectangleButtons;
+    menuButtonInfo.textShape = textButtons;
+    menuButtonInfo.id++;
+    menuButtonsInfo.push_back(menuButtonInfo);
+
+    rectangleButtons.setPosition(rectangleButtons.getLocalBounds().width / 2.0f, rectangleButtons.getLocalBounds().height / 2.0f - 50.0f);
+    textButtons.setPosition(rectangleButtons.getLocalBounds().width / 2.0f - 92.0f, rectangleButtons.getLocalBounds().height / 2.0f - 55.0f);
+    textButtons.setString("How To2");
+    menuButtonInfo.rectShape = rectangleButtons;
+    menuButtonInfo.textShape = textButtons;
+    menuButtonInfo.id++;
+    menuButtonsInfo.push_back(menuButtonInfo);
+
+    rectangleButtons.setPosition(rectangleButtons.getLocalBounds().width / 2.0f, rectangleButtons.getLocalBounds().height / 2.0f - 150.0f);
+    textButtons.setPosition(rectangleButtons.getLocalBounds().width / 2.0f - 80.0f, rectangleButtons.getLocalBounds().height / 2.0f - 155.0f);
+    textButtons.setString("Exit Game2");
+    menuButtonInfo.rectShape = rectangleButtons;
+    menuButtonInfo.textShape = textButtons;
+    menuButtonInfo.id++;
+    menuButtonsInfo.push_back(menuButtonInfo);
+
+    menuInfo.id++;
+    menuInfo.draw = false;
+    menus.push_back(std::make_pair(menuInfo, menuButtonsInfo));
+    menuButtonsInfo.clear();
+}
+
+void Menu::Update(sf::RenderWindow &window)
+{
+    if (movingCurrMenuOut)
+    {
+        for (std::vector<MenuButtonInfo>::iterator itr = menus[currentMenu].second.begin(); itr != menus[currentMenu].second.end(); ++itr)
+        {
+            (*itr).rectShape.setPosition((*itr).rectShape.getPosition().x, (*itr).rectShape.getPosition().y - 20.0f);
+            (*itr).textShape.setPosition((*itr).textShape.getPosition().x, (*itr).textShape.getPosition().y - 20.0f);
+
+            if ((*itr).textShape.getPosition().y < -100.0f)
+            {
+                movingCurrMenuOut = false;
+                movingNewMenuIn = true;
+                currentMenu = newMenu;
+
+                for (std::vector<std::pair<MenuInfo, std::vector<MenuButtonInfo>>>::iterator itr2 = menus.begin(); itr2 != menus.end(); ++itr2)
+                {
+                    if ((*itr2).first.id == currentMenu)
+                        (*itr2).first.draw = false;
+                    else if ((*itr2).first.id == newMenu)
+                        (*itr2).first.draw = true;
+                }
+            }
+        }
+    }
+    else if (movingNewMenuIn)
+    {
+        for (std::vector<MenuButtonInfo>::iterator itr = menus[currentMenu].second.begin(); itr != menus[currentMenu].second.end(); ++itr)
+        {
+            (*itr).rectShape.setPosition((*itr).rectShape.getPosition().x, (*itr).rectShape.getPosition().y + 20.0f);
+            (*itr).textShape.setPosition((*itr).textShape.getPosition().x, (*itr).textShape.getPosition().y + 20.0f);
+
+            if ((*itr).textShape.getPosition().y > 700.0f)
+            {
+                movingCurrMenuOut = false;
+                movingNewMenuIn = false;
+            }
+        }
+    }
+
+    Draw(window);
 }
 
 void Menu::Draw(sf::RenderWindow &window)
@@ -76,29 +198,35 @@ void Menu::Draw(sf::RenderWindow &window)
     sf::Vector2i currMousePos = sf::Mouse::getPosition(window);
     sf::View view = window.getView();
 
-    for (std::vector<MenuButtonInfo>::iterator itr = menuButtons.begin(); itr != menuButtons.end(); ++itr)
+    for (std::vector<std::pair<MenuInfo, std::vector<MenuButtonInfo>>>::iterator itr = menus.begin(); itr != menus.end(); ++itr)
     {
-        sf::Vector2f itrRectPos = (*itr).rectShape.getPosition();
-        sf::RectangleShape itrRectCopy = (*itr).rectShape;
-        itrRectCopy.setPosition(view.getCenter().x - itrRectPos.x, view.getCenter().y - itrRectPos.y);
-        sf::Text itrTextCopy = (*itr).textShape;
-        itrTextCopy.setPosition(view.getCenter().x - itrTextCopy.getPosition().x, view.getCenter().y - itrTextCopy.getPosition().y);
-
-        if ((*itr).id && (selectedOption == (*itr).id || !(prevMousePos.x == currMousePos.x && prevMousePos.y == currMousePos.y) && !(currMousePos.x > 1000.0f || currMousePos.y > 600.0f || currMousePos.x < 0.0f || currMousePos.y < 0.0f)))
+        if ((*itr).first.draw || (*itr).first.id == currentMenu)
         {
-            if (selectedOption == (*itr).id || WillCollision(float(currMousePos.x), float(currMousePos.y), 16.0f, 16.0f, itrRectCopy.getPosition().x, itrRectCopy.getPosition().y, itrRectCopy.getLocalBounds().height, itrRectCopy.getLocalBounds().width))
+            for (std::vector<MenuButtonInfo>::iterator itr2 = (*itr).second.begin(); itr2 != (*itr).second.end(); ++itr2)
             {
-                selectedOption = (*itr).id;
-                itrRectCopy.setFillColor(sf::Color::White);
+                sf::Vector2f itrRectPos = (*itr2).rectShape.getPosition();
+                sf::RectangleShape itrRectCopy = (*itr2).rectShape;
+                itrRectCopy.setPosition(view.getCenter().x - itrRectPos.x, view.getCenter().y - itrRectPos.y);
+                sf::Text itrTextCopy = (*itr2).textShape;
+                itrTextCopy.setPosition(view.getCenter().x - itrTextCopy.getPosition().x, view.getCenter().y - itrTextCopy.getPosition().y);
+
+                if ((*itr2).id && (selectedOption == (*itr2).id || !(prevMousePos.x == currMousePos.x && prevMousePos.y == currMousePos.y) && !(currMousePos.x > 1000.0f || currMousePos.y > 600.0f || currMousePos.x < 0.0f || currMousePos.y < 0.0f)))
+                {
+                    if (selectedOption == (*itr2).id || WillCollision(float(currMousePos.x), float(currMousePos.y), 16.0f, 16.0f, itrRectCopy.getPosition().x, itrRectCopy.getPosition().y, itrRectCopy.getLocalBounds().height, itrRectCopy.getLocalBounds().width))
+                    {
+                        selectedOption = (*itr2).id;
+                        itrRectCopy.setFillColor(sf::Color::White);
+                    }
+                    else if (selectedOption)
+                        selectedOption = 0;
+                }
+
+                window.draw(itrRectCopy);
+
+                if ((*itr2).id)
+                    window.draw(itrTextCopy);
             }
-            else if (selectedOption)
-                selectedOption = 0;
         }
-
-        window.draw(itrRectCopy);
-
-        if ((*itr).id)
-            window.draw(itrTextCopy);
     }
 
     prevMousePos = currMousePos;
@@ -110,14 +238,19 @@ void Menu::PressedEnterOrMouse(sf::RenderWindow &window)
     {
         case 0:
             break;
-        case 1:
-            game->StartActualGame(window, "level1.txt");
+        case 1: //! Play Game
+            //game->StartActualGame(window, "level1.txt");
+            newMenu = 1;
+            movingCurrMenuOut = true;
             break;
-        case 2:
-            window.close();
-            break;
-        case 3:
+        case 2: //! More Information
             //! NYI!
+            break;
+        case 3: //! How To
+            //! NYI!
+            break;
+        case 4: //! Exit Game
+            window.close();
             break;
     }
 }

@@ -36,11 +36,17 @@ struct SpriteInfo
     float posX, posY;
 };
 
+struct MenuInfo
+{
+    int id;
+    bool draw;
+};
+
 struct MenuButtonInfo
 {
+    int id;
     sf::RectangleShape rectShape;
     sf::Text textShape;
-    int id;
 };
 
 inline int urand(int min, int max)

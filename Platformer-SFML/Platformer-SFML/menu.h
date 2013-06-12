@@ -13,6 +13,7 @@ class Menu
         ~Menu();
 
         void Load();
+        void Update(sf::RenderWindow &window);
         void Draw(sf::RenderWindow &window);
 
         int GetSelectedOption() { return selectedOption; }
@@ -20,11 +21,14 @@ class Menu
 
         void PressedEnterOrMouse(sf::RenderWindow &window);
 
+        std::vector<MenuButtonInfo> &GetMenu(int menuId) { return menus[menuId].second; }
+
     private:
         Game* game;
         sf::Font font;
-        std::vector<MenuButtonInfo> menuButtons;
-        int selectedOption;
+        std::vector<std::pair<MenuInfo /* menuId, bool draw */, std::vector<MenuButtonInfo> /* menuInfo */>> menus;
+        int currentMenu, newMenu, selectedOption;
         sf::Vector2i prevMousePos;
+        bool movingCurrMenuOut, movingNewMenuIn;
 };
 

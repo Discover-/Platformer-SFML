@@ -226,15 +226,7 @@ int Game::Update()
                 {
                     int selection = menu->GetSelectedOption();
                     int ticks = _event.mouseWheel.delta;
-
-                    if (ticks > 0)
-                        menu->SetSelectedOption(selection >= 4 ? 1 : selection + ticks);
-                    else
-                        menu->SetSelectedOption(selection <= 1 ? 4 : selection + ticks);
-
-
-                    int selection2 = menu->GetSelectedOption();
-                    gameState = gameState;
+                    menu->SetSelectedOption(ticks > 0 ? selection >= 4 ? 1 : selection + ticks : selection <= 1 ? 4 : selection + ticks);
                 }
             }
             else if (_event.type == sf::Event::MouseButtonPressed)
@@ -277,7 +269,7 @@ int Game::Update()
             case STATE_MAIN_MENU:
             {
                 menuPlayer->Update();
-                menu->Draw(window);
+                menu->Update(window);
 
                 if (menuPlayer->GetPositionX() > window.getSize().x / 2.f + 300.0f)
                     view.setCenter(menuPlayer->GetPositionX(), view.getCenter().y);
