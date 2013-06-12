@@ -38,8 +38,8 @@ void MenuPlayer::Update()
     SetIsMovingToLeft(false);
     SetPosition(GetPositionX() + GetMoveSpeed(), GetPositionY());
 
-    if (GetPositionX() > 1800.0f)
-        SetPositionX(600.0f);
+    if (GetPositionX() > 2400.0f)
+        SetPositionX(1200.0f);
 }
 
 void MenuPlayer::HandleTimers(sf::Int32 diff_time)

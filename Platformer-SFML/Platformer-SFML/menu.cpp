@@ -9,7 +9,7 @@
 Menu::Menu(Game* _game)
 {
     game = _game;
-    selectedOption = 0;
+    selectedOption = 1;
 }
 
 Menu::~Menu()
@@ -28,6 +28,7 @@ void Menu::Load()
     rectangleBackground.setPosition(rectangleBackground.getLocalBounds().width / 2.0f, rectangleBackground.getLocalBounds().height / 2.0f);
     menuButtonInfo.rectShape = rectangleBackground;
     menuButtonInfo.textShape = sf::Text("", font, 15);
+    menuButtonInfo.id = 0;
     menuButtons.push_back(menuButtonInfo);
 
     sf::RectangleShape rectangleButtons(sf::Vector2f(300.0f, 50.0f));
@@ -42,7 +43,7 @@ void Menu::Load()
     textButtons.setString("Play Game");
     menuButtonInfo.rectShape = rectangleButtons;
     menuButtonInfo.textShape = textButtons;
-    menuButtonInfo.id = 1;
+    menuButtonInfo.id++;
     menuButtons.push_back(menuButtonInfo);
 
     rectangleButtons.setPosition(rectangleButtons.getLocalBounds().width / 2.0f, rectangleButtons.getLocalBounds().height / 2.0f + 50.0f);
@@ -72,6 +73,7 @@ void Menu::Load()
 
 void Menu::Draw(sf::RenderWindow &window)
 {
+    sf::Vector2i currMousePos = sf::Mouse::getPosition(window);
     sf::View view = window.getView();
 
     for (std::vector<MenuButtonInfo>::iterator itr = menuButtons.begin(); itr != menuButtons.end(); ++itr)
@@ -80,22 +82,26 @@ void Menu::Draw(sf::RenderWindow &window)
         sf::RectangleShape itrRectCopy = (*itr).rectShape;
         itrRectCopy.setPosition(view.getCenter().x - itrRectPos.x, view.getCenter().y - itrRectPos.y);
         sf::Text itrTextCopy = (*itr).textShape;
-        itrTextCopy.setPosition(view.getCenter().x - itrTextCopy.getPosition().x, view.getCenter().y - itrTextCopy.getPosition().y);\
-        sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+        itrTextCopy.setPosition(view.getCenter().x - itrTextCopy.getPosition().x, view.getCenter().y - itrTextCopy.getPosition().y);
 
-        if ((itrRectCopy.getLocalBounds().width <= 300.0f && WillCollision(float(mousePos.x), float(mousePos.y), 16.0f, 16.0f, itrRectCopy.getPosition().x, itrRectCopy.getPosition().y, itrRectCopy.getLocalBounds().height, itrRectCopy.getLocalBounds().width)))
+        if ((*itr).id && (selectedOption == (*itr).id || !(prevMousePos.x == currMousePos.x && prevMousePos.y == currMousePos.y) && !(currMousePos.x > 1000.0f || currMousePos.y > 600.0f || currMousePos.x < 0.0f || currMousePos.y < 0.0f)))
         {
-            selectedOption = (*itr).id;
-            itrRectCopy.setFillColor(sf::Color::White);
+            if (selectedOption == (*itr).id || WillCollision(float(currMousePos.x), float(currMousePos.y), 16.0f, 16.0f, itrRectCopy.getPosition().x, itrRectCopy.getPosition().y, itrRectCopy.getLocalBounds().height, itrRectCopy.getLocalBounds().width))
+            {
+                selectedOption = (*itr).id;
+                itrRectCopy.setFillColor(sf::Color::White);
+            }
+            else if (selectedOption)
+                selectedOption = 0;
         }
-        else if (selectedOption)
-            selectedOption = 0;
 
         window.draw(itrRectCopy);
 
-        if ((*itr).rectShape.getLocalBounds().width <= 300.0f)
+        if ((*itr).id)
             window.draw(itrTextCopy);
     }
+
+    prevMousePos = currMousePos;
 }
 
 void Menu::PressedEnterOrMouse(sf::RenderWindow &window)
@@ -105,7 +111,7 @@ void Menu::PressedEnterOrMouse(sf::RenderWindow &window)
         case 0:
             break;
         case 1:
-            game->StartActualGame(window);
+            game->StartActualGame(window, "level1.txt");
             break;
         case 2:
             window.close();

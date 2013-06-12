@@ -25,5 +25,6 @@ class Menu
         sf::Font font;
         std::vector<MenuButtonInfo> menuButtons;
         int selectedOption;
+        sf::Vector2i prevMousePos;
 };
 

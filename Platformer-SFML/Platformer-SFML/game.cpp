@@ -165,7 +165,7 @@ int Game::Update()
                     {
                         gameState = STATE_MAIN_MENU;
                         currLevel->LoadMap("Levels/level_menu.txt", window);
-                        menuPlayer->SetPosition(165.0f, 285.0f);
+                        menuPlayer->SetPosition(1200.0f, 285.0f);
                         break;
                     }
                     //! Turn on/off debug information
@@ -187,12 +187,18 @@ int Game::Update()
                     //! Move menu option selection up
                     case sf::Keyboard::Up:
                         if (gameState == STATE_MAIN_MENU)
-                            menu->SetSelectedOption(menu->GetSelectedOption() - 1);
+                        {
+                            int selection = menu->GetSelectedOption();
+                            menu->SetSelectedOption(selection == 1 ? 4 : selection - 1);
+                        }
                         break;
                     //! Move menu option selection down
                     case sf::Keyboard::Down:
                         if (gameState == STATE_MAIN_MENU)
-                            menu->SetSelectedOption(menu->GetSelectedOption() + 1);
+                        {
+                            int selection = menu->GetSelectedOption();
+                            menu->SetSelectedOption(selection == 4 ? 1 : selection + 1);
+                        }
                         break;
                     //! Select menu option
                     case sf::Keyboard::Return:
@@ -214,8 +220,24 @@ int Game::Update()
                         break;
                 }
             }
+            else if (_event.type == sf::Event::MouseWheelMoved)
+            {
+                if (gameState == STATE_MAIN_MENU)
+                {
+                    int selection = menu->GetSelectedOption();
+                    int ticks = _event.mouseWheel.delta;
 
-            if (_event.type == sf::Event::MouseButtonPressed)
+                    if (ticks > 0)
+                        menu->SetSelectedOption(selection >= 4 ? 1 : selection + ticks);
+                    else
+                        menu->SetSelectedOption(selection <= 1 ? 4 : selection + ticks);
+
+
+                    int selection2 = menu->GetSelectedOption();
+                    gameState = gameState;
+                }
+            }
+            else if (_event.type == sf::Event::MouseButtonPressed)
             {
                 switch (_event.mouseButton.button)
                 {
@@ -257,15 +279,15 @@ int Game::Update()
                 menuPlayer->Update();
                 menu->Draw(window);
 
-                if (menuPlayer->GetPositionX() > window.getSize().x / 2.f)
+                if (menuPlayer->GetPositionX() > window.getSize().x / 2.f + 300.0f)
                     view.setCenter(menuPlayer->GetPositionX(), view.getCenter().y);
                 else
-                    view.setCenter(window.getSize().x / 2.f, view.getCenter().y);
+                    view.setCenter(window.getSize().x / 2.f + 300.0f, view.getCenter().y);
 
                 if (menuPlayer->GetPositionY() > window.getSize().y / 2.f)
-                    view.setCenter(view.getCenter().x, menuPlayer->GetPositionY());
+                    view.setCenter(view.getCenter().x + 300.0f, menuPlayer->GetPositionY());
                 else
-                    view.setCenter(view.getCenter().x, window.getSize().y / 2.f);
+                    view.setCenter(view.getCenter().x + 300.0f, window.getSize().y / 2.f);
 
                 window.setView(view);
                 break;
@@ -371,10 +393,10 @@ void Game::HandleTimers(sf::Int32 diff_time)
             (*itr)->HandleTimers(diff_time);
 }
 
-void Game::StartActualGame(sf::RenderWindow &window)
+void Game::StartActualGame(sf::RenderWindow &window, std::string filename)
 {
     gameState = STATE_PLAYING;
-    currLevel->LoadMap("Levels/level1.txt", window);
+    currLevel->LoadMap("Levels/" + filename, window);
     //window.setMouseCursorVisible(false);
 }
 

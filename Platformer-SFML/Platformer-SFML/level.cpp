@@ -24,7 +24,7 @@ Level::~Level()
     
 }
 
-void Level::LoadMap(char const* filename, sf::RenderWindow &window)
+void Level::LoadMap(std::string filename, sf::RenderWindow &window)
 {
     sf::Clock _clock;
     _clock.restart();
@@ -206,11 +206,12 @@ void Level::LoadMap(char const* filename, sf::RenderWindow &window)
 void Level::DrawMap(sf::RenderWindow &window, bool menuLevel /* = false */)
 {
     sf::Vector2f cameraPos = menuLevel ? game->GetMenuPlayer()->GetPosition() : game->GetPlayer()->GetPosition();
+    float distToCamera = menuLevel ? 1300.0f : 950.0f;
 
     for (std::vector<SpriteInfo>::iterator itr = sprites.begin(); itr != sprites.end(); ++itr)
     {
         //! ONLY draw the images if the player is within visibility distance, else there's no point in wasting performance.
-        if (IsInRange(cameraPos.x, (*itr).posX, cameraPos.y, (*itr).posY, 950.0f))
+        if (IsInRange(cameraPos.x, (*itr).posX, cameraPos.y, (*itr).posY, distToCamera))
         {
             sf::Sprite sprite((*itr).image);
             sprite.setPosition((*itr).posX, (*itr).posY);

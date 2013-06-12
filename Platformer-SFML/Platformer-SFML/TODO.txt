@@ -1,11 +1,6 @@
-* Implement button like F3 to enable debug information (position, FPS, etc.)
 * Order repository files
 * Implement cannon like in Mario
 * Finish implementatation of the crate object which you can push away so it can help you
-* Update menu
-  - Have a view of a walking player move on the background with a repeated level design
-  - Replace graphics in current menu with something a lot better
-  - 
 * Add more 'surprises' to the bonus block: plant growing out, star jumping out, mushroom ontop moves out, etc.
 * Implement coins of all colors
 * Add sounds and music

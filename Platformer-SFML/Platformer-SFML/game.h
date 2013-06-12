@@ -21,7 +21,7 @@ class Game
 
         int Update();
         bool IsRunning() { return isRunning; }
-        void StartActualGame(sf::RenderWindow &window);
+        void StartActualGame(sf::RenderWindow &window, std::string filename);
 
         std::vector<sf::Sprite> &GetGameObjects() { return gameObjects; }
         std::vector<sf::Sprite> &GetGameObjectsCollidable() { return gameObjectsCollidable; }
