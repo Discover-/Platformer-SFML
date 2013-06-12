@@ -98,12 +98,12 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Program Files\SFML-2.0\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\SFML-2.0\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Program Files\SFML-2.0\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\SFML-2.0\lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>sfml-graphics-d.lib;sfml-audio-d.lib;sfml-system-d.lib;sfml-window-d.lib;sfml-network-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -147,10 +147,41 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="bonustile.cpp" />
+    <ClCompile Include="bouncetile.cpp" />
+    <ClCompile Include="bullet.cpp" />
+    <ClCompile Include="coin.cpp" />
+    <ClCompile Include="collision.cpp" />
+    <ClCompile Include="enemy.cpp" />
+    <ClCompile Include="game.cpp" />
+    <ClCompile Include="level.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="menu.cpp" />
+    <ClCompile Include="menuplayer.cpp" />
+    <ClCompile Include="movingtile.cpp" />
+    <ClCompile Include="player.cpp" />
+    <ClCompile Include="soundstream.cpp" />
+    <ClCompile Include="tile.cpp" />
+    <ClCompile Include="unit.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="bonustile.h" />
+    <ClInclude Include="bouncetile.h" />
+    <ClInclude Include="bullet.h" />
+    <ClInclude Include="coin.h" />
+    <ClInclude Include="collision.h" />
+    <ClInclude Include="enemy.h" />
+    <ClInclude Include="game.h" />
+    <ClInclude Include="level.h" />
+    <ClInclude Include="menu.h" />
+    <ClInclude Include="menuplayer.h" />
+    <ClInclude Include="movingtile.h" />
+    <ClInclude Include="player.h" />
+    <ClInclude Include="position.h" />
     <ClInclude Include="shareddefines.h" />
+    <ClInclude Include="soundstream.h" />
+    <ClInclude Include="tile.h" />
+    <ClInclude Include="unit.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
