@@ -36,10 +36,10 @@ struct SpriteInfo
     float posX, posY;
 };
 
-struct MenuSpriteInfo
+struct MenuButtonInfo
 {
-    sf::Texture image;
-    float posX, posY;
+    sf::RectangleShape rectShape;
+    sf::Text textShape;
     int id;
 };
 

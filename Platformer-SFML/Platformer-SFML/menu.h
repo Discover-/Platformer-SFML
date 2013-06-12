@@ -13,7 +13,6 @@ class Menu
         ~Menu();
 
         void Load();
-        void Update(sf::RenderWindow &window);
         void Draw(sf::RenderWindow &window);
 
         int GetSelectedOption() { return selectedOption; }
@@ -21,15 +20,10 @@ class Menu
 
         void PressedEnterOrMouse(sf::RenderWindow &window);
 
-        std::vector<MenuSpriteInfo> GetSprites() { return sprites; }
-        std::vector<MenuSpriteInfo> GetSpritesLightup() { return spritesLightup; }
-        void GetBothSprites(std::vector<MenuSpriteInfo> &_sprites, std::vector<MenuSpriteInfo> &_spritesLightup) { _sprites = sprites; _spritesLightup = spritesLightup; }
-
     private:
         Game* game;
-        std::vector<MenuSpriteInfo> sprites;
-        std::vector<MenuSpriteInfo> spritesLightup;
+        sf::Font font;
+        std::vector<MenuButtonInfo> menuButtons;
         int selectedOption;
 };
-
 

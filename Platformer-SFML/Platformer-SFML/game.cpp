@@ -165,7 +165,7 @@ int Game::Update()
                     {
                         gameState = STATE_MAIN_MENU;
                         currLevel->LoadMap("Levels/level_menu.txt", window);
-                        menuPlayer->SetPosition(165.0f, 300.0f);
+                        menuPlayer->SetPosition(165.0f, 285.0f);
                         break;
                     }
                     //! Turn on/off debug information
@@ -255,7 +255,7 @@ int Game::Update()
             case STATE_MAIN_MENU:
             {
                 menuPlayer->Update();
-                menu->Update(window);
+                menu->Draw(window);
 
                 if (menuPlayer->GetPositionX() > window.getSize().x / 2.f)
                     view.setCenter(menuPlayer->GetPositionX(), view.getCenter().y);

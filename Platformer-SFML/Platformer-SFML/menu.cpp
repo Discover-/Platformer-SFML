@@ -19,100 +19,82 @@ Menu::~Menu()
 
 void Menu::Load()
 {
-    sf::Texture image;
-    image.loadFromFile("Graphics/Other/menu_button_play.png");
-    MenuSpriteInfo tileInfo;
-    tileInfo.image = image;
-    tileInfo.posX = 0.0f;
-    tileInfo.posY = 70.0f;
-    tileInfo.id = 1;
-    sprites.push_back(tileInfo);
+    MenuButtonInfo menuButtonInfo;
 
-    image.loadFromFile("Graphics/Other/menu_button_exit.png");
-    tileInfo.image = image;
-    tileInfo.posX = 0.0f;
-    tileInfo.posY = 220.0f;
-    tileInfo.id = 2;
-    sprites.push_back(tileInfo);
+    font.loadFromFile("Fonts/Market_Deco.ttf");
 
-    image.loadFromFile("Graphics/Other/menu_button_info.png");
-    tileInfo.image = image;
-    tileInfo.posX = 0.0f;
-    tileInfo.posY = 370.0f;
-    tileInfo.id = 3;
-    sprites.push_back(tileInfo);
+    sf::RectangleShape rectangleBackground(sf::Vector2f(400.0f, 500.0f));
+    rectangleBackground.setFillColor(sf::Color(255, 255, 255, 128));
+    rectangleBackground.setPosition(rectangleBackground.getLocalBounds().width / 2.0f, rectangleBackground.getLocalBounds().height / 2.0f);
+    menuButtonInfo.rectShape = rectangleBackground;
+    menuButtonInfo.textShape = sf::Text("", font, 15);
+    menuButtons.push_back(menuButtonInfo);
 
-    image.loadFromFile("Graphics/Other/menu_button_play_lightup.png");
-    tileInfo.image = image;
-    tileInfo.posX = 0.0f;
-    tileInfo.posY = 70.0f;
-    tileInfo.id = 1;
-    spritesLightup.push_back(tileInfo);
+    sf::RectangleShape rectangleButtons(sf::Vector2f(300.0f, 50.0f));
+    sf::Text textButtons("", font, 30);
+    textButtons.setColor(sf::Color::Black);
+    textButtons.setPosition(textButtons.getLocalBounds().width / 2.0f, textButtons.getLocalBounds().height / 2.0f);
+                
+    rectangleButtons.setFillColor(sf::Color(255, 255, 255, 100));
 
-    image.loadFromFile("Graphics/Other/menu_button_exit_lightup.png");
-    tileInfo.image = image;
-    tileInfo.posX = 0.0f;
-    tileInfo.posY = 220.0f;
-    tileInfo.id = 2;
-    spritesLightup.push_back(tileInfo);
+    rectangleButtons.setPosition(rectangleButtons.getLocalBounds().width / 2.0f, rectangleButtons.getLocalBounds().height / 2.0f + 150.0f);
+    textButtons.setPosition(rectangleButtons.getLocalBounds().width / 2.0f - 80.0f, rectangleButtons.getLocalBounds().height / 2.0f + 145.0f);
+    textButtons.setString("Play Game");
+    menuButtonInfo.rectShape = rectangleButtons;
+    menuButtonInfo.textShape = textButtons;
+    menuButtonInfo.id = 1;
+    menuButtons.push_back(menuButtonInfo);
 
-    image.loadFromFile("Graphics/Other/menu_button_info_lightup.png");
-    tileInfo.image = image;
-    tileInfo.posX = 0.0f;
-    tileInfo.posY = 370.0f;
-    tileInfo.id = 3;
-    spritesLightup.push_back(tileInfo);
-}
+    rectangleButtons.setPosition(rectangleButtons.getLocalBounds().width / 2.0f, rectangleButtons.getLocalBounds().height / 2.0f + 50.0f);
+    textButtons.setPosition(rectangleButtons.getLocalBounds().width / 2.0f - 15.0f, rectangleButtons.getLocalBounds().height / 2.0f + 45.0f);
+    textButtons.setString("More Information");
+    menuButtonInfo.rectShape = rectangleButtons;
+    menuButtonInfo.textShape = textButtons;
+    menuButtonInfo.id++;
+    menuButtons.push_back(menuButtonInfo);
 
-void Menu::Update(sf::RenderWindow &window)
-{
-    float mouseX = float(sf::Mouse::getPosition(window).x);
-    float mouseY = float(sf::Mouse::getPosition(window).y);
+    rectangleButtons.setPosition(rectangleButtons.getLocalBounds().width / 2.0f, rectangleButtons.getLocalBounds().height / 2.0f - 50.0f);
+    textButtons.setPosition(rectangleButtons.getLocalBounds().width / 2.0f - 92.0f, rectangleButtons.getLocalBounds().height / 2.0f - 55.0f);
+    textButtons.setString("How To");
+    menuButtonInfo.rectShape = rectangleButtons;
+    menuButtonInfo.textShape = textButtons;
+    menuButtonInfo.id++;
+    menuButtons.push_back(menuButtonInfo);
 
-    sf::View view = window.getView();
-
-    for (std::vector<MenuSpriteInfo>::iterator itr = sprites.begin(); itr != sprites.end(); ++itr)
-    {
-        sf::Sprite sprite((*itr).image);
-        sprite.setPosition(view.getCenter().x - (sprite.getLocalBounds().width / 2.0f), view.getCenter().y - (sprite.getLocalBounds().height / 2.0f) + ((*itr).id * 150.0f) - 300.0f);
-
-        if (WillCollision(mouseX, mouseY, 16.0f, 16.0f, sprite.getPosition().x, sprite.getPosition().y, sprite.getLocalBounds().height, sprite.getLocalBounds().width))
-        {
-            selectedOption = (*itr).id;
-            break;
-        }
-    }
-
-    Draw(window);
+    rectangleButtons.setPosition(rectangleButtons.getLocalBounds().width / 2.0f, rectangleButtons.getLocalBounds().height / 2.0f - 150.0f);
+    textButtons.setPosition(rectangleButtons.getLocalBounds().width / 2.0f - 80.0f, rectangleButtons.getLocalBounds().height / 2.0f - 155.0f);
+    textButtons.setString("Exit Game");
+    menuButtonInfo.rectShape = rectangleButtons;
+    menuButtonInfo.textShape = textButtons;
+    menuButtonInfo.id++;
+    menuButtons.push_back(menuButtonInfo);
 }
 
 void Menu::Draw(sf::RenderWindow &window)
 {
     sf::View view = window.getView();
 
-    for (std::vector<MenuSpriteInfo>::iterator itr = sprites.begin(); itr != sprites.end(); ++itr)
+    for (std::vector<MenuButtonInfo>::iterator itr = menuButtons.begin(); itr != menuButtons.end(); ++itr)
     {
-        if (selectedOption != 0 && selectedOption == (*itr).id)
+        sf::Vector2f itrRectPos = (*itr).rectShape.getPosition();
+        sf::RectangleShape itrRectCopy = (*itr).rectShape;
+        itrRectCopy.setPosition(view.getCenter().x - itrRectPos.x, view.getCenter().y - itrRectPos.y);
+        sf::Text itrTextCopy = (*itr).textShape;
+        itrTextCopy.setPosition(view.getCenter().x - itrTextCopy.getPosition().x, view.getCenter().y - itrTextCopy.getPosition().y);\
+        sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+
+        if ((itrRectCopy.getLocalBounds().width <= 300.0f && WillCollision(float(mousePos.x), float(mousePos.y), 16.0f, 16.0f, itrRectCopy.getPosition().x, itrRectCopy.getPosition().y, itrRectCopy.getLocalBounds().height, itrRectCopy.getLocalBounds().width)))
         {
-            for (std::vector<MenuSpriteInfo>::iterator itr2 = spritesLightup.begin(); itr2 != spritesLightup.end(); ++itr2)
-            {
-                if ((*itr2).id == (*itr).id)
-                {
-                    sf::Sprite sprite((*itr2).image);
-                    sprite.setPosition(view.getCenter().x - (sprite.getLocalBounds().width / 2.0f), view.getCenter().y - (sprite.getLocalBounds().height / 2.0f) + ((*itr).id * 150.0f) - 300.0f);
-                    sprite.setColor(sf::Color(255, 255, 255, 300));
-                    window.draw(sprite);
-                    break;
-                }
-            }
+            selectedOption = (*itr).id;
+            itrRectCopy.setFillColor(sf::Color::White);
         }
-        else
-        {
-            sf::Sprite sprite((*itr).image);
-            sprite.setPosition(view.getCenter().x - (sprite.getLocalBounds().width / 2.0f), view.getCenter().y - (sprite.getLocalBounds().height / 2.0f) + ((*itr).id * 150.0f) - 300.0f);
-            sprite.setColor(sf::Color(255, 255, 255, 300));
-            window.draw(sprite);
-        }
+        else if (selectedOption)
+            selectedOption = 0;
+
+        window.draw(itrRectCopy);
+
+        if ((*itr).rectShape.getLocalBounds().width <= 300.0f)
+            window.draw(itrTextCopy);
     }
 }
 
