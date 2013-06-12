@@ -10,8 +10,8 @@ Menu::Menu(Game* _game)
 {
     game = _game;
     selectedOption = 1;
-    currentMenu = 0;
-    newMenu = -1;
+    currentMenu = MENU_MAIN;
+    newMenu = MENU_NONE;
     movingCurrMenuOut = false;
     movingNewMenuIn = false;
 }
@@ -76,75 +76,71 @@ void Menu::Load()
     menuButtonsInfo.push_back(menuButtonInfo);
 
     MenuInfo menuInfo;
-    menuInfo.id = 0;
+    menuInfo.id = MENU_MAIN;
     menuInfo.draw = true;
     menus.push_back(std::make_pair(menuInfo, menuButtonsInfo));
+
     menuButtonsInfo.clear();
 
-    //rectangleBackground.setSize(sf::Vector2f(600.0f, 600.0f));
-    //rectangleBackground.setFillColor(sf::Color(255, 255, 255, 128));
-    //rectangleBackground.setPosition(rectangleBackground.getLocalBounds().width / 2.0f, rectangleBackground.getLocalBounds().height / 2.0f);
-    //menuButtonInfo.rectShape = rectangleBackground;
-    //menuButtonInfo.textShape = sf::Text("", font, 15);
-    //menuButtonInfo.id = 0;
-    //menuButtonsInfo.push_back(menuButtonInfo);
+    rectangleButtons.setSize(sf::Vector2f(75.0f, 75.0f));
 
-    //rectangleButtons.setPosition(rectangleButtons.getLocalBounds().width / 2.0f, rectangleButtons.getLocalBounds().height / 2.0f - 350.0f);
-    //textButtons.setPosition(rectangleButtons.getLocalBounds().width / 2.0f - 80.0f, rectangleButtons.getLocalBounds().height / 2.0f - 345.0f);
-    //textButtons.setString("Herp");
-    //menuButtonInfo.rectShape = rectangleButtons;
-    //menuButtonInfo.textShape = textButtons;
-    //menuButtonInfo.id++;
-    //menuButtonsInfo.push_back(menuButtonInfo);
-
-    //rectangleButtons.setPosition(rectangleButtons.getLocalBounds().width / 2.0f, rectangleButtons.getLocalBounds().height / 2.0f - 350.0f);
-    //textButtons.setPosition(rectangleButtons.getLocalBounds().width / 2.0f - 15.0f, rectangleButtons.getLocalBounds().height / 2.0f - 345.0f);
-    //textButtons.setString("Derp");
-    //menuButtonInfo.rectShape = rectangleButtons;
-    //menuButtonInfo.textShape = textButtons;
-    //menuButtonInfo.id++;
-    //menuButtonsInfo.push_back(menuButtonInfo);
-
-    //menuInfo.id++;
-    //menuInfo.draw = false;
-    //menus.push_back(std::make_pair(menuInfo, menuButtonsInfo));
-    //menuButtonsInfo.clear();
-
-    
-
-    rectangleButtons.setPosition(rectangleButtons.getLocalBounds().width / 2.0f, rectangleButtons.getLocalBounds().height / 2.0f + 150.0f);
-    textButtons.setPosition(rectangleButtons.getLocalBounds().width / 2.0f - 80.0f, rectangleButtons.getLocalBounds().height / 2.0f + 145.0f);
-    textButtons.setString("Play Game2");
+    rectangleButtons.setPosition(rectangleButtons.getLocalBounds().width / 2.0f + 290.0f, rectangleButtons.getLocalBounds().height / 2.0f + 860.0f);
+    textButtons.setPosition(rectangleButtons.getLocalBounds().width / 2.0f + 260.0f, rectangleButtons.getLocalBounds().height / 2.0f + 840.0f);
+    textButtons.setString("1");
     menuButtonInfo.rectShape = rectangleButtons;
     menuButtonInfo.textShape = textButtons;
-    menuButtonInfo.id = 0;
+    menuButtonInfo.id = 1;
     menuButtonsInfo.push_back(menuButtonInfo);
 
-    rectangleButtons.setPosition(rectangleButtons.getLocalBounds().width / 2.0f, rectangleButtons.getLocalBounds().height / 2.0f + 50.0f);
-    textButtons.setPosition(rectangleButtons.getLocalBounds().width / 2.0f - 15.0f, rectangleButtons.getLocalBounds().height / 2.0f + 45.0f);
-    textButtons.setString("More Information2");
+    rectangleButtons.setPosition(rectangleButtons.getLocalBounds().width / 2.0f + 200.0f, rectangleButtons.getLocalBounds().height / 2.0f + 860.0f);
+    textButtons.setPosition(rectangleButtons.getLocalBounds().width / 2.0f + 170.0f, rectangleButtons.getLocalBounds().height / 2.0f + 840.0f);
+    textButtons.setString("2");
     menuButtonInfo.rectShape = rectangleButtons;
     menuButtonInfo.textShape = textButtons;
     menuButtonInfo.id++;
     menuButtonsInfo.push_back(menuButtonInfo);
 
-    rectangleButtons.setPosition(rectangleButtons.getLocalBounds().width / 2.0f, rectangleButtons.getLocalBounds().height / 2.0f - 50.0f);
-    textButtons.setPosition(rectangleButtons.getLocalBounds().width / 2.0f - 92.0f, rectangleButtons.getLocalBounds().height / 2.0f - 55.0f);
-    textButtons.setString("How To2");
+    rectangleButtons.setPosition(rectangleButtons.getLocalBounds().width / 2.0f + 110.0f, rectangleButtons.getLocalBounds().height / 2.0f + 860.0f);
+    textButtons.setPosition(rectangleButtons.getLocalBounds().width / 2.0f + 80.0f, rectangleButtons.getLocalBounds().height / 2.0f + 840.0f);
+    textButtons.setString("3");
     menuButtonInfo.rectShape = rectangleButtons;
     menuButtonInfo.textShape = textButtons;
     menuButtonInfo.id++;
     menuButtonsInfo.push_back(menuButtonInfo);
 
-    rectangleButtons.setPosition(rectangleButtons.getLocalBounds().width / 2.0f, rectangleButtons.getLocalBounds().height / 2.0f - 150.0f);
-    textButtons.setPosition(rectangleButtons.getLocalBounds().width / 2.0f - 80.0f, rectangleButtons.getLocalBounds().height / 2.0f - 155.0f);
-    textButtons.setString("Exit Game2");
+    rectangleButtons.setPosition(rectangleButtons.getLocalBounds().width / 2.0f + 20.0f, rectangleButtons.getLocalBounds().height / 2.0f + 860.0f);
+    textButtons.setPosition(rectangleButtons.getLocalBounds().width / 2.0f - 10.0f, rectangleButtons.getLocalBounds().height / 2.0f + 840.0f);
+    textButtons.setString("4");
     menuButtonInfo.rectShape = rectangleButtons;
     menuButtonInfo.textShape = textButtons;
     menuButtonInfo.id++;
     menuButtonsInfo.push_back(menuButtonInfo);
 
-    menuInfo.id++;
+    rectangleButtons.setPosition(rectangleButtons.getLocalBounds().width / 2.0f - 70.0f, rectangleButtons.getLocalBounds().height / 2.0f + 860.0f);
+    textButtons.setPosition(rectangleButtons.getLocalBounds().width / 2.0f - 90.0f, rectangleButtons.getLocalBounds().height / 2.0f + 840.0f);
+    textButtons.setString("5");
+    menuButtonInfo.rectShape = rectangleButtons;
+    menuButtonInfo.textShape = textButtons;
+    menuButtonInfo.id++;
+    menuButtonsInfo.push_back(menuButtonInfo);
+
+    rectangleButtons.setPosition(rectangleButtons.getLocalBounds().width / 2.0f - 160.0f, rectangleButtons.getLocalBounds().height / 2.0f + 860.0f);
+    textButtons.setPosition(rectangleButtons.getLocalBounds().width / 2.0f - 180.0f, rectangleButtons.getLocalBounds().height / 2.0f + 840.0f);
+    textButtons.setString("6");
+    menuButtonInfo.rectShape = rectangleButtons;
+    menuButtonInfo.textShape = textButtons;
+    menuButtonInfo.id++;
+    menuButtonsInfo.push_back(menuButtonInfo);
+
+    rectangleButtons.setPosition(rectangleButtons.getLocalBounds().width / 2.0f - 250.0f, rectangleButtons.getLocalBounds().height / 2.0f + 860.0f);
+    textButtons.setPosition(rectangleButtons.getLocalBounds().width / 2.0f - 270.0f, rectangleButtons.getLocalBounds().height / 2.0f + 840.0f);
+    textButtons.setString("7");
+    menuButtonInfo.rectShape = rectangleButtons;
+    menuButtonInfo.textShape = textButtons;
+    menuButtonInfo.id++;
+    menuButtonsInfo.push_back(menuButtonInfo);
+
+    menuInfo.id = MENU_LEVELS;
     menuInfo.draw = false;
     menus.push_back(std::make_pair(menuInfo, menuButtonsInfo));
     menuButtonsInfo.clear();
@@ -152,25 +148,52 @@ void Menu::Load()
 
 void Menu::Update(sf::RenderWindow &window)
 {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::F4) || sf::Keyboard::isKeyPressed(sf::Keyboard::F5))
+    {
+        for (std::vector<std::pair<MenuInfo, std::vector<MenuButtonInfo>>>::iterator itr3 = menus.begin(); itr3 != menus.end(); ++itr3)
+        {
+            if ((*itr3).first.id == currentMenu)
+            {
+                for (std::vector<MenuButtonInfo>::iterator itr = (*itr3).second.begin(); itr != (*itr3).second.end(); ++itr)
+                {
+                    (*itr).rectShape.setPosition((*itr).rectShape.getPosition().x, sf::Keyboard::isKeyPressed(sf::Keyboard::F4) ? (*itr).rectShape.getPosition().y + 1.0f : (*itr).rectShape.getPosition().y - 1.0f);
+                    (*itr).textShape.setPosition((*itr).textShape.getPosition().x, sf::Keyboard::isKeyPressed(sf::Keyboard::F4) ? (*itr).textShape.getPosition().y + 1.0f : (*itr).textShape.getPosition().y - 1.0f);
+                }
+
+                break;
+            }
+        }
+    }
+
     if (movingCurrMenuOut)
     {
-        for (std::vector<MenuButtonInfo>::iterator itr = menus[currentMenu].second.begin(); itr != menus[currentMenu].second.end(); ++itr)
+        for (std::vector<std::pair<MenuInfo, std::vector<MenuButtonInfo>>>::iterator itr3 = menus.begin(); itr3 != menus.end(); ++itr3)
         {
-            (*itr).rectShape.setPosition((*itr).rectShape.getPosition().x, (*itr).rectShape.getPosition().y - 20.0f);
-            (*itr).textShape.setPosition((*itr).textShape.getPosition().x, (*itr).textShape.getPosition().y - 20.0f);
-
-            if ((*itr).textShape.getPosition().y < -100.0f)
+            if ((*itr3).first.id == currentMenu)
             {
-                movingCurrMenuOut = false;
-                movingNewMenuIn = true;
-                currentMenu = newMenu;
-
-                for (std::vector<std::pair<MenuInfo, std::vector<MenuButtonInfo>>>::iterator itr2 = menus.begin(); itr2 != menus.end(); ++itr2)
+                for (std::vector<MenuButtonInfo>::iterator itr = (*itr3).second.begin(); itr != (*itr3).second.end(); ++itr)
                 {
-                    if ((*itr2).first.id == currentMenu)
-                        (*itr2).first.draw = false;
-                    else if ((*itr2).first.id == newMenu)
-                        (*itr2).first.draw = true;
+                    (*itr).rectShape.setPosition((*itr).rectShape.getPosition().x, (*itr).rectShape.getPosition().y + 20.0f);
+                    (*itr).textShape.setPosition((*itr).textShape.getPosition().x, (*itr).textShape.getPosition().y + 20.0f);
+
+                    if (movingNewMenuIn)
+                        continue;
+
+                    if ((*itr).textShape.getPosition().y > 800.0f)
+                    {
+                        movingCurrMenuOut = false;
+                        movingNewMenuIn = true;
+                        currentMenu = newMenu;
+                        newMenu = MENU_NONE;
+
+                        for (std::vector<std::pair<MenuInfo, std::vector<MenuButtonInfo>>>::iterator itr2 = menus.begin(); itr2 != menus.end(); ++itr2)
+                        {
+                            if ((*itr2).first.id == currentMenu)
+                                (*itr2).first.draw = false;
+                            else if ((*itr2).first.id == newMenu)
+                                (*itr2).first.draw = true;
+                        }
+                    }
                 }
             }
         }
@@ -179,10 +202,13 @@ void Menu::Update(sf::RenderWindow &window)
     {
         for (std::vector<MenuButtonInfo>::iterator itr = menus[currentMenu].second.begin(); itr != menus[currentMenu].second.end(); ++itr)
         {
-            (*itr).rectShape.setPosition((*itr).rectShape.getPosition().x, (*itr).rectShape.getPosition().y + 20.0f);
-            (*itr).textShape.setPosition((*itr).textShape.getPosition().x, (*itr).textShape.getPosition().y + 20.0f);
+            (*itr).rectShape.setPosition((*itr).rectShape.getPosition().x, (*itr).rectShape.getPosition().y - 20.0f);
+            (*itr).textShape.setPosition((*itr).textShape.getPosition().x, (*itr).textShape.getPosition().y - 20.0f);
 
-            if ((*itr).textShape.getPosition().y > 700.0f)
+            if (!movingNewMenuIn)
+                continue;
+
+            if ((*itr).id != 0 && (*itr).rectShape.getPosition().y < -110.0f)
             {
                 movingCurrMenuOut = false;
                 movingNewMenuIn = false;
@@ -234,23 +260,60 @@ void Menu::Draw(sf::RenderWindow &window)
 
 void Menu::PressedEnterOrMouse(sf::RenderWindow &window)
 {
-    switch (selectedOption)
+    switch (currentMenu)
     {
-        case 0:
+        case MENU_NONE:
             break;
-        case 1: //! Play Game
-            //game->StartActualGame(window, "level1.txt");
-            newMenu = 1;
-            movingCurrMenuOut = true;
+        case MENU_MAIN:
+        {
+            switch (selectedOption)
+            {
+                case 0:
+                    break;
+                case 1: //! Play Game
+                    newMenu = MENU_LEVELS;
+                    movingCurrMenuOut = true;
+                    break;
+                case 2: //! More Information
+                    //! NYI!
+                    break;
+                case 3: //! How To
+                    //! NYI!
+                    break;
+                case 4: //! Exit Game
+                    window.close();
+                    break;
+            }
             break;
-        case 2: //! More Information
-            //! NYI!
+        }
+        case MENU_LEVELS:
+        {
+            switch (selectedOption)
+            {
+                case 0:
+                    break;
+                default:
+                {
+                    for (std::vector<std::pair<MenuInfo, std::vector<MenuButtonInfo>>>::iterator itr = menus.begin(); itr != menus.end(); ++itr)
+                    {
+                        if ((*itr).first.id == currentMenu)
+                        {
+                            for (std::vector<MenuButtonInfo>::iterator itr2 = (*itr).second.begin(); itr2 != (*itr).second.end(); ++itr2)
+                            {
+                                if ((*itr2).id == selectedOption)
+                                {
+                                    game->StartActualGame(window, (*itr2).textShape.getString());
+                                    break;
+                                }
+                            }
+
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
             break;
-        case 3: //! How To
-            //! NYI!
-            break;
-        case 4: //! Exit Game
-            window.close();
-            break;
+        }
     }
 }

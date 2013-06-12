@@ -7,6 +7,7 @@
 #include <set>
 #include <string>
 #include <fstream>
+#include <sstream>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <SFML/Config.hpp>
@@ -155,16 +156,15 @@ int Game::Update()
                     case sf::Keyboard::F1:
                     {
                         sf::Clock _clock; _clock.restart();
-                        std::string levelFilename = "Levels/level";
-                        levelFilename += shiftPressed ? "_menu.txt" : "1.txt";
-                        currLevel->LoadMap(levelFilename.c_str(), window);
+                        std::stringstream ss; ss << currLevel->GetCurrentLevel();
+                        currLevel->LoadMap(ss.str(), window);
                         break;
                     }
                     //! Back to menu
                     case sf::Keyboard::F2:
                     {
                         gameState = STATE_MAIN_MENU;
-                        currLevel->LoadMap("Levels/level_menu.txt", window);
+                        currLevel->LoadMap("menu", window);
                         menuPlayer->SetPosition(1200.0f, 285.0f);
                         break;
                     }
@@ -202,7 +202,6 @@ int Game::Update()
                         break;
                     //! Select menu option
                     case sf::Keyboard::Return:
-                    case sf::Mouse::Left:
                         if (gameState == STATE_MAIN_MENU)
                             menu->PressedEnterOrMouse(window);
                         break;
@@ -271,15 +270,15 @@ int Game::Update()
                 menuPlayer->Update();
                 menu->Update(window);
 
-                if (menuPlayer->GetPositionX() > window.getSize().x / 2.f + 300.0f)
+                if (menuPlayer->GetPositionX() > window.getSize().x / 2.f + 400.0f)
                     view.setCenter(menuPlayer->GetPositionX(), view.getCenter().y);
                 else
-                    view.setCenter(window.getSize().x / 2.f + 300.0f, view.getCenter().y);
+                    view.setCenter(window.getSize().x / 2.f + 400.0f, view.getCenter().y);
 
                 if (menuPlayer->GetPositionY() > window.getSize().y / 2.f)
-                    view.setCenter(view.getCenter().x + 300.0f, menuPlayer->GetPositionY());
+                    view.setCenter(view.getCenter().x + 400.0f, menuPlayer->GetPositionY());
                 else
-                    view.setCenter(view.getCenter().x + 300.0f, window.getSize().y / 2.f);
+                    view.setCenter(view.getCenter().x + 400.0f, window.getSize().y / 2.f);
 
                 window.setView(view);
                 break;
@@ -358,10 +357,17 @@ int Game::Update()
             text.setPosition(view.getCenter().x + 375.0f, view.getCenter().y - 300.0f);
             window.draw(text);
 
+            sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+
+            sf::Text text3("Mouse X: " + std::to_string(static_cast<long long>(mousePos.x)) + "\nMouse Y: " + std::to_string(static_cast<long long>(mousePos.y)), font, 15);
+            text3.setColor(GAME_STATE_DRAW_GAME(gameState) || gameState == STATE_MAIN_MENU ? sf::Color::Black : sf::Color::White);
+            text3.setPosition(view.getCenter().x + 375.0f, view.getCenter().y - 265.0f);
+            window.draw(text3);
+
             float fps = 1 / fpsClock.getElapsedTime().asSeconds();
             sf::Text text2("FPS: " + std::to_string(static_cast<long long>(fps)), font, 15);
             text2.setColor(GAME_STATE_DRAW_GAME(gameState) || gameState == STATE_MAIN_MENU ? sf::Color::Black : sf::Color::White);
-            text2.setPosition(view.getCenter().x + 375.0f, view.getCenter().y - 265.0f);
+            text2.setPosition(view.getCenter().x + 375.0f, view.getCenter().y - 230.0f);
             window.draw(text2);
         }
 
@@ -388,7 +394,7 @@ void Game::HandleTimers(sf::Int32 diff_time)
 void Game::StartActualGame(sf::RenderWindow &window, std::string filename)
 {
     gameState = STATE_PLAYING;
-    currLevel->LoadMap("Levels/" + filename, window);
+    currLevel->LoadMap(filename, window);
     //window.setMouseCursorVisible(false);
 }
 

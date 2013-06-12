@@ -16,7 +16,8 @@
 Level::Level(Game* _game, sf::RenderWindow &window)
 {
     game = _game;
-    LoadMap("Levels/level_menu.txt", window);
+    LoadMap("menu", window);
+    currLevel = 0;
 }
 
 Level::~Level()
@@ -30,9 +31,10 @@ void Level::LoadMap(std::string filename, sf::RenderWindow &window)
     _clock.restart();
     std::vector<std::vector<std::string>> tilesInfoLayers;
     std::vector<std::string> tilesInfoBlocks;
-    std::ifstream openfile(filename);
+    std::ifstream openfile("Levels/level" + filename + ".txt");
     std::stringstream lineStream;
     std::string line;
+    currLevel = atoi(filename.c_str());
 
     while (std::getline(openfile, line))
     {
@@ -206,7 +208,7 @@ void Level::LoadMap(std::string filename, sf::RenderWindow &window)
 void Level::DrawMap(sf::RenderWindow &window, bool menuLevel /* = false */)
 {
     sf::Vector2f cameraPos = menuLevel ? game->GetMenuPlayer()->GetPosition() : game->GetPlayer()->GetPosition();
-    float distToCamera = menuLevel ? 1450.0f : 950.0f;
+    float distToCamera = menuLevel ? 1600.0f : 950.0f;
 
     for (std::vector<SpriteInfo>::iterator itr = sprites.begin(); itr != sprites.end(); ++itr)
     {

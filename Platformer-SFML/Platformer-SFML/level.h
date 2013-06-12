@@ -15,9 +15,12 @@ class Level
         void LoadMap(std::string filename, sf::RenderWindow &window);
         void DrawMap(sf::RenderWindow &window, bool menuLevel = false);
 
+        int GetCurrentLevel() { return currLevel; }
+
     private:
         Game* game;
         std::vector<SpriteInfo> sprites;
+        int currLevel;
 };
 
 

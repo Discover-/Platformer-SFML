@@ -36,9 +36,16 @@ struct SpriteInfo
     float posX, posY;
 };
 
+enum MenuId
+{
+    MENU_NONE   = -1,
+    MENU_MAIN   = 0,
+    MENU_LEVELS = 1,
+};
+
 struct MenuInfo
 {
-    int id;
+    MenuId id;
     bool draw;
 };
 
