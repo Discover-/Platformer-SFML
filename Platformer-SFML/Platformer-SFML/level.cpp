@@ -8,6 +8,7 @@
 #include "player.h"
 #include "menuplayer.h"
 #include "game.h"
+#include "enemy.h"
 #include "coin.h"
 #include "movingtile.h"
 #include "bouncetile.h"
@@ -25,7 +26,7 @@ Level::~Level()
     
 }
 
-void Level::LoadMap(std::string filename, sf::RenderWindow &window)
+void Level::LoadMap(std::string filename, sf::RenderWindow &window, bool reload /* = false */)
 {
     sf::Clock _clock;
     _clock.restart();
@@ -35,6 +36,7 @@ void Level::LoadMap(std::string filename, sf::RenderWindow &window)
     std::stringstream lineStream;
     std::string line;
     currLevel = atoi(filename.c_str());
+    bool foundPlayer = false;
 
     while (std::getline(openfile, line))
     {
@@ -57,6 +59,8 @@ void Level::LoadMap(std::string filename, sf::RenderWindow &window)
     game->ClearGameObjectCollidables();
     game->ClearCoins();
     game->ClearAllTiles();
+    game->ClearAllEnemies();
+    game->SetPlayer(NULL);
 
     //! Last used letter: 
     for (int i = 0; i < tilesInfoLayers.size(); i++)
@@ -111,6 +115,59 @@ void Level::LoadMap(std::string filename, sf::RenderWindow &window)
                 sf::Texture image;
                 image.loadFromFile("Graphics/Tiles/switch_" + tileColor + "_off.png");
                 game->AddTile(new BounceTile(game, &window, image, 3, startPos, destiPos, tileColor));
+                continue;
+            }
+            else if (tilesInfoLayers[i][j] == "!")
+            {
+                foundPlayer = true;
+
+                if (!reload && game->GetPlayer())
+                {
+                    std::cout << "There is already a player defined in level " + filename + "." << std::endl;
+                    continue;
+                }
+
+                sf::Texture imageCharacter;
+                std::vector<std::pair<int, sf::Texture>> spriteCharactersLeft;
+                std::vector<std::pair<int, sf::Texture>> spriteCharactersRight;
+
+                for (int x = 0; x < 2; ++x)
+                {
+                    for (int z = 0; z < 10; ++z)
+                    {
+                        imageCharacter.loadFromFile("Graphics/Character/walk_" + std::to_string(static_cast<long long>(z)) + "_" + (x ? "l" : "r") + ".png");
+                        x ? spriteCharactersRight.push_back(std::make_pair(z, imageCharacter)) : spriteCharactersLeft.push_back(std::make_pair(z, imageCharacter));
+                    }
+                }
+
+                game->SetPlayer(new Player(game, &window, sf::Vector2f(j * 50.0f, i * 50.0f), spriteCharactersLeft, spriteCharactersRight));
+                continue;
+            }
+            else if (tilesInfoLayers[i][j] == "Z" || tilesInfoLayers[i][j] == "?")
+            {
+                bool slime = tilesInfoLayers[i][j] == "Z";
+                sf::Texture imageEnemy;
+                std::vector<std::pair<int, sf::Texture>> spriteEnemiesLeft;
+                std::vector<std::pair<int, sf::Texture>> spriteEnemiesRight;
+
+                for (int x = 0; x < 2; ++x)
+                {
+                    for (int z = 0; z < 2; ++z)
+                    {
+                        if (slime)
+                        {
+                            imageEnemy.loadFromFile("Graphics/Enemies/slime_" + std::string(z ? "walk_" : "normal_") + (x ? "l" : "r") + ".png");
+                            x ? spriteEnemiesRight.push_back(std::make_pair(z, imageEnemy)) : spriteEnemiesLeft.push_back(std::make_pair(z, imageEnemy));
+                        }
+                        else
+                        {
+                            imageEnemy.loadFromFile("Graphics/Enemies/fly_" + std::string(z ? "fly_" : "normal_") + (x ? "l" : "r") + ".png");
+                            x ? spriteEnemiesRight.push_back(std::make_pair(z, imageEnemy)) : spriteEnemiesLeft.push_back(std::make_pair(z, imageEnemy));
+                        }
+                    }
+                }
+
+                game->AddEnemy(new Enemy(game, &window, sf::Vector2f(j * 50.0f, i * 50.0f), spriteEnemiesLeft, spriteEnemiesRight, 3, 1, 80, !slime));
                 continue;
             }
 
@@ -203,6 +260,9 @@ void Level::LoadMap(std::string filename, sf::RenderWindow &window)
     }
 
     std::cout << "Time in milliseconds taken to load level: " << _clock.restart().asMilliseconds() << std::endl;
+
+    if (!foundPlayer)
+        std::cout << "No player found in level " + filename + "." << std::endl;
 }
 
 void Level::DrawMap(sf::RenderWindow &window, bool menuLevel /* = false */)

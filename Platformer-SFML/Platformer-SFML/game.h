@@ -42,6 +42,7 @@ class Game
         void HandleTimers(sf::Int32 diff_time);
 
         Player* GetPlayer() { return player; }
+        void SetPlayer(Player* _player) { player = _player; RemoveUnitWithTypeId(TYPEID_PLAYER); if (_player) allUnits.push_back((Unit*)_player); }
         MenuPlayer* GetMenuPlayer() { return menuPlayer; }
 
         void AddBullet(Bullet* bullet) { allBullets.push_back(bullet); }
@@ -51,9 +52,15 @@ class Game
         void SetGameState(GameState state) { gameState = state; }
 
         std::vector<Enemy*> &GetEnemies() { return allEnemies; }
+        void ClearAllEnemies() { allEnemies.clear(); RemoveUnitWithTypeId(TYPEID_ENEMY); }
+        void AddEnemy(Enemy* enemy) { allEnemies.push_back(enemy); allUnits.push_back((Unit*)enemy); }
+
+        void RemoveUnitWithTypeId(UnitTypeId typeId);
+
         std::vector<Tile*> &GetTiles() { return allTiles; }
         void ClearAllTiles() { allTiles.clear(); }
         void AddTile(Tile* tile) { allTiles.push_back(tile); }
+
         std::vector<Coin*> &GetCoins() { return allCoins; }
         void ClearCoins() { allCoins.clear(); }
         void AddCoin(Coin* coin) { allCoins.push_back(coin); }

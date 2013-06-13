@@ -31,6 +31,8 @@ class Player : public Unit
         void DrawAccessoires(sf::RenderWindow &window, sf::View &view);
         std::vector<std::pair<int /* id */, bool /* full */>> &GetHearts() { return hearts; }
 
+        std::vector<std::pair<int, sf::Texture>> GetSpritesLeft() { return spritesLeft; }
+
     private:
         bool keysDown[4];
         int coinAmount;
@@ -38,4 +40,5 @@ class Player : public Unit
         sf::Texture imageHeartEmpty;
         sf::Texture imageHeartFull;
         sf::Texture imageSmallCoin;
+        std::vector<std::pair<int, sf::Texture>> spritesLeft;
 };

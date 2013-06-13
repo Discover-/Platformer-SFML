@@ -12,7 +12,7 @@ class Level
         Level(Game* _game, sf::RenderWindow &window);
         ~Level();
 
-        void LoadMap(std::string filename, sf::RenderWindow &window);
+        void LoadMap(std::string filename, sf::RenderWindow &window, bool reload = false);
         void DrawMap(sf::RenderWindow &window, bool menuLevel = false);
 
         int GetCurrentLevel() { return currLevel; }

@@ -32,6 +32,7 @@ Game::Game()
     isRunning = true;
     showDebugInfo = true;
     gameState = STATE_MAIN_MENU;
+    player = NULL;
 }
 
 Game::~Game()
@@ -49,71 +50,18 @@ int Game::Update()
 
     //window.setKeyRepeatEnabled(false);
 
-    sf::Texture imageCharacter;
-    std::vector<std::pair<int, sf::Texture>> spriteCharactersLeft;
-    std::vector<std::pair<int, sf::Texture>> spriteCharactersRight;
-
-    for (int j = 0; j < 2; ++j)
-    {
-        for (int i = 0; i < 10; ++i)
-        {
-            imageCharacter.loadFromFile("Graphics/Character/walk_" + std::to_string(static_cast<long long>(i)) + "_" + (j ? "l" : "r") + ".png");
-            j ? spriteCharactersRight.push_back(std::make_pair(i, imageCharacter)) : spriteCharactersLeft.push_back(std::make_pair(i, imageCharacter));
-        }
-    }
-
-    player = new Player(this, &window, sf::Vector2f(165.0f, 85.0f), spriteCharactersLeft, spriteCharactersRight);
-    menuPlayer = new MenuPlayer(this, &window, sf::Vector2f(165.0f, 285.0f), spriteCharactersLeft);
-
-    sf::Texture imageEnemy;
-    std::vector<std::pair<int, sf::Texture>> spriteEnemiesLeft;
-    std::vector<std::pair<int, sf::Texture>> spriteEnemiesRight;
-
-    for (int j = 0; j < 2; ++j)
-    {
-        for (int i = 0; i < 2; ++i)
-        {
-            imageEnemy.loadFromFile("Graphics/Enemies/fly_" + std::string(i ? "fly_" : "normal_") + (j ? "l" : "r") + ".png");
-            j ? spriteEnemiesRight.push_back(std::make_pair(i, imageEnemy)) : spriteEnemiesLeft.push_back(std::make_pair(i, imageEnemy));
-        }
-    }
-
-    Enemy* enemy1 = new Enemy(this, &window, sf::Vector2f(166.0f, 295.0f), sf::Vector2f(400.0f, 295.0f), spriteEnemiesLeft, spriteEnemiesRight);
-    Enemy* enemy2 = new Enemy(this, &window, sf::Vector2f(845.0f, 180.0f), sf::Vector2f(1250.0f, 180.0f), spriteEnemiesLeft, spriteEnemiesRight);
-    Enemy* enemy3 = new Enemy(this, &window, sf::Vector2f(235.0f, 39.0f), sf::Vector2f(620.0f, 39.0f), spriteEnemiesLeft, spriteEnemiesRight);
-
-    spriteEnemiesLeft.clear();
-    spriteEnemiesRight.clear();
-
-    for (int j = 0; j < 2; ++j)
-    {
-        for (int i = 0; i < 2; ++i)
-        {
-            imageEnemy.loadFromFile("Graphics/Enemies/slime_" + std::string(i ? "walk_" : "normal_") + (j ? "l" : "r") + ".png");
-            j ? spriteEnemiesRight.push_back(std::make_pair(i, imageEnemy)) : spriteEnemiesLeft.push_back(std::make_pair(i, imageEnemy));
-        }
-    }
-
-    Enemy* enemy4 = new Enemy(this, &window, sf::Vector2f(450.0f, 140.0f), sf::Vector2f(650.0f, 140.0f), spriteEnemiesLeft, spriteEnemiesRight, 3, 1, 80, false);
-
-    allEnemies.push_back(enemy1);
-    allEnemies.push_back(enemy2);
-    allEnemies.push_back(enemy3);
-    allEnemies.push_back(enemy4);
-
-    for (std::vector<Enemy*>::iterator itr = allEnemies.begin(); itr != allEnemies.end(); ++itr)
-        allUnits.push_back(*itr);
-
-    allUnits.push_back(player);
-    allUnits.push_back(menuPlayer);
-
     sf::Font font;
     font.loadFromFile("Fonts/Market_Deco.ttf");
 
     sf::View view(window.getDefaultView());
     sf::Clock clock, fpsClock;
 
+    //! Level::Level calls Level::LoadMap which then initializes Game::Player so we can access the Player's class in order to get its sprites!
     currLevel = new Level(this, window);
+
+    menuPlayer = new MenuPlayer(this, &window, sf::Vector2f(165.0f, 285.0f), player->GetSpritesLeft());
+    allUnits.push_back(menuPlayer);
+
     Menu* menu = new Menu(this);
     menu->Load();
 
@@ -157,7 +105,7 @@ int Game::Update()
                     {
                         sf::Clock _clock; _clock.restart();
                         std::stringstream ss; ss << currLevel->GetCurrentLevel();
-                        currLevel->LoadMap(ss.str(), window);
+                        currLevel->LoadMap(ss.str(), window, true);
                         break;
                     }
                     //! Back to menu
@@ -452,4 +400,18 @@ bool Game::IsInLavaArea(float x, float y, float h, float w)
     }
 
     return false;
+}
+
+void Game::RemoveUnitWithTypeId(UnitTypeId typeId)
+{
+    for (std::vector<Unit*>::iterator itr = allUnits.begin(); itr != allUnits.end();)
+    {
+        if ((*itr)->GetTypeId() == typeId)
+        {
+            allUnits.erase(itr);
+            itr = allUnits.begin();
+        }
+        else
+            ++itr;
+    }
 }

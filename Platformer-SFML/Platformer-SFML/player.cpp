@@ -26,6 +26,7 @@ Unit(_game, _window, position, _spritesLeft, _spritesRight, TYPEID_PLAYER, _life
     for (int i = 0; i < 4; ++i)
         keysDown[i] = false;
 
+    spritesLeft = _spritesLeft;
     imageHeartEmpty.loadFromFile("Graphics/Other/heart_empty.png");
     imageHeartFull.loadFromFile("Graphics/Other/heart_full.png");
     imageSmallCoin.loadFromFile("Graphics/Tiles/coin_gold_small.png");

@@ -18,13 +18,16 @@
 #include "bullet.h"
 #include "unit.h"
 
-Enemy::Enemy(Game* _game, sf::RenderWindow* _window, sf::Vector2f position1, sf::Vector2f position2, std::vector<std::pair<int, sf::Texture>> _spritesLeft, std::vector<std::pair<int, sf::Texture>> _spritesRight, int _life, int _totalMoveFrames, int _frameInterval, bool _canFly) :
-Unit(_game, _window, position1, _spritesLeft, _spritesRight, TYPEID_ENEMY, _life, _totalMoveFrames, _frameInterval, _canFly)
+Enemy::Enemy(Game* _game, sf::RenderWindow* _window, sf::Vector2f position, std::vector<std::pair<int, sf::Texture>> _spritesLeft, std::vector<std::pair<int, sf::Texture>> _spritesRight, int _life, int _totalMoveFrames, int _frameInterval, bool _canFly) :
+Unit(_game, _window, position, _spritesLeft, _spritesRight, TYPEID_ENEMY, _life, _totalMoveFrames, _frameInterval, _canFly)
 {
-    destinationX1 = position1.x;
-    destinationY1 = position1.y;
-    destinationX2 = position2.x;
-    destinationY2 = position2.y;
+    destinationX1 = position.x;
+    destinationY1 = position.y;
+    destinationX2 = position.x + 200.0f;
+    destinationY2 = position.y;
+
+    if (_canFly)
+        destinationX2 += float(urand(100, 300));
 }
 
 void Enemy::Update()
