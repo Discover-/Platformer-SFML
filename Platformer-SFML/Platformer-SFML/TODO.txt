@@ -2,6 +2,7 @@
 * Implement cannon like in Mario
 * Finish implementatation of the crate object which you can push away so it can help you
 * Add more 'surprises' to the bonus block: plant growing out, star jumping out, mushroom ontop moves out, etc.
+* Only make the bonus block trigger when hit from the bottom
 * Implement coins of all colors
 * Add sounds and music
 * Add timer of how long the level was played
@@ -29,3 +30,5 @@
 * Implement turtle enemy and when killing it, pushing it kills all enemies on its path
 * Get rid of some stuff in the constructors that is always the same anwyay (or at least add default values to them)
 * Properly get rid of unused Collision files
+* Don't make menu accessible while it's moving
+* Arrow keys to left/right in menu too

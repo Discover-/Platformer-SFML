@@ -36,6 +36,7 @@ Unit::Unit(Game* _game, sf::RenderWindow* _window, sf::Vector2f position, std::v
     switch (_typeId)
     {
         case TYPEID_PLAYER:
+            imageJumpSprite.loadFromFile("Graphics/Character/jump.png");
             moveSpeed = 7.0f;
             isMoving = false;
             break;
@@ -300,6 +301,13 @@ void Unit::BounceAway(bool toLeft)
 
 sf::Sprite Unit::GetSpriteBody()
 {
+    if (typeId == TYPEID_PLAYER && (isJumping))// || (fallSpeed && !CollidesWithGameobjects(GetPositionX(), GetPositionY() + fallSpeed))))
+    {
+        sf::Sprite sprite(imageJumpSprite);
+        sprite.setPosition(GetPositionX(), GetPositionY());
+        return sprite;
+    }
+
     if (movingToLeft && typeId != TYPEID_MENU_PLAYER)
     {
         for (std::vector<std::pair<int, sf::Texture>>::iterator itr = spriteBodiesLeft.begin(); itr != spriteBodiesLeft.end(); ++itr)
