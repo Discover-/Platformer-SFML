@@ -151,7 +151,6 @@
     <ClCompile Include="bouncetile.cpp" />
     <ClCompile Include="bullet.cpp" />
     <ClCompile Include="coin.cpp" />
-    <ClCompile Include="collision.cpp" />
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="level.cpp" />
@@ -160,7 +159,6 @@
     <ClCompile Include="menuplayer.cpp" />
     <ClCompile Include="movingtile.cpp" />
     <ClCompile Include="player.cpp" />
-    <ClCompile Include="soundstream.cpp" />
     <ClCompile Include="tile.cpp" />
     <ClCompile Include="unit.cpp" />
   </ItemGroup>
@@ -169,7 +167,6 @@
     <ClInclude Include="bouncetile.h" />
     <ClInclude Include="bullet.h" />
     <ClInclude Include="coin.h" />
-    <ClInclude Include="collision.h" />
     <ClInclude Include="enemy.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="level.h" />
@@ -179,7 +176,6 @@
     <ClInclude Include="player.h" />
     <ClInclude Include="position.h" />
     <ClInclude Include="shareddefines.h" />
-    <ClInclude Include="soundstream.h" />
     <ClInclude Include="tile.h" />
     <ClInclude Include="unit.h" />
   </ItemGroup>
