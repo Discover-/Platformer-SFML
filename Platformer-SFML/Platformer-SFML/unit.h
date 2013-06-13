@@ -90,7 +90,7 @@ class Unit : public Position
         std::vector<std::pair<int, sf::Texture>> spriteBodiesLeft;
         std::vector<std::pair<int, sf::Texture>> spriteBodiesRight;
         sf::RenderWindow* window;
-        sf::Texture imageDeadSprite, imageJumpSprite;
+        sf::Texture imageDeadSprite, imageJumpSpriteLeft, imageJumpSpriteRight;
 
         /* MOVEMENT */
         bool isMoving, isJumping, isFalling, hasBounced;

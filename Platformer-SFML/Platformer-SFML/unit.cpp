@@ -35,7 +35,8 @@ Unit::Unit(Game* _game, sf::RenderWindow* _window, sf::Vector2f position, std::v
     switch (_typeId)
     {
         case TYPEID_PLAYER:
-            imageJumpSprite.loadFromFile("Graphics/Character/jump.png");
+            imageJumpSpriteLeft.loadFromFile("Graphics/Character/jump_l.png");
+            imageJumpSpriteRight.loadFromFile("Graphics/Character/jump_r.png");
             moveSpeed = 7.0f;
             isMoving = false;
             break;
@@ -163,11 +164,19 @@ void Unit::Update()
     }
     else if (!canFly)
     {
-        if (!isOnMovingTile && !CollidesWithGameobjects(GetPositionX(), GetPositionY() + fallSpeed))
+        if (!isOnMovingTile)
         {
-            isFalling = true;
-            SetPositionY(GetPositionY() + fallSpeed);
-            fallSpeed++;
+            if ((!fallSpeed && !CollidesWithGameobjects(GetPositionX(), GetPositionY() + 1.0f)) || (fallSpeed && !CollidesWithGameobjects(GetPositionX(), GetPositionY() + fallSpeed)))
+            {
+                isFalling = true;
+                SetPositionY(GetPositionY() + fallSpeed);
+                fallSpeed++;
+            }
+            else
+            {
+                isFalling = false;
+                fallSpeed = 0;
+            }
         }
         else
         {
@@ -300,9 +309,9 @@ void Unit::BounceAway(bool toLeft)
 
 sf::Sprite Unit::GetSpriteBody()
 {
-    if (typeId == TYPEID_PLAYER && (isJumping))// || (fallSpeed && !CollidesWithGameobjects(GetPositionX(), GetPositionY() + fallSpeed))))
+    if (typeId == TYPEID_PLAYER && (isJumping || isFalling))
     {
-        sf::Sprite sprite(imageJumpSprite);
+        sf::Sprite sprite(movingToLeft ? imageJumpSpriteRight : imageJumpSpriteLeft);
         sprite.setPosition(GetPositionX(), GetPositionY());
         return sprite;
     }
