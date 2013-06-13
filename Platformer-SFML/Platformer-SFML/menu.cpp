@@ -237,16 +237,20 @@ void Menu::Draw(sf::RenderWindow &window)
                 sf::Text itrTextCopy = (*itr2).textShape;
                 itrTextCopy.setPosition(view.getCenter().x - itrTextCopy.getPosition().x, view.getCenter().y - itrTextCopy.getPosition().y);
 
-                if ((*itr2).id && (selectedOption == (*itr2).id || !(prevMousePos.x == currMousePos.x && prevMousePos.y == currMousePos.y) && !(currMousePos.x > 1000.0f || currMousePos.y > 600.0f || currMousePos.x < 0.0f || currMousePos.y < 0.0f)))
-                {
-                    if (selectedOption == (*itr2).id || WillCollision(float(currMousePos.x), float(currMousePos.y), 16.0f, 16.0f, itrRectCopy.getPosition().x, itrRectCopy.getPosition().y, itrRectCopy.getLocalBounds().height, itrRectCopy.getLocalBounds().width))
-                    {
-                        selectedOption = (*itr2).id;
-                        itrRectCopy.setFillColor(sf::Color::White);
-                    }
-                    else if (selectedOption)
-                        selectedOption = 0;
-                }
+
+                if (selectedOption == (*itr2).id)
+                    itrRectCopy.setFillColor(sf::Color::White);
+
+                //if ((*itr2).id && (selectedOption == (*itr2).id || !(prevMousePos.x == currMousePos.x && prevMousePos.y == currMousePos.y) && !(currMousePos.x > 1000.0f || currMousePos.y > 600.0f || currMousePos.x < 0.0f || currMousePos.y < 0.0f)))
+                //{
+                //    if (selectedOption == (*itr2).id || WillCollision(float(currMousePos.x), float(currMousePos.y), 16.0f, 16.0f, itrRectCopy.getPosition().x, itrRectCopy.getPosition().y, itrRectCopy.getLocalBounds().height, itrRectCopy.getLocalBounds().width))
+                //    {
+                //        selectedOption = (*itr2).id;
+                //        itrRectCopy.setFillColor(sf::Color::White);
+                //    }
+                //    else if (selectedOption)
+                //        selectedOption = 0;
+                //}
 
                 window.draw(itrRectCopy);
 
