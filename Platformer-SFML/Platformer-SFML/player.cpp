@@ -65,7 +65,7 @@ void Player::Update()
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-        if (!IsJumping() && /*!IsBouncing() &&*/ !IsFalling())
+        if (!IsJumping() && !IsBouncing() && !IsFalling())
             Jump();
 
     std::vector<Enemy*> enemies = GetGame()->GetEnemies();
