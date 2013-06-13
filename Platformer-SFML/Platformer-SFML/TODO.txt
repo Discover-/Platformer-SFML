@@ -14,7 +14,6 @@
 * Make startpos of player be loaded in level file so it's different for each level
 * Proper collision detection on movingtile
 * Get rid of the small 'bounce' when you hit the ground after jumping
-* Fix collision on X 0.0 coord
 * Make bullets go faster
 * Add proper graphics for bullets
 * Implement keys and locks to access new level
