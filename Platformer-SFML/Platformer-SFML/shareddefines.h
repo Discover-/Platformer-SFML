@@ -47,6 +47,7 @@ struct MenuInfo
 {
     MenuId id;
     bool draw;
+    int amountOfButtons;
 };
 
 struct MenuButtonInfo

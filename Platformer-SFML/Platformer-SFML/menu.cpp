@@ -77,6 +77,7 @@ void Menu::Load()
     MenuInfo menuInfo;
     menuInfo.id = MENU_MAIN;
     menuInfo.draw = true;
+    menuInfo.amountOfButtons = int(menuButtonsInfo.size());
     menus.push_back(std::make_pair(menuInfo, menuButtonsInfo));
 
     menuButtonsInfo.clear();
@@ -141,6 +142,7 @@ void Menu::Load()
 
     menuInfo.id = MENU_LEVELS;
     menuInfo.draw = false;
+    menuInfo.amountOfButtons = int(menuButtonsInfo.size());
     menus.push_back(std::make_pair(menuInfo, menuButtonsInfo));
     menuButtonsInfo.clear();
 }
@@ -317,5 +319,24 @@ void Menu::PressedEnterOrMouse(sf::RenderWindow &window)
             }
             break;
         }
+    }
+}
+
+void Menu::UpdateSelection(bool moveNegative)
+{
+    if (moveNegative)//! arrow up
+    {
+        if ((currentMenu == MENU_LEVELS && selectedOption <= 1) || (currentMenu != MENU_LEVELS && selectedOption < 2))
+            selectedOption = currentMenu == MENU_MAIN ? menus[currentMenu].first.amountOfButtons - 1 : menus[currentMenu].first.amountOfButtons;
+        else
+            selectedOption -= 1;
+    }
+    else
+    {
+        if ((currentMenu == MENU_LEVELS && selectedOption >= menus[currentMenu].first.amountOfButtons) || (currentMenu != MENU_LEVELS && selectedOption >= menus[currentMenu].first.amountOfButtons - 1))
+        //if (selectedOption >= menus[currentMenu].first.amountOfButtons)
+            selectedOption = 1;
+        else
+            selectedOption += 1;
     }
 }

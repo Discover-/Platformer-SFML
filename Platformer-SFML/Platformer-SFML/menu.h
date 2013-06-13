@@ -18,10 +18,12 @@ class Menu
 
         int GetSelectedOption() { return selectedOption; }
         void SetSelectedOption(int val) { selectedOption = val; }
+        void UpdateSelection(bool moveNegative);
 
         void PressedEnterOrMouse(sf::RenderWindow &window);
 
-        std::vector<MenuButtonInfo> &GetMenu(int menuId) { return menus[menuId].second; }
+        MenuId GetCurrentMenu() { return currentMenu; }
+        MenuInfo GetCurrentMenuInfo() { return menus[currentMenu].first; }
 
     private:
         Game* game;

@@ -7,27 +7,22 @@
 * Add sounds and music
 * Add timer of how long the level was played
 * Add level indicator (level 1 / 5)
-* Implement move animation while jumping
-* Implement running (walking faster)
 * Add mini menu in-game rather than just 'PAUSED'
 * Add lifebar above enemy
 * Move all positions to Position struct or sf::Vector2f
 * When hitting an enemy, bounce away based on which side you hit it not on enemy's current direction
 * Implement proper falling logic (currently you fall straight down after letting go move button in air)
 * Make startpos of player be loaded in level file so it's different for each level
-* Proper collision detection op movingtile
+* Proper collision detection on movingtile
 * Get rid of the small 'bounce' when you hit the ground after jumping
 * Fix collision on X 0.0 coord
 * Make bullets go faster
 * Add proper graphics for bullets
 * Implement keys and locks to access new level
 * Implement spikes
-* Implement rocks
 * Check 'timestep' rather than FPS limit (http://www.cppforum.nl/index.php/topic,2531.msg16014.html#msg16014)
 * Implement zooming out (MouseWheelMoved)
 * Add more IsInRange calls
 * Implement climbing to clouds like mario
 * Implement turtle enemy and when killing it, pushing it kills all enemies on its path
 * Get rid of some stuff in the constructors that is always the same anwyay (or at least add default values to them)
-* Properly get rid of unused Collision files
-* Arrow keys to left/right in menu too

@@ -187,18 +187,22 @@ int Game::Update()
                     //! Move menu option selection up
                     case sf::Keyboard::Up:
                         if (gameState == STATE_MAIN_MENU)
-                        {
-                            int selection = menu->GetSelectedOption();
-                            menu->SetSelectedOption(selection == 1 ? 4 : selection - 1);
-                        }
+                            menu->UpdateSelection(true);
                         break;
                     //! Move menu option selection down
                     case sf::Keyboard::Down:
                         if (gameState == STATE_MAIN_MENU)
-                        {
-                            int selection = menu->GetSelectedOption();
-                            menu->SetSelectedOption(selection == 4 ? 1 : selection + 1);
-                        }
+                            menu->UpdateSelection(false);
+                        break;
+                    //! Move menu option selection to left
+                    case sf::Keyboard::Left:
+                        if (gameState == STATE_MAIN_MENU && menu->GetCurrentMenu() == MENU_LEVELS)
+                            menu->UpdateSelection(true);
+                        break;
+                    //! Move menu option selection to right
+                    case sf::Keyboard::Right:
+                        if (gameState == STATE_MAIN_MENU && menu->GetCurrentMenu() == MENU_LEVELS)
+                            menu->UpdateSelection(false);
                         break;
                     //! Select menu option
                     case sf::Keyboard::Return:
@@ -222,11 +226,7 @@ int Game::Update()
             else if (_event.type == sf::Event::MouseWheelMoved)
             {
                 if (gameState == STATE_MAIN_MENU)
-                {
-                    int selection = menu->GetSelectedOption();
-                    int ticks = _event.mouseWheel.delta;
-                    menu->SetSelectedOption(ticks > 0 ? selection >= 4 ? 1 : selection + ticks : selection <= 1 ? 4 : selection + ticks);
-                }
+                    menu->UpdateSelection(_event.mouseWheel.delta > 0);
             }
             else if (_event.type == sf::Event::MouseButtonPressed)
             {
