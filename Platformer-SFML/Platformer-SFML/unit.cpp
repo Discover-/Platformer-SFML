@@ -185,12 +185,6 @@ void Unit::Update()
         }
     }
 
-    if (GetPositionX() < 0)
-        SetPositionX(0.0f);
-
-    if (GetPositionY() < 0)
-        SetPositionY(0.0f);
-
     Draw(NULL, true);
 }
 

@@ -208,7 +208,7 @@ void Level::LoadMap(std::string filename, sf::RenderWindow &window)
 void Level::DrawMap(sf::RenderWindow &window, bool menuLevel /* = false */)
 {
     sf::Vector2f cameraPos = menuLevel ? game->GetMenuPlayer()->GetPosition() : game->GetPlayer()->GetPosition();
-    float distToCamera = menuLevel ? 1600.0f : 950.0f;
+    float distToCamera = menuLevel ? 1600.0f : 1000.0f;
 
     for (std::vector<SpriteInfo>::iterator itr = sprites.begin(); itr != sprites.end(); ++itr)
     {

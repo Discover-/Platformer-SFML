@@ -303,15 +303,19 @@ int Game::Update()
                 //player->Update();
                 player->DrawAccessoires(window, view);
 
-                if (player->GetPositionX() > window.getSize().x / 2.f)
-                    view.setCenter(player->GetPositionX(), view.getCenter().y);
-                else
-                    view.setCenter(window.getSize().x / 2.f, view.getCenter().y);
+                float cameraX = 0.0f, cameraY = 0.0f;
 
-                if (player->GetPositionY() > window.getSize().y / 2.f)
-                    view.setCenter(view.getCenter().x, player->GetPositionY());
+                if (player->GetPositionX() > window.getSize().x / 2.f || player->GetPositionX() < window.getSize().x / 2.f)
+                    cameraX = player->GetPositionX();
                 else
-                    view.setCenter(view.getCenter().x, window.getSize().y / 2.f);
+                    cameraX = window.getSize().x / 2.f;
+
+                if (player->GetPositionY() > window.getSize().y / 2.f || player->GetPositionY() < window.getSize().y / 2.f)
+                    cameraY = player->GetPositionY();
+                else
+                    cameraY = window.getSize().y / 2.f;
+
+                view.setCenter(cameraX, cameraY);
 
                 window.setView(view);
                 break;
