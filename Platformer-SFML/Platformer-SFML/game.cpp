@@ -30,7 +30,7 @@
 Game::Game()
 {
     isRunning = true;
-    showDebugInfo = false;
+    showDebugInfo = true;
     gameState = STATE_MAIN_MENU;
 }
 
