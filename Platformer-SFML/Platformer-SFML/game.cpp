@@ -94,7 +94,7 @@ int Game::Update()
         }
     }
 
-    Enemy* enemy4 = new Enemy(this, &window, sf::Vector2f(450.0f, 140.0f), sf::Vector2f(650.0f, 140.0f), spriteEnemiesLeft, spriteEnemiesRight);
+    Enemy* enemy4 = new Enemy(this, &window, sf::Vector2f(450.0f, 140.0f), sf::Vector2f(650.0f, 140.0f), spriteEnemiesLeft, spriteEnemiesRight, 3, 1, 80, false);
 
     allEnemies.push_back(enemy1);
     allEnemies.push_back(enemy2);
