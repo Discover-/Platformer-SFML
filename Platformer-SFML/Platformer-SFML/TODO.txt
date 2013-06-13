@@ -30,5 +30,4 @@
 * Implement turtle enemy and when killing it, pushing it kills all enemies on its path
 * Get rid of some stuff in the constructors that is always the same anwyay (or at least add default values to them)
 * Properly get rid of unused Collision files
-* Don't make menu accessible while it's moving
 * Arrow keys to left/right in menu too

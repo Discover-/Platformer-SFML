@@ -259,6 +259,9 @@ void Menu::Draw(sf::RenderWindow &window)
 
 void Menu::PressedEnterOrMouse(sf::RenderWindow &window)
 {
+    if (movingCurrMenuOut || movingNewMenuIn)
+        return;
+
     switch (currentMenu)
     {
         case MENU_NONE:
