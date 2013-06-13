@@ -6,7 +6,6 @@
 * Implement coins of all colors
 * Add sounds and music
 * Add timer of how long the level was played
-* Add level indicator (level 1 / 5)
 * Add mini menu in-game rather than just 'PAUSED'
 * Add lifebar above enemy
 * Move all positions to Position struct or sf::Vector2f

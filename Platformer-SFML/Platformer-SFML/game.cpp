@@ -375,6 +375,14 @@ int Game::Update()
             window.draw(text2);
         }
 
+        if (gameState != STATE_MAIN_MENU)
+        {
+            sf::Text text("Level " + std::to_string(static_cast<long long>(currLevel->GetCurrentLevel())) + " / 7", font, 30);
+            text.setColor(GAME_STATE_DRAW_GAME(gameState) || gameState == STATE_MAIN_MENU ? sf::Color::Black : sf::Color::White);
+            text.setPosition(view.getCenter().x + 330.0f, view.getCenter().y + 255.0f);
+            window.draw(text);
+        }
+
         window.display();
     }
 
