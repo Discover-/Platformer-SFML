@@ -149,7 +149,7 @@ void Menu::Load()
 
 void Menu::Update(sf::RenderWindow &window)
 {
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::F4) || sf::Keyboard::isKeyPressed(sf::Keyboard::F5))
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::F6) || sf::Keyboard::isKeyPressed(sf::Keyboard::F7))
     {
         for (std::vector<std::pair<MenuInfo, std::vector<MenuButtonInfo>>>::iterator itr3 = menus.begin(); itr3 != menus.end(); ++itr3)
         {
