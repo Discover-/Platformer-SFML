@@ -1,6 +1,5 @@
 #include "bullet.h"
 #include "player.h"
-#include "collision.h"
 #include "game.h"
 #include "shareddefines.h"
 #include "enemy.h"

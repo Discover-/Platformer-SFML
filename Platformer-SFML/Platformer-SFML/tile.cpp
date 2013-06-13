@@ -3,7 +3,6 @@
 #include "player.h"
 #include "enemy.h"
 #include "bullet.h"
-#include "collision.h"
 #include "game.h"
 
 Tile::Tile(Game* _game, sf::RenderWindow* _window, sf::Texture _image, sf::Vector2f position, TileTypeId _typeId)

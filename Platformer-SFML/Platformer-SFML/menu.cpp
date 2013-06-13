@@ -2,7 +2,6 @@
 #include "player.h"
 #include "enemy.h"
 #include "bullet.h"
-#include "collision.h"
 #include "game.h"
 #include "menu.h"
 

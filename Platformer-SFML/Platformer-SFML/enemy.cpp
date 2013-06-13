@@ -14,7 +14,6 @@
 #include <SFML/Window.hpp>
 #include "game.h"
 #include "enemy.h"
-#include "collision.h"
 #include "shareddefines.h"
 #include "bullet.h"
 #include "unit.h"

@@ -13,7 +13,6 @@
 #include <SFML/OpenGL.hpp>
 #include <SFML/Window.hpp>
 #include "player.h"
-#include "collision.h"
 #include "shareddefines.h"
 #include "bullet.h"
 #include "enemy.h"
