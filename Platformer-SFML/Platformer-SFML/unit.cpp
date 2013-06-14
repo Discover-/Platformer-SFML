@@ -65,6 +65,11 @@ Unit::Unit(Game* _game, sf::RenderWindow* _window, sf::Vector2f position, std::v
     }
 }
 
+Unit::~Unit()
+{
+
+}
+
 void Unit::Update()
 {
     if (typeId == TYPEID_MENU_PLAYER || (GAME_STATE_PAUSED(game->GetGameState()) && isAlive))

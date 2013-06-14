@@ -33,9 +33,17 @@ Game::Game()
     showDebugInfo = true;
     gameState = STATE_MAIN_MENU;
     player = NULL;
+    menuPlayer = NULL;
 }
 
 Game::~Game()
+{
+    DeleteContentMemory();
+    delete currLevel;
+    delete this;
+}
+
+void Game::DeleteContentMemory()
 {
     for (std::vector<Unit*>::iterator itr = allUnits.begin(); itr != allUnits.end(); ++itr)
         delete *itr;
@@ -48,9 +56,6 @@ Game::~Game()
 
     for (std::vector<Coin*>::iterator itr = allCoins.begin(); itr != allCoins.end(); ++itr)
         delete *itr;
-
-    delete currLevel;
-    delete menuPlayer;
 }
 
 int Game::Update()

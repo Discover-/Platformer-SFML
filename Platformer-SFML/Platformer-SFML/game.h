@@ -23,6 +23,8 @@ class Game
         bool IsRunning() { return isRunning; }
         void StartActualGame(sf::RenderWindow &window, std::string filename);
 
+        void DeleteContentMemory();
+
         std::vector<sf::Sprite> &GetGameObjects() { return gameObjects; }
         std::vector<sf::Sprite> &GetGameObjectsCollidable() { return gameObjectsCollidable; }
         std::vector<sf::Sprite> &GetQuickSandObjects() { return quickSandGameobjects; }

@@ -36,6 +36,11 @@ Unit(_game, _window, position, _spritesLeft, _spritesRight, TYPEID_PLAYER, _life
         hearts.push_back(std::make_pair(i, true));
 }
 
+Player::~Player()
+{
+
+}
+
 void Player::Update()
 {
     Unit::Update();

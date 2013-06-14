@@ -30,6 +30,11 @@ Unit(_game, _window, position, _spritesLeft, _spritesRight, TYPEID_ENEMY, _life,
         destinationX2 += float(urand(100, 300));
 }
 
+Enemy::~Enemy()
+{
+
+}
+
 void Enemy::Update()
 {
     Unit::Update();
