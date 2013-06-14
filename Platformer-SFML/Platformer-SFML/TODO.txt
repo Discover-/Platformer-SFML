@@ -7,11 +7,10 @@
 * Add sounds and music
 * Add timer of how long the level was played
 * Add mini menu in-game rather than just 'PAUSED'
-* Add lifebar above enemy
+* Add lifebar above enemy (70x12)
 * Move all positions to Position struct or sf::Vector2f
 * When hitting an enemy, bounce away based on which side you hit it not on enemy's current direction
 * Implement proper falling logic (currently you fall straight down after letting go move button in air)
-* Make startpos of player be loaded in level file so it's different for each level
 * Proper collision detection on movingtile
 * Get rid of the small 'bounce' when you hit the ground after jumping
 * Make bullets go faster
@@ -23,3 +22,9 @@
 * Add more IsInRange calls
 * Implement climbing to clouds like mario
 * Implement turtle enemy and when killing it, pushing it kills all enemies on its path
+* Re-write bullets
+  - Make them go faster
+  - New graphics for them
+  - Add several types of bullets or upgrades
+* Improve animations
+* Loading screen

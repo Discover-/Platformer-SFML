@@ -150,7 +150,7 @@ void Unit::Update()
 
     if (isJumping)
     {
-        if (!isOnMovingTile && jumpSpeed && !CollidesWithGameobjects(GetPositionX(), GetPositionY() - jumpSpeed))
+        if (jumpSpeed && !CollidesWithGameobjects(GetPositionX(), GetPositionY() - jumpSpeed))
         {
             SetPositionY(GetPositionY() - jumpSpeed);
             jumpSpeed--;
