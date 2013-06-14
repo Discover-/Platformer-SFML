@@ -110,11 +110,10 @@ void Level::LoadMap(std::string filename, sf::RenderWindow &window, bool reload 
             else if (tilesInfoLayers[i][j] == "E" || tilesInfoLayers[i][j] == "F" || tilesInfoLayers[i][j] == "G" || tilesInfoLayers[i][j] == "H")
             {
                 sf::Vector2f startPos(j * 50.0f, i * 50.0f);
-                sf::Vector2f destiPos = startPos;
                 std::string tileColor = GetBounceTileColor(tilesInfoLayers[i][j]);
                 sf::Texture image;
                 image.loadFromFile("Graphics/Tiles/switch_" + tileColor + "_off.png");
-                game->AddTile(new BounceTile(game, &window, image, 3, startPos, destiPos, tileColor));
+                game->AddTile(new BounceTile(game, &window, image, 3, startPos, tileColor));
                 continue;
             }
             else if (tilesInfoLayers[i][j] == "!")

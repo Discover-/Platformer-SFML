@@ -128,4 +128,5 @@ void Bullet::Draw(sf::Sprite* spriteBullet /* = NULL */, bool updatePos /* = fal
 void Bullet::Explode()
 {
     isRemoved = true;
+    game->RemoveBullet(this);
 }

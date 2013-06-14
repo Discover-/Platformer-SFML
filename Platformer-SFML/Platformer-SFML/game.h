@@ -46,6 +46,7 @@ class Game
         MenuPlayer* GetMenuPlayer() { return menuPlayer; }
 
         void AddBullet(Bullet* bullet) { allBullets.push_back(bullet); }
+        void RemoveBullet(Bullet* bullet);
         std::vector<Bullet*> &GetBullets() { return allBullets; }
 
         GameState GetGameState() { return gameState; }

@@ -257,6 +257,7 @@ int Game::Update()
                     if ((*itr)->GetTypeId() != TYPEID_MENU_PLAYER)
                         (*itr)->Update();
 
+                if (!allBullets.empty())
                 for (std::vector<Bullet*>::iterator itr = allBullets.begin(); itr != allBullets.end(); ++itr)
                     if (!(*itr)->IsRemoved())
                         (*itr)->Update();
@@ -428,4 +429,23 @@ void Game::RemoveUnitWithTypeId(UnitTypeId typeId)
         else
             ++itr;
     }
+}
+
+void Game::RemoveBullet(Bullet* bullet)
+{
+    //if (!bullet || allBullets.empty())
+    //    return;
+
+    //for (std::vector<Bullet*>::iterator itr = allBullets.begin(); itr != allBullets.end();)
+    //{
+    //    if ((*itr) == bullet)
+    //    {
+    //        allBullets.erase(itr);
+    //        itr = allBullets.begin();
+    //    }
+    //    else
+    //        ++itr;
+    //}
+
+    //delete bullet;
 }

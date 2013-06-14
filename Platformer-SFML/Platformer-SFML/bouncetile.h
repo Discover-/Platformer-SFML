@@ -24,7 +24,7 @@ class Game;
 class BounceTile : public Tile
 {
     public:
-        BounceTile(Game* _game, sf::RenderWindow* _window, sf::Texture _image, int _velocity, sf::Vector2f startPosition, sf::Vector2f _destination, std::string color);
+        BounceTile(Game* _game, sf::RenderWindow* _window, sf::Texture _image, int _velocity, sf::Vector2f startPosition, std::string color);
         ~BounceTile();
 
         void Update();
@@ -37,5 +37,5 @@ class BounceTile : public Tile
     private:
         bool isUsed;
         sf::Texture imageUsed;
-        sf::Vector2f startPosition, destination;
+        sf::Vector2f startPosition;
 };
