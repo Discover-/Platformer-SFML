@@ -26,6 +26,11 @@ Unit(_game, _window, position, _spritesRight, _spritesRight, TYPEID_MENU_PLAYER,
 
 }
 
+MenuPlayer::~MenuPlayer()
+{
+
+}
+
 void MenuPlayer::Update()
 {
     if (GetGame()->GetGameState() != STATE_MAIN_MENU)

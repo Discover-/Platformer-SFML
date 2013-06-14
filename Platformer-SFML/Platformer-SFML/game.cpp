@@ -50,7 +50,7 @@ Game::~Game()
         delete *itr;
 
     delete currLevel;
-    //delete menuPlayer;
+    delete menuPlayer;
 }
 
 int Game::Update()
