@@ -150,7 +150,7 @@ void Unit::Update()
 
     if (isJumping)
     {
-        if (jumpSpeed && !CollidesWithGameobjects(GetPositionX(), GetPositionY() - jumpSpeed))
+        if (!isOnMovingTile && jumpSpeed && !CollidesWithGameobjects(GetPositionX(), GetPositionY() - jumpSpeed))
         {
             SetPositionY(GetPositionY() - jumpSpeed);
             jumpSpeed--;
@@ -180,6 +180,7 @@ void Unit::Update()
         }
         else
         {
+            isJumping = false;
             isFalling = false;
             fallSpeed = 0;
         }
@@ -284,8 +285,7 @@ void Unit::Shoot()
 
     sf::Texture imageBullet;
     imageBullet.loadFromFile("Graphics/Other/bullet.png");
-    Bullet* bullet = new Bullet(game, window, movingToLeft ? GetPositionX() + 50.0f : GetPositionX() - 15.0f, GetPositionY() + 25.0f, imageBullet, movingToLeft);
-    game->AddBullet(bullet);
+    game->AddBullet(new Bullet(game, window, movingToLeft ? GetPositionX() + 50.0f : GetPositionX() - 15.0f, GetPositionY() + 25.0f, imageBullet, movingToLeft));
 }
 
 void Unit::BounceAway(bool toLeft)

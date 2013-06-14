@@ -37,7 +37,20 @@ Game::Game()
 
 Game::~Game()
 {
+    for (std::vector<Unit*>::iterator itr = allUnits.begin(); itr != allUnits.end(); ++itr)
+        delete *itr;
 
+    for (std::vector<Bullet*>::iterator itr = allBullets.begin(); itr != allBullets.end(); ++itr)
+        delete *itr;
+
+    for (std::vector<Tile*>::iterator itr = allTiles.begin(); itr != allTiles.end(); ++itr)
+        delete *itr;
+
+    for (std::vector<Coin*>::iterator itr = allCoins.begin(); itr != allCoins.end(); ++itr)
+        delete *itr;
+
+    delete currLevel;
+    //delete menuPlayer;
 }
 
 int Game::Update()
@@ -334,6 +347,7 @@ int Game::Update()
         window.display();
     }
 
+    delete menu;
     return 0;
 }
 

@@ -25,9 +25,11 @@ Bullet::~Bullet()
 
 void Bullet::Update()
 {
-    Player* player = game->GetPlayer();
+    if (isRemoved || !game || !game->IsRunning())
+        return;
 
-    if (isRemoved || !game || !game->IsRunning() || !player)
+    Player* player = game->GetPlayer();
+    if (!player)
         return;
 
     bool isPaused = GAME_STATE_PAUSED(game->GetGameState());

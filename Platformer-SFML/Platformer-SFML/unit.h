@@ -52,6 +52,7 @@ class Unit : public Position
         void SetMoveSpeed(float val) { moveSpeed = val; }
 
         int GetMoveFrame();
+
         bool IsMovingToLeft() { return movingToLeft; }
         void SetIsMovingToLeft(bool val) { movingToLeft = val; }
 

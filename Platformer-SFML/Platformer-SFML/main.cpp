@@ -3,5 +3,7 @@
 int main()
 {
     Game* game = new Game();
-    return game->Update();
+    int result = game->Update();
+    delete game;
+    return result;
 }
