@@ -92,6 +92,9 @@ class Unit : public Position
         std::vector<std::pair<int, sf::Texture>> spriteBodiesRight;
         sf::RenderWindow* window;
         sf::Texture imageDeadSprite, imageJumpSpriteLeft, imageJumpSpriteRight;
+        sf::RectangleShape lifeBarRed, lifeBarGreen;
+        bool showLifeBar;
+        int showLifeBarTimer;
 
         /* MOVEMENT */
         bool isMoving, isJumping, isFalling, hasBounced;
@@ -104,7 +107,7 @@ class Unit : public Position
         /* MECHANICS */
         bool canShoot;
         sf::Int32 shootCooldown;
-        int life;
+        int maxLifes, life;
 };
 
 

@@ -21,6 +21,7 @@ Unit::Unit(Game* _game, sf::RenderWindow* _window, sf::Vector2f position, std::v
     jumpSpeed = 15;
     bounceSpeed = 15;
     life = _life;
+    maxLifes = _life;
     moveFrame = 0;
     totalMoveFrames = _totalMoveFrames;
     frameInterval = 0;
@@ -31,6 +32,8 @@ Unit::Unit(Game* _game, sf::RenderWindow* _window, sf::Vector2f position, std::v
     isInQuickSandArea = false;
     isInWaterArea = false;
     isInLavaArea = false;
+    showLifeBar = false;
+    showLifeBarTimer = 0;
 
     switch (_typeId)
     {
@@ -44,6 +47,16 @@ Unit::Unit(Game* _game, sf::RenderWindow* _window, sf::Vector2f position, std::v
             imageDeadSprite.loadFromFile("Graphics/Enemies/" + std::string(canFly ? "fly_dead" : "slime_dead") + ".png");
             moveSpeed = 3.0f;
             isMoving = true;
+            lifeBarRed.setSize(sf::Vector2f(75.0f, 12.0f));
+            lifeBarRed.setFillColor(sf::Color::Red);
+            lifeBarRed.setPosition(position.x - lifeBarRed.getLocalBounds().width / 2.0f, position.y - lifeBarRed.getLocalBounds().height / 2.0f);
+            lifeBarRed.setOutlineColor(sf::Color::Black);
+            lifeBarRed.setOutlineThickness(1.0f);
+            lifeBarGreen.setSize(sf::Vector2f(75.0f, 12.0f));
+            lifeBarGreen.setFillColor(sf::Color::Green);
+            lifeBarGreen.setPosition(position.x - lifeBarRed.getLocalBounds().width / 2.0f, position.y - lifeBarRed.getLocalBounds().height / 2.0f);
+            lifeBarGreen.setOutlineColor(sf::Color::Black);
+            lifeBarGreen.setOutlineThickness(1.0f);
             break;
         case TYPEID_MENU_PLAYER:
             moveSpeed = 7.0f;
@@ -200,6 +213,15 @@ void Unit::Draw(sf::Sprite* _spriteBody /* = NULL */, bool updatePos /* = false 
         spriteToDraw.setColor(sf::Color(255, 255, 255, 128));
 
     window->draw(spriteToDraw);
+
+    if (typeId == TYPEID_ENEMY && showLifeBar && isAlive)
+    {
+        sf::FloatRect spriteRect = GetSpriteBody().getGlobalBounds();
+        lifeBarGreen.setPosition(GetPositionX() - spriteRect.width / 2.0f, GetPositionY() - spriteRect.height / 2.0f);
+        lifeBarRed.setPosition(GetPositionX() - spriteRect.width / 2.0f, GetPositionY() - spriteRect.height / 2.0f);
+        window->draw(lifeBarRed);
+        window->draw(lifeBarGreen);
+    }
 }
 
 void Unit::HandleTimers(sf::Int32 diff_time)
@@ -235,6 +257,20 @@ void Unit::HandleTimers(sf::Int32 diff_time)
         }
         else
             moveFrame = 0;
+    }
+
+    if (typeId == TYPEID_ENEMY)
+    {
+        if (showLifeBar)
+        {
+            if (diff_time >= showLifeBarTimer)
+            {
+                showLifeBarTimer = 0;
+                showLifeBar = false;
+            }
+            else
+                showLifeBarTimer -= diff_time;
+        }
     }
 }
 
@@ -342,18 +378,29 @@ bool Unit::DropLife()
 {
      life--;
 
-     if (typeId == TYPEID_PLAYER)
+     switch (typeId)
      {
-        std::vector<std::pair<int /* id */, bool /* full */>> &hearts = ((Player*)this)->GetHearts();
+         case TYPEID_PLAYER:
+         {
+             std::vector<std::pair<int /* id */, bool /* full */>> &hearts = ((Player*)this)->GetHearts();
 
-        for (std::vector<std::pair<int /* id */, bool /* full */>>::iterator itr = hearts.begin(); itr != hearts.end(); ++itr)
-        {
-            if ((*itr).second)
-            {
-                (*itr).second = false;
-                break;
-            }
-        }
+             for (std::vector<std::pair<int /* id */, bool /* full */>>::iterator itr = hearts.begin(); itr != hearts.end(); ++itr)
+             {
+                 if ((*itr).second)
+                 {
+                     (*itr).second = false;
+                     break;
+                 }
+             }
+             break;
+         }
+         case TYPEID_ENEMY:
+         {
+             lifeBarGreen.setSize(sf::Vector2f(lifeBarRed.getLocalBounds().width - ((lifeBarRed.getLocalBounds().width / maxLifes) * (maxLifes - life)), 12.0f));
+             showLifeBarTimer = 2500;
+             showLifeBar = true;
+             break;
+         }
      }
 
      return !life;
