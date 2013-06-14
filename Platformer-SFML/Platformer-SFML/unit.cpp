@@ -34,6 +34,7 @@ Unit::Unit(Game* _game, sf::RenderWindow* _window, sf::Vector2f position, std::v
     isInLavaArea = false;
     showLifeBar = false;
     showLifeBarTimer = 0;
+    shootCooldown = 0;
 
     switch (_typeId)
     {
