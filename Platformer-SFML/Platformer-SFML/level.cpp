@@ -153,7 +153,7 @@ void Level::LoadMap(std::string filename, sf::RenderWindow &window, bool reload 
             else if (tilesInfoLayers[i][j] == "E" || tilesInfoLayers[i][j] == "F" || tilesInfoLayers[i][j] == "G" || tilesInfoLayers[i][j] == "H")
             {
                 std::string tileColor = GetBounceTileColor(tilesInfoLayers[i][j]);
-                game->AddSpecialTile(new BounceTile(game, &window, Textures["Graphics/Tiles/switch_" + tileColor + "_off.png"], mapPosition, tileColor));
+                game->AddSpecialTile(new BounceTile(game, &window, Textures["Graphics/Tiles/switch_" + tileColor + "_on.png"], mapPosition, tileColor));
                 continue;
             }
             else if (tilesInfoLayers[i][j] == "!")

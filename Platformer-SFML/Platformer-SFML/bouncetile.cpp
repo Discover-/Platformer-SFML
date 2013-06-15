@@ -9,7 +9,7 @@ SpecialTile(_game, _window, _image, _startPosition, TYPEID_BOUNCE_TILE)
     isUsed = false;
     startPosition = _startPosition;
     SetPosition(startPosition.x, startPosition.y);
-    imageUsed.loadFromFile("Graphics/Tiles/switch_" + color + "_on.png");
+    imageUsed.loadFromFile("Graphics/Tiles/switch_" + color + "_off.png");
 }
 
 BounceTile::~BounceTile()
