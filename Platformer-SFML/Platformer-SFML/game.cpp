@@ -40,7 +40,6 @@ Game::~Game()
 {
     DeleteContentMemory();
     delete currLevel;
-    delete this;
 }
 
 void Game::DeleteContentMemory()
@@ -264,9 +263,9 @@ int Game::Update()
                         (*itr)->Update();
 
                 if (!allBullets.empty())
-                for (std::vector<Bullet*>::iterator itr = allBullets.begin(); itr != allBullets.end(); ++itr)
-                    if (!(*itr)->IsRemoved())
-                        (*itr)->Update();
+                    for (std::vector<Bullet*>::iterator itr = allBullets.begin(); itr != allBullets.end(); ++itr)
+                        if (!(*itr)->IsRemoved())
+                            (*itr)->Update();
 
                 //player->Update();
                 player->DrawAccessoires(window, view);
