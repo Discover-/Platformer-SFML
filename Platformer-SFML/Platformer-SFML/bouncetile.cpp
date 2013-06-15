@@ -3,11 +3,12 @@
 #include "game.h"
 #include "player.h"
 
-BounceTile::BounceTile(Game* _game, sf::RenderWindow* _window, sf::Texture _image, int _velocity, sf::Vector2f _startPosition, std::string color) :
-Tile(_game, _window, _image, _startPosition, TYPEID_BOUNCE_TILE)
+BounceTile::BounceTile(Game* _game, sf::RenderWindow* _window, sf::Texture _image, sf::Vector2f _startPosition, std::string color) :
+SpecialTile(_game, _window, _image, _startPosition, TYPEID_BOUNCE_TILE)
 {
     isUsed = false;
     startPosition = _startPosition;
+    SetPosition(startPosition.x, startPosition.y);
     imageUsed.loadFromFile("Graphics/Tiles/switch_" + color + "_on.png");
 }
 
@@ -18,7 +19,7 @@ BounceTile::~BounceTile()
 
 void BounceTile::Update()
 {
-    Tile::Update();
+    SpecialTile::Update();
 
     if (GAME_STATE_PAUSED(GetGame()->GetGameState()))
     {
@@ -34,7 +35,7 @@ void BounceTile::HandleTimers(sf::Int32 diff_time)
     if (IsRemoved())
         return;
 
-    Tile::HandleTimers(diff_time);
+    SpecialTile::HandleTimers(diff_time);
 }
 
 bool BounceTile::OnCollision(Unit* unit /* = NULL */)
@@ -46,4 +47,9 @@ bool BounceTile::OnCollision(Unit* unit /* = NULL */)
     }
 
     return false;
+}
+
+void BounceTile::OnCollisionOut(Unit* unit)
+{
+
 }

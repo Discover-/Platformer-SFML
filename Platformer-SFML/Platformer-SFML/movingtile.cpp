@@ -4,13 +4,14 @@
 #include "player.h"
 
 MovingTile::MovingTile(Game* _game, sf::RenderWindow* _window, sf::Texture _image, int _velocity, sf::Vector2f _startPosition, sf::Vector2f _destination, bool _movesVertical) :
-Tile(_game, _window, _image, _startPosition, TYPEID_MOVING_TILE)
+SpecialTile(_game, _window, _image, _startPosition, TYPEID_MOVING_TILE)
 {
     velocity = _velocity;
     movingToActualDest = true;
     movesVertical = _movesVertical;
     startPosition = _startPosition;
     destination = _destination;
+    SetPosition(startPosition.x, startPosition.y);
 }
 
 MovingTile::~MovingTile()
@@ -20,7 +21,7 @@ MovingTile::~MovingTile()
 
 void MovingTile::Update()
 {
-    Tile::Update();
+    SpecialTile::Update();
 
     if (GAME_STATE_PAUSED(GetGame()->GetGameState()))
         return;
@@ -93,7 +94,7 @@ void MovingTile::HandleTimers(sf::Int32 diff_time)
     if (IsRemoved())
         return;
 
-    Tile::HandleTimers(diff_time);
+    SpecialTile::HandleTimers(diff_time);
 }
 
 void MovingTile::AddPassenger(Unit* unit)
@@ -121,4 +122,9 @@ bool MovingTile::OnCollision(Unit* unit /* = NULL */)
             AddPassenger(unitToTarget);
 
     return false;
+}
+
+void MovingTile::OnCollisionOut(Unit* unit)
+{
+
 }

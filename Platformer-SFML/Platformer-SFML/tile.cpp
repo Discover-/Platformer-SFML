@@ -5,7 +5,7 @@
 #include "bullet.h"
 #include "game.h"
 
-Tile::Tile(Game* _game, sf::RenderWindow* _window, sf::Texture _image, sf::Vector2f position, TileTypeId _typeId)
+SpecialTile::SpecialTile(Game* _game, sf::RenderWindow* _window, sf::Texture _image, sf::Vector2f position, TileTypeId _typeId)
 {
     window = _window;
     SetPosition(position.x, position.y);
@@ -15,7 +15,7 @@ Tile::Tile(Game* _game, sf::RenderWindow* _window, sf::Texture _image, sf::Vecto
     isRemoved = false;
 }
 
-void Tile::Update()
+void SpecialTile::Update()
 {
     if (GAME_STATE_PAUSED(game->GetGameState()) && !isRemoved)
     {
@@ -29,7 +29,7 @@ void Tile::Update()
     //Draw(NULL, true);
 }
 
-void Tile::Draw(sf::Texture* _textureTile /* = NULL */, bool updatePos /* = false */)
+void SpecialTile::Draw(sf::Texture* _textureTile /* = NULL */, bool updatePos /* = false */)
 {
     sf::Vector2f position = GetPosition();
     sf::Vector2f positionPlr = game->GetPlayer()->GetPosition();
@@ -53,7 +53,7 @@ void Tile::Draw(sf::Texture* _textureTile /* = NULL */, bool updatePos /* = fals
     window->draw(spriteToDraw);
 }
 
-void Tile::HandleTimers(sf::Int32 diff_time)
+void SpecialTile::HandleTimers(sf::Int32 diff_time)
 {
     if (isRemoved)
         return;
@@ -61,7 +61,7 @@ void Tile::HandleTimers(sf::Int32 diff_time)
 
 }
 
-sf::Sprite Tile::GetSpriteTile()
+sf::Sprite SpecialTile::GetSpriteTile()
 {
     sf::Sprite sprite(image);
     sprite.setPosition(GetPositionX(), GetPositionY());

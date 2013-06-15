@@ -20,15 +20,16 @@
 
 class Game;
 
-class Tile : public Position
+class SpecialTile : public Position
 {
     public:
-        Tile(Game* _game, sf::RenderWindow* _window, sf::Texture _image, sf::Vector2f position, TileTypeId _typeId);
-        //~Tile();
+        SpecialTile(Game* _game, sf::RenderWindow* _window, sf::Texture _image, sf::Vector2f position, TileTypeId _typeId);
+        //~SpecialTile();
 
         virtual void Update();
         virtual void HandleTimers(sf::Int32 diff_time);
         virtual bool OnCollision(Unit* unit = NULL) = 0; //! Return true if we should stop movement
+        virtual void OnCollisionOut(Unit* unit) = 0;
 
         bool IsRemoved() { return isRemoved; }
         void Draw(sf::Texture* _textureTil = NULL, bool updatePos = false);

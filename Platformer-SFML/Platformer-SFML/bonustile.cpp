@@ -4,7 +4,7 @@
 #include "coin.h"
 
 BonusTile::BonusTile(Game* _game, sf::RenderWindow* _window, sf::Texture _image, sf::Vector2f _startPosition) :
-Tile(_game, _window, _image, _startPosition, TYPEID_BONUS_TILE)
+SpecialTile(_game, _window, _image, _startPosition, TYPEID_BONUS_TILE)
 {
     window = _window;
     isUsed = false;
@@ -13,6 +13,7 @@ Tile(_game, _window, _image, _startPosition, TYPEID_BONUS_TILE)
     movingUp = true;
     startPosition = _startPosition;
     imageUsed.loadFromFile("Graphics/Tiles/bonus_used.png");
+    SetPosition(startPosition.x, startPosition.y);
 }
 
 BonusTile::~BonusTile()
@@ -31,7 +32,7 @@ void BonusTile::Update()
         return;
     }
 
-    Tile::Update();
+    SpecialTile::Update();
 
     if (isUsed && animating && !animationFinished)
     {
@@ -91,7 +92,7 @@ void BonusTile::HandleTimers(sf::Int32 diff_time)
     if (IsRemoved())
         return;
 
-    Tile::HandleTimers(diff_time);
+    SpecialTile::HandleTimers(diff_time);
 }
 
 bool BonusTile::OnCollision(Unit* unit /* = NULL */) //! Return true if we should stop movement
@@ -104,4 +105,9 @@ bool BonusTile::OnCollision(Unit* unit /* = NULL */) //! Return true if we shoul
     }
 
     return true;
+}
+
+void BonusTile::OnCollisionOut(Unit* unit)
+{
+
 }

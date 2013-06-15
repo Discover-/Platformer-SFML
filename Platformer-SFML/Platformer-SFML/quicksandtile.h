@@ -21,22 +21,16 @@
 
 class Game;
 
-class BounceTile : public SpecialTile
+class QuickSandTile : public SpecialTile
 {
     public:
-        BounceTile(Game* _game, sf::RenderWindow* _window, sf::Texture _image, sf::Vector2f startPosition, std::string color);
-        ~BounceTile();
+        QuickSandTile(Game* _game, sf::RenderWindow* _window, sf::Texture _image, sf::Vector2f startPosition);
+        ~QuickSandTile();
 
         void Update();
         void HandleTimers(sf::Int32 diff_time);
         bool OnCollision(Unit* unit = NULL); //! Return true if we should stop movement of player when colliding
         void OnCollisionOut(Unit* unit);
 
-        bool IsUsed() { return isUsed; }
-        void SetIsUsed(bool val) { isUsed = val; }
-
     private:
-        bool isUsed;
-        sf::Texture imageUsed;
-        sf::Vector2f startPosition;
 };

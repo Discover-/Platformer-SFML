@@ -25,9 +25,12 @@ enum UnitTypeId
 
 enum TileTypeId
 {
-    TYPEID_MOVING_TILE   = 0,
-    TYPEID_BOUNCE_TILE   = 1,
-    TYPEID_BONUS_TILE    = 2,
+    TYPEID_MOVING_TILE      = 0,
+    TYPEID_BOUNCE_TILE      = 1,
+    TYPEID_BONUS_TILE       = 2,
+    TYPEID_WATER_TILE       = 3,
+    TYPEID_LAVA_TILE        = 4,
+    TYPEID_QUICK_SAND_TILE  = 5,
 };
 
 struct SpriteInfo

@@ -113,47 +113,6 @@ void Unit::Update()
         return;
     }
 
-    sf::FloatRect spriteRect = GetSpriteBody().getGlobalBounds();
-
-    if (game->IsQuickSandArea(GetPositionX(), GetPositionY(), spriteRect.height, spriteRect.width))
-    {
-        if (!isInQuickSandArea)
-        {
-            SetMoveSpeed(GetMoveSpeed() / 2.0f);
-            isInQuickSandArea = true;
-        }
-    }
-    else if (isInQuickSandArea)
-    {
-        SetMoveSpeed(GetMoveSpeed() * 2.0f);
-        isInQuickSandArea = false;
-    }
-
-    if (game->IsInWaterArea(GetPositionX(), GetPositionY(), spriteRect.height, spriteRect.width))
-    {
-        if (!isInWaterArea)
-        {
-            SetMoveSpeed(GetMoveSpeed() / 2.0f);
-            isInWaterArea = true;
-        }
-    }
-    else if (isInWaterArea)
-    {
-        SetMoveSpeed(GetMoveSpeed() * 2.0f);
-        isInWaterArea = false;
-    }
-
-    if (game->IsInLavaArea(GetPositionX(), GetPositionY(), spriteRect.height, spriteRect.width))
-    {
-        if (!isInLavaArea)
-        {
-            BounceAway(IsMovingToLeft());
-            isInLavaArea = true;
-        }
-    }
-    else if (isInLavaArea)
-        isInLavaArea = false;
-
     if (hasBounced)
     {
         float newX = bounceToLeft ? GetPositionX() - bounceSpeed : GetPositionX() + bounceSpeed;
@@ -294,15 +253,19 @@ bool Unit::CollidesWithGameobjects(float newPosX /* = 0.0f */, float newPosY /* 
     sf::Vector2f spritePos = spriteBody.getPosition();
     sf::FloatRect spriteRect = spriteBody.getGlobalBounds();
 
-    std::vector<Tile*> allTiles = game->GetTiles();
+    std::vector<SpecialTile*> allSpecialTiles = game->GetSpecialTiles();
 
-    for (std::vector<Tile*>::iterator itr = allTiles.begin(); itr != allTiles.end(); ++itr)
+    for (std::vector<SpecialTile*>::iterator itr = allSpecialTiles.begin(); itr != allSpecialTiles.end(); ++itr)
     {
         sf::FloatRect tileRect = (*itr)->GetSpriteTile().getGlobalBounds();
 
         if (WillCollision(spritePos.x, spritePos.y, spriteRect.height, spriteRect.width, (*itr)->GetPositionX(), (*itr)->GetPositionY(), tileRect.height, tileRect.width))
+        {
             if ((*itr)->OnCollision(this))
                 return true;
+        }
+        else
+            (*itr)->OnCollisionOut(this);
     }
 
     std::vector<sf::Sprite> gameObjects = game->GetGameObjectsCollidable();

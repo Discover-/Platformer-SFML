@@ -13,6 +13,9 @@
 #include "movingtile.h"
 #include "bouncetile.h"
 #include "bonustile.h"
+#include "watertile.h"
+#include "lavatile.h"
+#include "quicksandtile.h"
 #include <dirent.h>
 
 std::map<std::string /* filename */, sf::Texture> Level::Textures;
@@ -22,7 +25,6 @@ Level::Level(Game* _game, sf::RenderWindow &window)
     game = _game;
     LoadAllImages();
     LoadMap("menu", window);
-    //textures.clear();
     currLevel = 0;
 }
 
@@ -93,7 +95,7 @@ void Level::LoadMap(std::string filename, sf::RenderWindow &window, bool reload 
     game->ClearGameObjects();
     game->ClearGameObjectCollidables();
     game->ClearCoins();
-    game->ClearAllTiles();
+    game->ClearAllSpecialTiles();
     game->ClearAllEnemies();
     game->SetPlayer(NULL);
 
@@ -105,8 +107,7 @@ void Level::LoadMap(std::string filename, sf::RenderWindow &window, bool reload 
             if (tilesInfoLayers[i][j] == "_")
                 continue;
 
-            sf::Sprite tmpSprite;
-            tmpSprite.setPosition(j * 50.0f, i * 50.0f);
+            sf::Vector2f mapPosition(j * 50.0f, i * 50.0f);
 
             if (tilesInfoLayers[i][j] == "A")
             {
@@ -115,7 +116,7 @@ void Level::LoadMap(std::string filename, sf::RenderWindow &window, bool reload 
             }
             else if (tilesInfoLayers[i][j] == "B" || tilesInfoLayers[i][j] == "C")
             {
-                sf::Vector2f startPos(j * 50.0f, i * 50.0f);
+                sf::Vector2f startPos = mapPosition;
                 sf::Vector2f destiPos = startPos;
 
                 if (tilesInfoLayers[i][j] == "B")
@@ -126,18 +127,33 @@ void Level::LoadMap(std::string filename, sf::RenderWindow &window, bool reload 
                     destiPos.y -= 200.0f;
                 }
 
-                game->AddTile(new MovingTile(game, &window, Textures["Graphics/Tiles/plank.png"], 3, startPos, destiPos, tilesInfoLayers[i][j] == "B"));
+                game->AddSpecialTile(new MovingTile(game, &window, Textures["Graphics/Tiles/plank.png"], 3, startPos, destiPos, tilesInfoLayers[i][j] == "B"));
                 continue;
             }
             else if (tilesInfoLayers[i][j] == "D")
             {
-                game->AddTile(new BonusTile(game, &window, Textures["Graphics/Tiles/bonus.png"], sf::Vector2f(j * 50.0f, i * 50.0f)));
+                game->AddSpecialTile(new BonusTile(game, &window, Textures["Graphics/Tiles/bonus.png"], mapPosition));
+                continue;
+            }
+            else if (tilesInfoLayers[i][j] == "Y")
+            {
+                game->AddSpecialTile(new QuickSandTile(game, &window, Textures["Graphics/Tiles/ground_sand.png"], mapPosition));
+                continue;
+            }
+            else if (tilesInfoLayers[i][j] == "S")
+            {
+                game->AddSpecialTile(new WaterTile(game, &window, Textures["Graphics/Tiles/water.png"], mapPosition));
+                continue;
+            }
+            else if (tilesInfoLayers[i][j] == "R")
+            {
+                game->AddSpecialTile(new LavaTile(game, &window, Textures["Graphics/Tiles/lava.png"], mapPosition));
                 continue;
             }
             else if (tilesInfoLayers[i][j] == "E" || tilesInfoLayers[i][j] == "F" || tilesInfoLayers[i][j] == "G" || tilesInfoLayers[i][j] == "H")
             {
                 std::string tileColor = GetBounceTileColor(tilesInfoLayers[i][j]);
-                game->AddTile(new BounceTile(game, &window, Textures["Graphics/Tiles/switch_" + tileColor + "_off.png"], 3, sf::Vector2f(j * 50.0f, i * 50.0f), tileColor));
+                game->AddSpecialTile(new BounceTile(game, &window, Textures["Graphics/Tiles/switch_" + tileColor + "_off.png"], mapPosition, tileColor));
                 continue;
             }
             else if (tilesInfoLayers[i][j] == "!")
@@ -163,7 +179,7 @@ void Level::LoadMap(std::string filename, sf::RenderWindow &window, bool reload 
                     }
                 }
 
-                game->SetPlayer(new Player(game, &window, sf::Vector2f(j * 50.0f, i * 50.0f), spriteCharactersLeft, spriteCharactersRight));
+                game->SetPlayer(new Player(game, &window, mapPosition, spriteCharactersLeft, spriteCharactersRight));
                 continue;
             }
             else if (tilesInfoLayers[i][j] == "Z" || tilesInfoLayers[i][j] == "?")
@@ -189,7 +205,7 @@ void Level::LoadMap(std::string filename, sf::RenderWindow &window, bool reload 
                     }
                 }
 
-                game->AddEnemy(new Enemy(game, &window, sf::Vector2f(j * 50.0f, i * 50.0f), spriteEnemiesLeft, spriteEnemiesRight, 3, 1, 80, !slime));
+                game->AddEnemy(new Enemy(game, &window, mapPosition, spriteEnemiesLeft, spriteEnemiesRight, 3, 1, 80, !slime));
                 continue;
             }
 
@@ -231,10 +247,6 @@ void Level::LoadMap(std::string filename, sf::RenderWindow &window, bool reload 
                 fileName = "Graphics/Tiles/fence_normal.png";
             else if (tilesInfoLayers[i][j] == "Q")
                 fileName = "Graphics/Tiles/fence_broken.png";
-            else if (tilesInfoLayers[i][j] == "R")
-                fileName = "Graphics/Tiles/lava.png";
-            else if (tilesInfoLayers[i][j] == "S")
-                fileName = "Graphics/Tiles/water.png";
             else if (tilesInfoLayers[i][j] == "T")
                 fileName = "Graphics/Tiles/bush.png";
             else if (tilesInfoLayers[i][j] == "U")
@@ -247,11 +259,6 @@ void Level::LoadMap(std::string filename, sf::RenderWindow &window, bool reload 
             {
                 isCollidable = true;
                 fileName = "Graphics/Tiles/crate.png";
-            }
-            else if (tilesInfoLayers[i][j] == "Y")
-            {
-                isCollidable = true;
-                fileName = "Graphics/Tiles/ground_sand.png";
             }
             else
                 std::cout << "Unkown type ID found in '" + fileName + "', letter '" + tilesInfoLayers[i][j] + "'." << std::endl;
@@ -267,22 +274,16 @@ void Level::LoadMap(std::string filename, sf::RenderWindow &window, bool reload 
 
             SpriteInfo tileInfo;
             tileInfo.image = Textures[fileName];
-            tileInfo.posX = j * 50.0f;
-            tileInfo.posY = i * 50.0f;
+            tileInfo.posX = mapPosition.x;
+            tileInfo.posY = mapPosition.y;
             sprites.push_back(tileInfo);
 
+            sf::Sprite tmpSprite;
             tmpSprite.setTexture(Textures[fileName]);
-            tmpSprite.setPosition(j * 50.0f, i * 50.0f);
+            tmpSprite.setPosition(mapPosition);
 
             if (isCollidable)
                 game->AddGameObjectCollidable(tmpSprite);
-
-            if (tilesInfoLayers[i][j] == "Y")
-                game->AddQuickSandObject(tmpSprite);
-            else if (tilesInfoLayers[i][j] == "S")
-                game->AddWaterObject(tmpSprite);
-            else if (tilesInfoLayers[i][j] == "R")
-                game->AddLavaObject(tmpSprite);
 
             game->AddGameObject(tmpSprite);
         }

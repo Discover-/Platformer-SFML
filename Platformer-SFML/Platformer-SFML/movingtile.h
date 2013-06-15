@@ -21,7 +21,7 @@
 
 class Game;
 
-class MovingTile : public Tile
+class MovingTile : public SpecialTile
 {
     public:
         MovingTile(Game* _game, sf::RenderWindow* _window, sf::Texture _image, int _velocity, sf::Vector2f startPosition, sf::Vector2f _destination, bool _movesVertical);
@@ -30,6 +30,7 @@ class MovingTile : public Tile
         void Update();
         void HandleTimers(sf::Int32 diff_time);
         bool OnCollision(Unit* unit = NULL); //! Return true if we should stop movement of player when colliding
+        void OnCollisionOut(Unit* unit);
 
         void AddPassenger(Unit* unit);
         void RemovePassenger(Unit* unit);

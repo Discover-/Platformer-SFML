@@ -51,7 +51,7 @@ void Game::DeleteContentMemory()
     for (std::vector<Bullet*>::iterator itr = allBullets.begin(); itr != allBullets.end(); ++itr)
         delete *itr;
 
-    for (std::vector<Tile*>::iterator itr = allTiles.begin(); itr != allTiles.end(); ++itr)
+    for (std::vector<SpecialTile*>::iterator itr = allSpecialTiles.begin(); itr != allSpecialTiles.end(); ++itr)
         delete *itr;
 
     for (std::vector<Coin*>::iterator itr = allCoins.begin(); itr != allCoins.end(); ++itr)
@@ -215,7 +215,7 @@ int Game::Update()
         window.clear(sf::Color(136, 247, 255));
         currLevel->DrawMap(window, gameState == STATE_MAIN_MENU);
 
-        //! Temporarily commented out because it brings weird behavior to objects with Tile class
+        //! Temporarily commented out because it brings weird behavior to objects with SpecialTile class
         //sf::Vector2f cameraPos = gameState == STATE_MAIN_MENU ? menuPlayer->GetPosition() : player->GetPosition();
 
         //if (cameraPos.x > window.getSize().x / 2.f)
@@ -252,7 +252,7 @@ int Game::Update()
             }
             case STATE_PLAYING:
             {
-                for (std::vector<Tile*>::iterator itr = allTiles.begin(); itr != allTiles.end(); ++itr)
+                for (std::vector<SpecialTile*>::iterator itr = allSpecialTiles.begin(); itr != allSpecialTiles.end(); ++itr)
                     (*itr)->Update();
 
                 for (std::vector<Coin*>::iterator itr = allCoins.begin(); itr != allCoins.end(); ++itr)
@@ -294,7 +294,7 @@ int Game::Update()
                 //player->Update();
                 player->DrawAccessoires(window, view);
 
-                for (std::vector<Tile*>::iterator itr = allTiles.begin(); itr != allTiles.end(); ++itr)
+                for (std::vector<SpecialTile*>::iterator itr = allSpecialTiles.begin(); itr != allSpecialTiles.end(); ++itr)
                     (*itr)->Update();
 
                 for (std::vector<Coin*>::iterator itr = allCoins.begin(); itr != allCoins.end(); ++itr)
@@ -367,7 +367,7 @@ void Game::HandleTimers(sf::Int32 diff_time)
         if (!(*itr)->IsDead())
             (*itr)->HandleTimers(diff_time);
 
-    for (std::vector<Tile*>::iterator itr = allTiles.begin(); itr != allTiles.end(); ++itr)
+    for (std::vector<SpecialTile*>::iterator itr = allSpecialTiles.begin(); itr != allSpecialTiles.end(); ++itr)
         if (!(*itr)->IsRemoved())
             (*itr)->HandleTimers(diff_time);
 }
@@ -377,50 +377,6 @@ void Game::StartActualGame(sf::RenderWindow &window, std::string filename)
     gameState = STATE_PLAYING;
     currLevel->LoadMap(filename, window);
     //window.setMouseCursorVisible(false);
-}
-
-bool Game::IsQuickSandArea(float x, float y, float h, float w)
-{
-    for (std::vector<sf::Sprite>::iterator itr = quickSandGameobjects.begin(); itr != quickSandGameobjects.end(); ++itr)
-    {
-        sf::Vector2f quickSandPos = (*itr).getPosition();
-        sf::FloatRect quickSandRect = (*itr).getGlobalBounds();
-
-        //! We add 5 pixels to the height so it properly checks for gameobjects we're moving on.
-        if (WillCollision(x, y, h + 5, w, quickSandPos.x, quickSandPos.y, quickSandRect.height, quickSandRect.width))
-            return true;
-    }
-
-    return false;
-}
-
-bool Game::IsInWaterArea(float x, float y, float h, float w)
-{
-    for (std::vector<sf::Sprite>::iterator itr = waterGameobjects.begin(); itr != waterGameobjects.end(); ++itr)
-    {
-        sf::Vector2f waterPos = (*itr).getPosition();
-        sf::FloatRect waterRect = (*itr).getGlobalBounds();
-
-        //! We add 5 pixels to the height so it properly checks for gameobjects we're moving on.
-        if (WillCollision(x, y, h + 5, w, waterPos.x, waterPos.y, waterRect.height, waterRect.width))
-            return true;
-    }
-
-    return false;
-}
-
-bool Game::IsInLavaArea(float x, float y, float h, float w)
-{
-    for (std::vector<sf::Sprite>::iterator itr = lavaGameobjects.begin(); itr != lavaGameobjects.end(); ++itr)
-    {
-        sf::Vector2f lavaPos = (*itr).getPosition();
-        sf::FloatRect lavaRect = (*itr).getGlobalBounds();
-
-        if (WillCollision(x, y, h, w, lavaPos.x, lavaPos.y, lavaRect.height, lavaRect.width))
-            return true;
-    }
-
-    return false;
 }
 
 void Game::RemoveUnitWithTypeId(UnitTypeId typeId)

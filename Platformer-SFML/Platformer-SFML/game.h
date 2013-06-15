@@ -8,7 +8,7 @@ class Player;
 class Bullet;
 class Level;
 class Enemy;
-class Tile;
+class SpecialTile;
 class Coin;
 class Unit;
 class MenuPlayer;
@@ -27,19 +27,10 @@ class Game
 
         std::vector<sf::Sprite> &GetGameObjects() { return gameObjects; }
         std::vector<sf::Sprite> &GetGameObjectsCollidable() { return gameObjectsCollidable; }
-        std::vector<sf::Sprite> &GetQuickSandObjects() { return quickSandGameobjects; }
-        std::vector<sf::Sprite> &GetWaterObjects() { return waterGameobjects; }
-        std::vector<sf::Sprite> &GetLavaObjects() { return lavaGameobjects; }
         void AddGameObject(sf::Sprite gameobject) { gameObjects.push_back(gameobject); }
         void AddGameObjectCollidable(sf::Sprite gameobject) { gameObjectsCollidable.push_back(gameobject); }
-        void AddQuickSandObject(sf::Sprite quickSandObject) { quickSandGameobjects.push_back(quickSandObject); }
-        void AddWaterObject(sf::Sprite waterObject) { waterGameobjects.push_back(waterObject); }
-        void AddLavaObject(sf::Sprite lavaObject) { lavaGameobjects.push_back(lavaObject); }
         void ClearGameObjects() { gameObjects.clear(); }
         void ClearGameObjectCollidables() { gameObjectsCollidable.clear(); }
-        void ClearQuickSandObjects() { quickSandGameobjects.clear(); }
-        void ClearWaterObjects() { waterGameobjects.clear(); }
-        void ClearLavaObjects() { lavaGameobjects.clear(); }
 
         void HandleTimers(sf::Int32 diff_time);
 
@@ -60,17 +51,13 @@ class Game
 
         void RemoveUnitWithTypeId(UnitTypeId typeId);
 
-        std::vector<Tile*> &GetTiles() { return allTiles; }
-        void ClearAllTiles() { allTiles.clear(); }
-        void AddTile(Tile* tile) { allTiles.push_back(tile); }
+        std::vector<SpecialTile*> &GetSpecialTiles() { return allSpecialTiles; }
+        void ClearAllSpecialTiles() { allSpecialTiles.clear(); }
+        void AddSpecialTile(SpecialTile* tile) { allSpecialTiles.push_back(tile); }
 
         std::vector<Coin*> &GetCoins() { return allCoins; }
         void ClearCoins() { allCoins.clear(); }
         void AddCoin(Coin* coin) { allCoins.push_back(coin); }
-
-        bool IsQuickSandArea(float x, float y, float h, float w);
-        bool IsInWaterArea(float x, float y, float h, float w);
-        bool IsInLavaArea(float x, float y, float h, float w);
 
     private:
         bool isRunning, showDebugInfo;
@@ -78,14 +65,11 @@ class Game
         MenuPlayer* menuPlayer;
         std::vector<sf::Sprite> gameObjects;
         std::vector<sf::Sprite> gameObjectsCollidable;
-        std::vector<sf::Sprite> quickSandGameobjects;
-        std::vector<sf::Sprite> waterGameobjects;
-        std::vector<sf::Sprite> lavaGameobjects;
         std::vector<Bullet*> allBullets;
         std::vector<Enemy*> allEnemies;
         std::vector<Unit*> allUnits;
         GameState gameState;
         Level* currLevel;
-        std::vector<Tile*> allTiles;
+        std::vector<SpecialTile*> allSpecialTiles;
         std::vector<Coin*> allCoins;
 };
