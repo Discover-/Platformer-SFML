@@ -26,16 +26,17 @@ class Unit : public Position
         virtual ~Unit();
         virtual void Update();
         virtual void HandleTimers(sf::Int32 diff_time);
+        virtual sf::Sprite GetSpriteBody();
 
         void Draw(sf::Sprite* _spriteBody = NULL, bool updatePos = false);
-
-        sf::Sprite GetSpriteBody();
 
         Game* &GetGame() { return game; }
 
         UnitTypeId GetTypeId() { return typeId; }
 
         /* MOVEMENT */
+        int fallSpeed, jumpSpeed, bounceSpeed;
+
         void SetIsMoving(bool val) { isMoving = val; }
         bool IsMoving() { return isMoving; }
 
@@ -90,14 +91,14 @@ class Unit : public Position
         std::vector<std::pair<int, sf::Texture>> spriteBodiesLeft;
         std::vector<std::pair<int, sf::Texture>> spriteBodiesRight;
         sf::RenderWindow* window;
-        sf::Texture imageDeadSprite, imageJumpSpriteLeft, imageJumpSpriteRight;
+        sf::Texture imageJumpSpriteLeft, imageJumpSpriteRight;
         sf::RectangleShape lifeBarRed, lifeBarGreen;
         bool showLifeBar;
         int showLifeBarTimer;
 
         /* MOVEMENT */
-        bool isMoving, isJumping, isFalling, hasBounced;
-        int fallSpeed, jumpSpeed, bounceSpeed, bounceToLeft;
+        bool isMoving, isJumping, isFalling, hasBounced, bounceToLeft;
+        //int fallSpeed, jumpSpeed, bounceSpeed;
         float moveSpeed;
         int moveFrame, totalMoveFrames, frameInterval, frameIntervalStore;
         bool canFly, movingToLeft, isOnMovingTile;

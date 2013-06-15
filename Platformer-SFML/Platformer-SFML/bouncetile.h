@@ -24,7 +24,7 @@ class Game;
 class BounceTile : public SpecialTile
 {
     public:
-        BounceTile(Game* _game, sf::RenderWindow* _window, sf::Texture _image, sf::Vector2f startPosition, std::string color);
+        BounceTile(Game* _game, sf::RenderWindow* _window, sf::Texture _image, sf::Texture _imageUsed, sf::Vector2f startPosition, std::string color);
         ~BounceTile();
 
         void Update();

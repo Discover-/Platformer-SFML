@@ -27,6 +27,7 @@ class MenuPlayer : public Unit
 
         void Update();
         void HandleTimers(sf::Int32 diff_time);
+        sf::Sprite GetSpriteBody() { return Unit::GetSpriteBody(); }
 
     private:
 

@@ -18,13 +18,15 @@
 #include "bullet.h"
 #include "unit.h"
 
-Enemy::Enemy(Game* _game, sf::RenderWindow* _window, sf::Vector2f position, std::vector<std::pair<int, sf::Texture>> _spritesLeft, std::vector<std::pair<int, sf::Texture>> _spritesRight, int _life, int _totalMoveFrames, int _frameInterval, bool _canFly) :
+Enemy::Enemy(Game* _game, sf::RenderWindow* _window, sf::Vector2f position, std::vector<std::pair<int, sf::Texture>> _spritesLeft, std::vector<std::pair<int, sf::Texture>> _spritesRight, sf::Texture _imageDead, int _life, int _totalMoveFrames, int _frameInterval, bool _canFly) :
 Unit(_game, _window, position, _spritesLeft, _spritesRight, TYPEID_ENEMY, _life, _totalMoveFrames, _frameInterval, _canFly)
 {
+    SetPosition(position.x, position.y);
     destinationX1 = position.x;
     destinationY1 = position.y;
     destinationX2 = position.x + 200.0f;
     destinationY2 = position.y;
+    imageDead = _imageDead;
 
     if (_canFly)
         destinationX2 += float(urand(100, 300));
@@ -38,6 +40,19 @@ Enemy::~Enemy()
 void Enemy::Update()
 {
     Unit::Update();
+
+    if (IsDead())
+    {
+        if (CanFly() && GetPositionY() < 900.0f)
+        {
+            SetPositionY(GetPositionY() + fallSpeed);
+            fallSpeed++;
+        }
+
+        sf::Sprite spriteDead(imageDead);
+        Draw(&spriteDead, true);
+        return;
+    }
 
     if (GAME_STATE_PAUSED(GetGame()->GetGameState()) || IsDead())
         return;

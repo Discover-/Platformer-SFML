@@ -1,8 +1,10 @@
 * Order repository files
 * Implement cannon like in Mario
 * Finish implementatation of the crate object which you can push away so it can help you
-* Add more 'surprises' to the bonus block: plant growing out, star jumping out, mushroom ontop moves out, etc.
-* Only make the bonus block trigger when hit from the bottom
+* Update Bonus Tile:
+  - Add more 'surprises' to the bonus block: plant growing out, star jumping out, mushroom ontop moves out, etc.
+  - Only make the bonus block trigger when hit from the bottom
+  - Store all 'surprises' in the class in a vector with pair id and texture and load these from Level class (Textures) (can only do this when we get more than one type of surprise)
 * Implement coins of all colors
 * Add sounds and music
 * Add timer of how long the level was played

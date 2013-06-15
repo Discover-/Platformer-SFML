@@ -3,10 +3,10 @@
 #include "game.h"
 #include "player.h"
 
-Coin::Coin(Game* _game, sf::RenderWindow* _window, sf::Vector2f _startPosition)
+Coin::Coin(Game* _game, sf::RenderWindow* _window, sf::Vector2f _startPosition, sf::Texture _image)
 {
     game = _game;
-    image.loadFromFile("Graphics/Tiles/coin_gold.png");;
+    image = _image;
     window = _window;
     startPosition = _startPosition;
     SetPosition(startPosition.x, startPosition.y);

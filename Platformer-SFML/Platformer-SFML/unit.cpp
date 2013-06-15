@@ -35,18 +35,15 @@ Unit::Unit(Game* _game, sf::RenderWindow* _window, sf::Vector2f position, std::v
     showLifeBar = false;
     showLifeBarTimer = 0;
     shootCooldown = 0;
-    bounceToLeft = 0;
+    bounceToLeft = false;
 
     switch (_typeId)
     {
         case TYPEID_PLAYER:
-            imageJumpSpriteLeft.loadFromFile("Graphics/Character/jump_l.png");
-            imageJumpSpriteRight.loadFromFile("Graphics/Character/jump_r.png");
             moveSpeed = 7.0f;
             isMoving = false;
             break;
         case TYPEID_ENEMY:
-            imageDeadSprite.loadFromFile("Graphics/Enemies/" + std::string(canFly ? "fly_dead" : "slime_dead") + ".png");
             moveSpeed = 3.0f;
             isMoving = true;
             lifeBarRed.setSize(sf::Vector2f(75.0f, 12.0f));
@@ -80,38 +77,8 @@ void Unit::Update()
         return;
     }
 
-    if (game->GetGameState() == STATE_MAIN_MENU)
+    if (game->GetGameState() == STATE_MAIN_MENU || !isAlive)
         return;
-
-    if (!isAlive)
-    {
-        if (typeId == TYPEID_ENEMY)
-        {
-            if (canFly && GetPositionY() > 0)
-            {
-                SetPositionY(GetPositionY() + fallSpeed);
-                fallSpeed++;
-
-                sf::Sprite sprite(imageDeadSprite);
-                Draw(&sprite, true);
-            }
-            else if (!canFly)
-            {
-                if (!CollidesWithGameobjects(GetPositionX(), GetPositionY() + fallSpeed))
-                {
-                    SetPositionY(GetPositionY() + fallSpeed);
-                    fallSpeed++;
-                }
-                else
-                    fallSpeed = 0;
-
-                sf::Sprite sprite(imageDeadSprite);
-                Draw(&sprite, true);
-            }
-        }
-
-        return;
-    }
 
     if (hasBounced)
     {
@@ -309,13 +276,6 @@ void Unit::BounceAway(bool toLeft)
 
 sf::Sprite Unit::GetSpriteBody()
 {
-    if (typeId == TYPEID_PLAYER && (isJumping || isFalling))
-    {
-        sf::Sprite sprite(movingToLeft ? imageJumpSpriteRight : imageJumpSpriteLeft);
-        sprite.setPosition(GetPositionX(), GetPositionY());
-        return sprite;
-    }
-
     if (movingToLeft && typeId != TYPEID_MENU_PLAYER)
     {
         for (std::vector<std::pair<int, sf::Texture>>::iterator itr = spriteBodiesLeft.begin(); itr != spriteBodiesLeft.end(); ++itr)

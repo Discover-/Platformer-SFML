@@ -3,13 +3,13 @@
 #include "game.h"
 #include "player.h"
 
-BounceTile::BounceTile(Game* _game, sf::RenderWindow* _window, sf::Texture _image, sf::Vector2f _startPosition, std::string color) :
+BounceTile::BounceTile(Game* _game, sf::RenderWindow* _window, sf::Texture _image, sf::Texture _imageUsed, sf::Vector2f _startPosition, std::string color) :
 SpecialTile(_game, _window, _image, _startPosition, TYPEID_BOUNCE_TILE)
 {
     isUsed = false;
     startPosition = _startPosition;
     SetPosition(startPosition.x, startPosition.y);
-    imageUsed.loadFromFile("Graphics/Tiles/switch_" + color + "_off.png");
+    imageUsed = _imageUsed;
 }
 
 BounceTile::~BounceTile()

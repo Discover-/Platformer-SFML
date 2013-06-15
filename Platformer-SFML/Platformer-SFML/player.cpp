@@ -20,16 +20,16 @@
 #include "coin.h"
 #include <math.h>
 
-Player::Player(Game* _game, sf::RenderWindow* _window, sf::Vector2f position, std::vector<std::pair<int, sf::Texture>> _spritesLeft, std::vector<std::pair<int, sf::Texture>> _spritesRight, int _life, int _totalMoveFrames, int _frameInterval, bool _canFly) :
-Unit(_game, _window, position, _spritesLeft, _spritesRight, TYPEID_PLAYER, _life, _totalMoveFrames, _frameInterval, _canFly)
+Player::Player(Game* _game, sf::RenderWindow* _window, sf::Vector2f position, std::vector<std::pair<int, sf::Texture>> _spritesLeft, std::vector<std::pair<int, sf::Texture>> _spritesRight, sf::Texture _imageHeartEmpty, sf::Texture _imageHeartFull, sf::Texture _imageSmallCoin, sf::Texture _imageJumpSpriteLeft, sf::Texture _imageJumpSpriteRight, int _life, int _totalMoveFrames, int _frameInterval) :
+Unit(_game, _window, position, _spritesLeft, _spritesRight, TYPEID_PLAYER, _life, _totalMoveFrames, _frameInterval, false)
 {
-    for (int i = 0; i < 4; ++i)
-        keysDown[i] = false;
-
+    SetPosition(position.x, position.y);
     spritesLeft = _spritesLeft;
-    imageHeartEmpty.loadFromFile("Graphics/Other/heart_empty.png");
-    imageHeartFull.loadFromFile("Graphics/Other/heart_full.png");
-    imageSmallCoin.loadFromFile("Graphics/Tiles/coin_gold_small.png");
+    imageHeartEmpty = _imageHeartEmpty;
+    imageHeartFull = _imageHeartFull;
+    imageSmallCoin = _imageSmallCoin;
+    imageJumpSpriteLeft = _imageJumpSpriteLeft;
+    imageJumpSpriteRight = _imageJumpSpriteRight;
     coinAmount = 0;
 
     for (int i = 0; i < 5; ++i)
@@ -54,6 +54,10 @@ void Player::Update()
     {
         if (!CollidesWithGameobjects(GetPositionX() - GetMoveSpeed(), GetPositionY()))
         {
+            float posX = GetPositionX();
+            float posY = GetPositionY();
+            float speed = GetMoveSpeed();
+
             SetPosition(GetPositionX() - GetMoveSpeed(), GetPositionY());
             SetIsMovingToLeft(false);
             SetIsMoving(true);
@@ -127,33 +131,6 @@ void Player::HandleTimers(sf::Int32 diff_time)
     Unit::HandleTimers(diff_time);
 }
 
-void Player::SetKeysDown(sf::Uint8 index, bool value)
-{
-    return;
-    //keysDown[index] = value;
-
-    //if (value)
-    //{
-    //    switch (index)
-    //    {
-    //        case 0: //! A & >
-    //            keysDown[2] = false;
-    //            break;
-    //        case 2: //! v & A
-    //            keysDown[0] = false;
-    //            break;
-    //        case 1: //! < & A
-    //            keysDown[3] = false;
-    //            break;
-    //        case 3: //! > & D
-    //            keysDown[1] = false;
-    //            break;
-    //        default:
-    //            break;
-    //    }
-    //}
-}
-
 void Player::DrawAccessoires(sf::RenderWindow &window, sf::View &view)
 {
     for (std::vector<std::pair<int /* id */, bool /* full */>>::iterator itr = hearts.begin(); itr != hearts.end(); ++itr)
@@ -182,4 +159,16 @@ void Player::DrawAccessoires(sf::RenderWindow &window, sf::View &view)
             window.draw(spriteSmallCoin);
         }
     }
+}
+
+sf::Sprite Player::GetSpriteBody()
+{
+    if (IsJumping() || IsFalling())
+    {
+        sf::Sprite sprite(IsMovingToLeft() ? imageJumpSpriteRight : imageJumpSpriteLeft);
+        sprite.setPosition(GetPositionX(), GetPositionY());
+        return sprite;
+    }
+
+    return Unit::GetSpriteBody();
 }

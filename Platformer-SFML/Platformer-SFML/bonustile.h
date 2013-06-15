@@ -24,7 +24,7 @@ class Game;
 class BonusTile : public SpecialTile
 {
     public:
-        BonusTile(Game* _game, sf::RenderWindow* _window, sf::Texture _image, sf::Vector2f startPosition);
+        BonusTile(Game* _game, sf::RenderWindow* _window, sf::Texture _image, sf::Texture _imageUsed, sf::Vector2f startPosition);
         ~BonusTile();
 
         void Update();

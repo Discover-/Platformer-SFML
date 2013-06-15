@@ -111,7 +111,7 @@ void Level::LoadMap(std::string filename, sf::RenderWindow &window, bool reload 
 
             if (tilesInfoLayers[i][j] == "A")
             {
-                game->AddCoin(new Coin(game, &window, sf::Vector2f(j * 50.0f, i * 50.0f - 20.0f + float(urand(0, 9)))));
+                game->AddCoin(new Coin(game, &window, sf::Vector2f(j * 50.0f, i * 50.0f - 20.0f + float(urand(0, 9))), Textures["Graphics/Tiles/coin_gold.png"]));
                 continue;
             }
             else if (tilesInfoLayers[i][j] == "B" || tilesInfoLayers[i][j] == "C")
@@ -132,7 +132,7 @@ void Level::LoadMap(std::string filename, sf::RenderWindow &window, bool reload 
             }
             else if (tilesInfoLayers[i][j] == "D")
             {
-                game->AddSpecialTile(new BonusTile(game, &window, Textures["Graphics/Tiles/bonus.png"], mapPosition));
+                game->AddSpecialTile(new BonusTile(game, &window, Textures["Graphics/Tiles/bonus.png"], Textures["Graphics/Tiles/bonus_used.png"], mapPosition));
                 continue;
             }
             else if (tilesInfoLayers[i][j] == "Y")
@@ -153,7 +153,7 @@ void Level::LoadMap(std::string filename, sf::RenderWindow &window, bool reload 
             else if (tilesInfoLayers[i][j] == "E" || tilesInfoLayers[i][j] == "F" || tilesInfoLayers[i][j] == "G" || tilesInfoLayers[i][j] == "H")
             {
                 std::string tileColor = GetBounceTileColor(tilesInfoLayers[i][j]);
-                game->AddSpecialTile(new BounceTile(game, &window, Textures["Graphics/Tiles/switch_" + tileColor + "_on.png"], mapPosition, tileColor));
+                game->AddSpecialTile(new BounceTile(game, &window, Textures["Graphics/Tiles/switch_" + tileColor + "_on.png"], Textures["Graphics/Tiles/switch_" + tileColor + "_off.png"], mapPosition, tileColor));
                 continue;
             }
             else if (tilesInfoLayers[i][j] == "!")
@@ -179,7 +179,7 @@ void Level::LoadMap(std::string filename, sf::RenderWindow &window, bool reload 
                     }
                 }
 
-                game->SetPlayer(new Player(game, &window, mapPosition, spriteCharactersLeft, spriteCharactersRight));
+                game->SetPlayer(new Player(game, &window, mapPosition, spriteCharactersLeft, spriteCharactersRight, Textures["Graphics/Other/heart_empty.png"], Textures["Graphics/Other/heart_full.png"], Textures["Graphics/Other/coin_gold_small.png"], Textures["Graphics/Character/jump_l.png"], Textures["Graphics/Character/jump_r.png"]));
                 continue;
             }
             else if (tilesInfoLayers[i][j] == "Z" || tilesInfoLayers[i][j] == "?")
@@ -205,7 +205,7 @@ void Level::LoadMap(std::string filename, sf::RenderWindow &window, bool reload 
                     }
                 }
 
-                game->AddEnemy(new Enemy(game, &window, mapPosition, spriteEnemiesLeft, spriteEnemiesRight, 3, 1, 80, !slime));
+                game->AddEnemy(new Enemy(game, &window, mapPosition, spriteEnemiesLeft, spriteEnemiesRight, Textures["Graphics/Enemies/" + std::string(!slime ? "fly_dead" : "slime_dead") + ".png"], 3, 1, 80, !slime));
                 continue;
             }
 

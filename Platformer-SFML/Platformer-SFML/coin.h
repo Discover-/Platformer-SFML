@@ -22,7 +22,7 @@ class Game;
 class Coin : public Position
 {
     public:
-        Coin(Game* _game, sf::RenderWindow* _window, sf::Vector2f _startPosition);
+        Coin(Game* _game, sf::RenderWindow* _window, sf::Vector2f _startPosition, sf::Texture _image);
         ~Coin();
 
         void Update();

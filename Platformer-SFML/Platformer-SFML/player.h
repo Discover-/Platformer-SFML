@@ -22,23 +22,22 @@ class Game;
 class Player : public Unit
 {
     public:
-        Player(Game* _game, sf::RenderWindow* _window, sf::Vector2f position, std::vector<std::pair<int, sf::Texture>> _spritesLeft, std::vector<std::pair<int, sf::Texture>> _spritesRight, int _life = 5, int _totalMoveFrames = 9, int _frameInterval = 30, bool _canFly = false);
+        Player(Game* _game, sf::RenderWindow* _window, sf::Vector2f position, std::vector<std::pair<int, sf::Texture>> _spritesLeft, std::vector<std::pair<int, sf::Texture>> _spritesRight, sf::Texture _imageHeartEmpty, sf::Texture _imageHeartFull, sf::Texture _imageSmallCoin, sf::Texture _imageJumpSpriteLeft, sf::Texture _imageJumpSpriteRight, int _life = 5, int _totalMoveFrames = 9, int _frameInterval = 30);
         ~Player();
 
         void Update();
-        void SetKeysDown(sf::Uint8 index, bool value);
         void HandleTimers(sf::Int32 diff_time);
+        sf::Sprite GetSpriteBody();
+
         void DrawAccessoires(sf::RenderWindow &window, sf::View &view);
         std::vector<std::pair<int /* id */, bool /* full */>> &GetHearts() { return hearts; }
 
         std::vector<std::pair<int, sf::Texture>> GetSpritesLeft() { return spritesLeft; }
 
     private:
-        bool keysDown[4];
         int coinAmount;
         std::vector<std::pair<int /* id */, bool /* full */>> hearts;
-        sf::Texture imageHeartEmpty;
-        sf::Texture imageHeartFull;
-        sf::Texture imageSmallCoin;
+        sf::Texture imageHeartEmpty, imageHeartFull, imageSmallCoin;
+        sf::Texture imageJumpSpriteLeft, imageJumpSpriteRight;
         std::vector<std::pair<int, sf::Texture>> spritesLeft;
 };
