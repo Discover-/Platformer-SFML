@@ -28,3 +28,4 @@
   - Add several types of bullets or upgrades
 * Improve animations
 * Loading screen
+* Make Game class singleton/static

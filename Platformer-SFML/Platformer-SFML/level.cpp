@@ -13,17 +13,52 @@
 #include "movingtile.h"
 #include "bouncetile.h"
 #include "bonustile.h"
+#include <dirent.h>
+
+std::map<std::string /* filename */, sf::Texture> Level::Textures;
 
 Level::Level(Game* _game, sf::RenderWindow &window)
 {
     game = _game;
+    LoadAllImages();
     LoadMap("menu", window);
+    //textures.clear();
     currLevel = 0;
 }
 
 Level::~Level()
 {
     
+}
+
+void Level::LoadAllImages()
+{
+    DIR* dir;
+    struct dirent *ent;
+    std::stringstream ss;
+    sf::Texture image;
+    char const* dirSubName[4] = { "Graphics/Tiles", "Graphics/Character", "Graphics/Enemies", "Graphics/Other" };
+
+    for (int i = 0; i < 4; ++i)
+    {
+        if ((dir = opendir(dirSubName[i])) != NULL)
+        {
+            while ((ent = readdir(dir)) != NULL)
+            {
+                if (ent->d_name[0] != '.') //! These seem to be the only hidden invisible files in there and the dirent library doesn't offer detection for it, so this will work. :)
+                {
+                    ss << dirSubName[i] << "/" << ent->d_name;
+                    image.loadFromFile(ss.str().c_str());
+                    Textures[ss.str().c_str()] = image;
+                    ss.str(std::string());
+                }
+            }
+
+            closedir(dir);
+        }
+    }
+
+    return;
 }
 
 void Level::LoadMap(std::string filename, sf::RenderWindow &window, bool reload /* = false */)
@@ -91,29 +126,18 @@ void Level::LoadMap(std::string filename, sf::RenderWindow &window, bool reload 
                     destiPos.y -= 200.0f;
                 }
 
-                sf::Texture image;
-                image.loadFromFile("Graphics/Tiles/plank.png");
-                game->AddTile(new MovingTile(game, &window, image, 3, startPos, destiPos, tilesInfoLayers[i][j] == "B"));
-                //tmpSprite.setTexture(image);
-                //game->AddGameObjectCollidable(tmpSprite);
+                game->AddTile(new MovingTile(game, &window, Textures["Graphics/Tiles/plank.png"], 3, startPos, destiPos, tilesInfoLayers[i][j] == "B"));
                 continue;
             }
             else if (tilesInfoLayers[i][j] == "D")
             {
-                sf::Vector2f startPos(j * 50.0f, i * 50.0f);
-                sf::Vector2f destiPos = startPos;
-                sf::Texture image;
-                image.loadFromFile("Graphics/Tiles/bonus.png");
-                game->AddTile(new BonusTile(game, &window, image, startPos));
+                game->AddTile(new BonusTile(game, &window, Textures["Graphics/Tiles/bonus.png"], sf::Vector2f(j * 50.0f, i * 50.0f)));
                 continue;
             }
             else if (tilesInfoLayers[i][j] == "E" || tilesInfoLayers[i][j] == "F" || tilesInfoLayers[i][j] == "G" || tilesInfoLayers[i][j] == "H")
             {
-                sf::Vector2f startPos(j * 50.0f, i * 50.0f);
                 std::string tileColor = GetBounceTileColor(tilesInfoLayers[i][j]);
-                sf::Texture image;
-                image.loadFromFile("Graphics/Tiles/switch_" + tileColor + "_off.png");
-                game->AddTile(new BounceTile(game, &window, image, 3, startPos, tileColor));
+                game->AddTile(new BounceTile(game, &window, Textures["Graphics/Tiles/switch_" + tileColor + "_off.png"], 3, sf::Vector2f(j * 50.0f, i * 50.0f), tileColor));
                 continue;
             }
             else if (tilesInfoLayers[i][j] == "!")
@@ -134,7 +158,7 @@ void Level::LoadMap(std::string filename, sf::RenderWindow &window, bool reload 
                 {
                     for (int z = 0; z < 10; ++z)
                     {
-                        imageCharacter.loadFromFile("Graphics/Character/walk_" + std::to_string(static_cast<long long>(z)) + "_" + (x ? "l" : "r") + ".png");
+                        sf::Texture imageCharacter = Textures["Graphics/Character/walk_" + std::to_string(static_cast<long long>(z)) + "_" + (x ? "l" : "r") + ".png"];
                         x ? spriteCharactersRight.push_back(std::make_pair(z, imageCharacter)) : spriteCharactersLeft.push_back(std::make_pair(z, imageCharacter));
                     }
                 }
@@ -145,7 +169,6 @@ void Level::LoadMap(std::string filename, sf::RenderWindow &window, bool reload 
             else if (tilesInfoLayers[i][j] == "Z" || tilesInfoLayers[i][j] == "?")
             {
                 bool slime = tilesInfoLayers[i][j] == "Z";
-                sf::Texture imageEnemy;
                 std::vector<std::pair<int, sf::Texture>> spriteEnemiesLeft;
                 std::vector<std::pair<int, sf::Texture>> spriteEnemiesRight;
 
@@ -155,12 +178,12 @@ void Level::LoadMap(std::string filename, sf::RenderWindow &window, bool reload 
                     {
                         if (slime)
                         {
-                            imageEnemy.loadFromFile("Graphics/Enemies/slime_" + std::string(z ? "walk_" : "normal_") + (x ? "l" : "r") + ".png");
+                            sf::Texture imageEnemy = Textures["Graphics/Enemies/slime_" + std::string(z ? "walk_" : "normal_") + (x ? "l" : "r") + ".png"];
                             x ? spriteEnemiesRight.push_back(std::make_pair(z, imageEnemy)) : spriteEnemiesLeft.push_back(std::make_pair(z, imageEnemy));
                         }
                         else
                         {
-                            imageEnemy.loadFromFile("Graphics/Enemies/fly_" + std::string(z ? "fly_" : "normal_") + (x ? "l" : "r") + ".png");
+                            sf::Texture imageEnemy = Textures["Graphics/Enemies/fly_" + std::string(z ? "fly_" : "normal_") + (x ? "l" : "r") + ".png"];
                             x ? spriteEnemiesRight.push_back(std::make_pair(z, imageEnemy)) : spriteEnemiesLeft.push_back(std::make_pair(z, imageEnemy));
                         }
                     }
@@ -175,10 +198,10 @@ void Level::LoadMap(std::string filename, sf::RenderWindow &window, bool reload 
 
             if (tilesInfoLayers[i][j] == "I")
             {
-                if (urand(0, 20) > 18)
-                    fileName = "Graphics/Tiles/cloud_" + std::to_string(static_cast<long long>(urand(0, 2))) + ".png";
-                else
+                if (urand(0, 20) < 18)
                     continue;
+
+                fileName = "Graphics/Tiles/cloud_" + std::to_string(static_cast<long long>(urand(0, 2))) + ".png";
             }
             else if (tilesInfoLayers[i][j] == "J")
             {
@@ -221,7 +244,10 @@ void Level::LoadMap(std::string filename, sf::RenderWindow &window, bool reload 
             else if (tilesInfoLayers[i][j] == "W")
                 fileName = "Graphics/Tiles/shroom.png";
             else if (tilesInfoLayers[i][j] == "X")
+            {
+                isCollidable = true;
                 fileName = "Graphics/Tiles/crate.png";
+            }
             else if (tilesInfoLayers[i][j] == "Y")
             {
                 isCollidable = true;
@@ -233,15 +259,19 @@ void Level::LoadMap(std::string filename, sf::RenderWindow &window, bool reload 
             if (fileName == "")
                 continue;
 
-            sf::Texture image;
-            image.loadFromFile(fileName);
+            if (!Textures.count(fileName))
+            {
+                std::cout << "Unloaded image ('" << fileName << "') found" << std::endl;
+                continue;
+            }
+
             SpriteInfo tileInfo;
-            tileInfo.image = image;
+            tileInfo.image = Textures[fileName];
             tileInfo.posX = j * 50.0f;
             tileInfo.posY = i * 50.0f;
             sprites.push_back(tileInfo);
 
-            tmpSprite.setTexture(image);
+            tmpSprite.setTexture(Textures[fileName]);
             tmpSprite.setPosition(j * 50.0f, i * 50.0f);
 
             if (isCollidable)
@@ -258,7 +288,7 @@ void Level::LoadMap(std::string filename, sf::RenderWindow &window, bool reload 
         }
     }
 
-    std::cout << "Time in milliseconds taken to load level: " << _clock.restart().asMilliseconds() << std::endl;
+    std::cout << "Time in milliseconds taken to load level '" + filename + "': " << _clock.restart().asMilliseconds() << std::endl;
 
     if (!foundPlayer)
         std::cout << "No player found in level " + filename + "." << std::endl;

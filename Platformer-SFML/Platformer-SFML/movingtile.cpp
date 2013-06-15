@@ -33,8 +33,7 @@ void MovingTile::Update()
         if (!WillCollision((*itr)->GetPositionX(), (*itr)->GetPositionY(), playerRect.height, playerRect.width, GetPositionX(), GetPositionY(), tileRect.height, tileRect.width))
         {
             (*itr)->SetIsOnMovingTile(false);
-            passengers.erase(itr);
-            itr = passengers.begin();
+            itr = passengers.erase(itr);
         }
         else
             ++itr;
