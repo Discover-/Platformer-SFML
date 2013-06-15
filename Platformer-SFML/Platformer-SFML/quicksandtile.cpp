@@ -36,7 +36,7 @@ bool QuickSandTile::OnCollision(Unit* unit /* = NULL */)
         unit->SetMoveSpeed(unit->GetMoveSpeed() / 2.0f);
     }
 
-    return false;
+    return true;
 }
 
 void QuickSandTile::OnCollisionOut(Unit* unit)
