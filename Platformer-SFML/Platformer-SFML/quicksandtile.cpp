@@ -30,7 +30,7 @@ void QuickSandTile::HandleTimers(sf::Int32 diff_time)
 
 bool QuickSandTile::OnCollision(Unit* unit /* = NULL */)
 {
-    if (unit && unit->GetTypeId() == TYPEID_PLAYER)
+    if (unit && !unit->IsInQuickSandArea())
     {
         unit->SetIsInQuickSandArea(true);
         unit->SetMoveSpeed(unit->GetMoveSpeed() / 2.0f);
@@ -41,6 +41,9 @@ bool QuickSandTile::OnCollision(Unit* unit /* = NULL */)
 
 void QuickSandTile::OnCollisionOut(Unit* unit)
 {
-    unit->SetIsInQuickSandArea(false);
-    unit->SetMoveSpeed(unit->GetMoveSpeed() * 2.0f);
+    if (unit->IsInQuickSandArea())
+    {
+        unit->SetIsInQuickSandArea(false);
+        unit->SetMoveSpeed(unit->GetMoveSpeed() * 2.0f);
+    }
 }

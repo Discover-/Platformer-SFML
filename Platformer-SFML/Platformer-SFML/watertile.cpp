@@ -30,7 +30,7 @@ void WaterTile::HandleTimers(sf::Int32 diff_time)
 
 bool WaterTile::OnCollision(Unit* unit /* = NULL */)
 {
-    if (unit && unit->GetTypeId() == TYPEID_PLAYER)
+    if (unit && !unit->IsInWaterArea())
     {
         unit->SetIsInWaterArea(true);
         unit->SetMoveSpeed(unit->GetMoveSpeed() / 2.0f);
@@ -41,6 +41,9 @@ bool WaterTile::OnCollision(Unit* unit /* = NULL */)
 
 void WaterTile::OnCollisionOut(Unit* unit)
 {
-    unit->SetIsInWaterArea(false);
-    unit->SetMoveSpeed(unit->GetMoveSpeed() * 2.0f);
+    if (unit->IsInWaterArea())
+    {
+        unit->SetIsInWaterArea(false);
+        unit->SetMoveSpeed(unit->GetMoveSpeed() * 2.0f);
+    }
 }
