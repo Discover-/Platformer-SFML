@@ -23,6 +23,7 @@ class Menu
         void PressedEnterOrMouse(sf::RenderWindow &window);
 
         MenuId GetCurrentMenu() { return currentMenu; }
+        void SetCurrentMenu(MenuId newMenu) { currentMenu = newMenu; }
         MenuInfo GetCurrentMenuInfo() { return menus[currentMenu].first; }
 
     private:

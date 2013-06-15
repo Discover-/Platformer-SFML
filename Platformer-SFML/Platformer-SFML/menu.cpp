@@ -22,6 +22,7 @@ Menu::~Menu()
 
 void Menu::Load()
 {
+    menus.clear();
     std::vector<MenuButtonInfo> menuButtonsInfo;
     MenuButtonInfo menuButtonInfo;
 

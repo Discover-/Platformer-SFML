@@ -129,6 +129,7 @@ int Game::Update()
                     //! Back to menu
                     case sf::Keyboard::F2:
                     {
+                        menu->SetCurrentMenu(MENU_MAIN);
                         gameState = STATE_MAIN_MENU;
                         currLevel->LoadMap("menu", window);
                         menuPlayer->SetPosition(1200.0f, 285.0f);
