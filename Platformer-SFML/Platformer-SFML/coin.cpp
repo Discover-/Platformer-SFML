@@ -3,14 +3,13 @@
 #include "game.h"
 #include "player.h"
 
-Coin::Coin(Game* _game, sf::RenderWindow* _window, sf::Vector2f _startPosition, sf::Texture _image)
+Coin::Coin(Game* _game, sf::RenderWindow* _window, sf::Vector2f _startPosition, sf::Texture _image) :
+FloatingTile(_startPosition)
 {
     game = _game;
     image = _image;
     window = _window;
-    startPosition = _startPosition;
-    SetPosition(startPosition.x, startPosition.y);
-    movingUp = true;
+    SetPosition(_startPosition.x, _startPosition.y);
     isTaken = false;
 }
 
@@ -22,22 +21,7 @@ Coin::~Coin()
 void Coin::Update()
 {
     if (!GAME_STATE_PAUSED(game->GetGameState()))
-    {
-        if (movingUp)
-        {
-            SetPositionY(GetPositionY() - 1.0f);
-
-            if (GetPositionY() < startPosition.y - 10.0f)
-                movingUp = false;
-        }
-        else
-        {
-            SetPositionY(GetPositionY() + 1.0f);
-
-            if (GetPositionY() > startPosition.y + 10.0f)
-                movingUp = true;
-        }
-    }
+        FloatingTile::Update();
 
     sf::Sprite spriteCoin(image);
     Draw(spriteCoin, true);
