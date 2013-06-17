@@ -84,6 +84,8 @@ int Game::Update()
 
     std::cout << "Time in milliseconds taken to load everything before entering while-loop: " << clockStart.restart().asMilliseconds() << std::endl;
 
+    float playedTime = 0.0f;
+
     while (window.isOpen())
     {
         sf::Event _event;
@@ -209,7 +211,8 @@ int Game::Update()
             }
         }
 
-        HandleTimers(clock.restart().asMilliseconds());
+        float timer = clock.restart().asSeconds();
+        HandleTimers(sf::Int32(timer * 1000));
         fpsClock.restart();
         window.clear(sf::Color(136, 247, 255));
         currLevel->DrawMap(window, gameState == STATE_MAIN_MENU);
@@ -348,6 +351,11 @@ int Game::Update()
             text.setColor(GAME_STATE_DRAW_GAME(gameState) || gameState == STATE_MAIN_MENU ? sf::Color::Black : sf::Color::White);
             text.setPosition(view.getCenter().x + 330.0f, view.getCenter().y + 255.0f);
             window.draw(text);
+
+            sf::Text text2("Timer " + std::to_string(static_cast<long long>(GAME_STATE_PAUSED(gameState) ? playedTime : playedTime += timer)), font, 30);
+            text2.setColor(GAME_STATE_DRAW_GAME(gameState) || gameState == STATE_MAIN_MENU ? sf::Color::Black : sf::Color::White);
+            text2.setPosition(view.getCenter().x + 330.0f, view.getCenter().y + 225.0f);
+            window.draw(text2);
         }
 
         window.display();
