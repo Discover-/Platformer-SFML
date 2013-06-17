@@ -5,7 +5,6 @@
   - Add more 'surprises' to the bonus block: plant growing out, star jumping out, mushroom ontop moves out, etc.
   - Only make the bonus block trigger when hit from the bottom
   - Store all 'surprises' in the class in a vector with pair id and texture and load these from Level class (Textures) (can only do this when we get more than one type of surprise)
-* Implement coins of all colors
 * Add sounds and music
 * Add mini menu in-game rather than just 'PAUSED'
 * Move all positions to Position struct or sf::Vector2f
