@@ -13,7 +13,6 @@
 * Proper collision detection on movingtile
 * Get rid of the small 'bounce' when you hit the ground after jumping
 * Implement keys and locks to access new level
-* Implement spikes
 * Check 'timestep' rather than FPS limit (http://www.cppforum.nl/index.php/topic,2531.msg16014.html#msg16014)
 * Implement zooming out (MouseWheelMoved)
 * Add more IsInRange calls
@@ -26,3 +25,4 @@
 * Improve animations
 * Loading screen
 * Make Game class singleton/static
+* Make possible for player to fall inbetween two tiles (if one is missing, like a gap) for proper collision for special tiles like Spikes, Lava, Water and Quicksand

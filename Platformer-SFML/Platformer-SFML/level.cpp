@@ -16,6 +16,7 @@
 #include "watertile.h"
 #include "lavatile.h"
 #include "quicksandtile.h"
+#include "spiketile.h"
 #include <dirent.h>
 
 std::map<std::string /* filename */, sf::Texture> Level::Textures;
@@ -150,10 +151,16 @@ void Level::LoadMap(std::string filename, sf::RenderWindow &window, bool reload 
                 game->AddSpecialTile(new LavaTile(game, &window, Textures["Graphics/Tiles/lava.png"], mapPosition));
                 continue;
             }
-            else if (tilesInfoLayers[i][j] == "E" || tilesInfoLayers[i][j] == "F" || tilesInfoLayers[i][j] == "G" || tilesInfoLayers[i][j] == "H")
+            else if (tilesInfoLayers[i][j] == "E" || tilesInfoLayers[i][j] == "F")
             {
-                std::string tileColor = GetBounceTileColor(tilesInfoLayers[i][j]);
+                std::string tileColor = tilesInfoLayers[i][j] == "E" ? "blue" : "red";
                 game->AddSpecialTile(new BounceTile(game, &window, Textures["Graphics/Tiles/switch_" + tileColor + "_on.png"], Textures["Graphics/Tiles/switch_" + tileColor + "_off.png"], mapPosition, tileColor));
+                continue;
+            }
+            else if (tilesInfoLayers[i][j] == "G")
+            {
+                mapPosition.y += 25.0f;
+                game->AddSpecialTile(new SpikeTile(game, &window, Textures["Graphics/Tiles/spikes.png"], mapPosition));
                 continue;
             }
             else if (tilesInfoLayers[i][j] == "!")
