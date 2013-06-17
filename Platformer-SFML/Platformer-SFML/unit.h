@@ -22,7 +22,7 @@ class Game;
 class Unit : public Position
 {
     public:
-        Unit(Game* _game, sf::RenderWindow* _window, sf::Vector2f position, std::vector<std::pair<int, sf::Texture>> _spritesLeft, std::vector<std::pair<int, sf::Texture>> _spritesRight, UnitTypeId _typeId, int _life, int _totalMoveFrames, int _frameInterval, bool _canFly);
+        Unit(Game* _game, sf::RenderWindow* _window, sf::Vector2f position, std::vector<std::pair<int, sf::Texture>> _spritesLeft, std::vector<std::pair<int, sf::Texture>> _spritesRight, UnitTypeId _typeId, int _life, int _totalMoveFrames, int _frameInterval, bool _canFly, sf::Texture _bulletTexture);
         virtual ~Unit();
         virtual void Update();
         virtual void HandleTimers(sf::Int32 diff_time);
@@ -108,6 +108,7 @@ class Unit : public Position
         bool canShoot;
         sf::Int32 shootCooldown;
         int maxLifes, life;
+        sf::Texture bulletTexture;
 };
 
 

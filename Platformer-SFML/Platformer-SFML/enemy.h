@@ -6,7 +6,7 @@
 class Enemy : public Unit
 {
     public:
-        Enemy(Game* _game, sf::RenderWindow* _window, sf::Vector2f position, std::vector<std::pair<int, sf::Texture>> _spritesLeft, std::vector<std::pair<int, sf::Texture>> _spritesRight, sf::Texture _imageDead, int _life = 3, int _totalMoveFrames = 1, int _frameInterval = 80, bool _canFly = true);
+        Enemy(Game* _game, sf::RenderWindow* _window, sf::Vector2f position, std::vector<std::pair<int, sf::Texture>> _spritesLeft, std::vector<std::pair<int, sf::Texture>> _spritesRight, sf::Texture _imageDead, sf::Texture _bulletTexture, int _life = 3, int _totalMoveFrames = 1, int _frameInterval = 80, bool _canFly = true);
         ~Enemy();
 
         void Update();

@@ -76,7 +76,7 @@ int Game::Update()
     //! Level::Level calls Level::LoadMap which then initializes Game::Player so we can access the Player's class in order to get its sprites!
     currLevel = new Level(this, window);
 
-    menuPlayer = new MenuPlayer(this, &window, sf::Vector2f(165.0f, 285.0f), player->GetSpritesLeft());
+    menuPlayer = new MenuPlayer(this, &window, sf::Vector2f(165.0f, 285.0f), player->GetSpritesLeft(), sf::Texture());
     allUnits.push_back(menuPlayer);
 
     Menu* menu = new Menu(this);

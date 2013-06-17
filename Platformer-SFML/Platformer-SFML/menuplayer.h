@@ -22,7 +22,7 @@ class Game;
 class MenuPlayer : public Unit
 {
     public:
-        MenuPlayer(Game* _game, sf::RenderWindow* _window, sf::Vector2f position, std::vector<std::pair<int, sf::Texture>> _spritesRight, int _totalMoveFrames = 9, int _frameInterval = 30);
+        MenuPlayer(Game* _game, sf::RenderWindow* _window, sf::Vector2f position, std::vector<std::pair<int, sf::Texture>> _spritesRight, sf::Texture _bulletTexture, int _totalMoveFrames = 9, int _frameInterval = 30);
         ~MenuPlayer();
 
         void Update();

@@ -8,7 +8,7 @@
 #include "bouncetile.h"
 #include "bonustile.h"
 
-Unit::Unit(Game* _game, sf::RenderWindow* _window, sf::Vector2f position, std::vector<std::pair<int, sf::Texture>> _spritesLeft, std::vector<std::pair<int, sf::Texture>> _spritesRight, UnitTypeId _typeId, int _life, int _totalMoveFrames, int _frameInterval, bool _canFly)
+Unit::Unit(Game* _game, sf::RenderWindow* _window, sf::Vector2f position, std::vector<std::pair<int, sf::Texture>> _spritesLeft, std::vector<std::pair<int, sf::Texture>> _spritesRight, UnitTypeId _typeId, int _life, int _totalMoveFrames, int _frameInterval, bool _canFly, sf::Texture _bulletTexture)
 {
     window = _window;
     SetPosition(position.x, position.y);
@@ -36,6 +36,7 @@ Unit::Unit(Game* _game, sf::RenderWindow* _window, sf::Vector2f position, std::v
     showLifeBarTimer = 0;
     shootCooldown = 0;
     bounceToLeft = false;
+    bulletTexture = _bulletTexture;
 
     switch (_typeId)
     {
@@ -255,10 +256,7 @@ void Unit::Shoot()
 
     shootCooldown = 400;
     canShoot = false;
-
-    sf::Texture imageBullet;
-    imageBullet.loadFromFile("Graphics/Other/bullet.png");
-    game->AddBullet(new Bullet(game, window, movingToLeft ? GetPositionX() + 50.0f : GetPositionX() - 15.0f, GetPositionY() + 25.0f, imageBullet, movingToLeft));
+    game->AddBullet(new Bullet(game, window, movingToLeft ? GetPositionX() + 50.0f : GetPositionX() - 15.0f, GetPositionY() + 25.0f, bulletTexture, movingToLeft));
 }
 
 void Unit::BounceAway(bool toLeft)

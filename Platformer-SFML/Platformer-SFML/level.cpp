@@ -188,7 +188,7 @@ void Level::LoadMap(std::string filename, sf::RenderWindow &window, bool reload 
                     }
                 }
 
-                game->SetPlayer(new Player(game, &window, mapPosition, spriteCharactersLeft, spriteCharactersRight, Textures["Graphics/Other/heart_empty.png"], Textures["Graphics/Other/heart_full.png"], Textures["Graphics/Other/coin_gold_small.png"], Textures["Graphics/Character/jump_l.png"], Textures["Graphics/Character/jump_r.png"]));
+                game->SetPlayer(new Player(game, &window, mapPosition, spriteCharactersLeft, spriteCharactersRight, Textures["Graphics/Other/heart_empty.png"], Textures["Graphics/Other/heart_full.png"], Textures["Graphics/Other/coin_gold_small.png"], Textures["Graphics/Character/jump_l.png"], Textures["Graphics/Character/jump_r.png"], Textures["Graphics/Other/bullet.png"]));
                 continue;
             }
             else if (tilesInfoLayers[i][j] == "Z" || tilesInfoLayers[i][j] == "?")
@@ -214,7 +214,7 @@ void Level::LoadMap(std::string filename, sf::RenderWindow &window, bool reload 
                     }
                 }
 
-                game->AddEnemy(new Enemy(game, &window, mapPosition, spriteEnemiesLeft, spriteEnemiesRight, Textures["Graphics/Enemies/" + std::string(!slime ? "fly_dead" : "slime_dead") + ".png"], 3, 1, 80, !slime));
+                game->AddEnemy(new Enemy(game, &window, mapPosition, spriteEnemiesLeft, spriteEnemiesRight, Textures["Graphics/Enemies/" + std::string(!slime ? "fly_dead" : "slime_dead") + ".png"], Textures["Graphics/Other/bullet.png"], 3, 1, 80, !slime));
                 continue;
             }
 

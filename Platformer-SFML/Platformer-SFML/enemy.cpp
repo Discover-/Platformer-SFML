@@ -18,8 +18,8 @@
 #include "bullet.h"
 #include "unit.h"
 
-Enemy::Enemy(Game* _game, sf::RenderWindow* _window, sf::Vector2f position, std::vector<std::pair<int, sf::Texture>> _spritesLeft, std::vector<std::pair<int, sf::Texture>> _spritesRight, sf::Texture _imageDead, int _life, int _totalMoveFrames, int _frameInterval, bool _canFly) :
-Unit(_game, _window, position, _spritesLeft, _spritesRight, TYPEID_ENEMY, _life, _totalMoveFrames, _frameInterval, _canFly)
+Enemy::Enemy(Game* _game, sf::RenderWindow* _window, sf::Vector2f position, std::vector<std::pair<int, sf::Texture>> _spritesLeft, std::vector<std::pair<int, sf::Texture>> _spritesRight, sf::Texture _imageDead, sf::Texture _bulletTexture, int _life, int _totalMoveFrames, int _frameInterval, bool _canFly) :
+Unit(_game, _window, position, _spritesLeft, _spritesRight, TYPEID_ENEMY, _life, _totalMoveFrames, _frameInterval, _canFly, _bulletTexture)
 {
     SetPosition(position.x, position.y);
     destinationX1 = position.x;
