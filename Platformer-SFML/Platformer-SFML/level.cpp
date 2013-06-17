@@ -143,11 +143,13 @@ void Level::LoadMap(std::string filename, sf::RenderWindow &window, bool reload 
             }
             else if (tilesInfoLayers[i][j] == "S")
             {
+                mapPosition.y += 25.0f;
                 game->AddSpecialTile(new WaterTile(game, &window, Textures["Graphics/Tiles/water.png"], mapPosition));
                 continue;
             }
             else if (tilesInfoLayers[i][j] == "R")
             {
+                mapPosition.y += 25.0f;
                 game->AddSpecialTile(new LavaTile(game, &window, Textures["Graphics/Tiles/lava.png"], mapPosition));
                 continue;
             }
