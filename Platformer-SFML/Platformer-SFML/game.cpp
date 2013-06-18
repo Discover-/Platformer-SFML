@@ -104,16 +104,10 @@ int Game::Update()
             }
 
             if (_event.type == sf::Event::LostFocus && gameState == STATE_PLAYING)
-            {
-                //window.setMouseCursorVisible(true);
                 gameState = STATE_PAUSED_FOCUS;
-            }
 
             if (_event.type == sf::Event::GainedFocus && gameState == STATE_PAUSED_FOCUS)
-            {
-                //window.setMouseCursorVisible(false);
                 gameState = STATE_PLAYING;
-            }
 
             if (_event.type == sf::Event::KeyReleased)
             {
@@ -145,10 +139,7 @@ int Game::Update()
                     //! Pause or un-pause game based on current gamestate.
                     case sf::Keyboard::Escape:
                         if (gameState != STATE_MAIN_MENU)
-                        {
                             gameState = gameState == STATE_PLAYING ? STATE_PAUSED : STATE_PLAYING;
-                            //window.setMouseCursorVisible(gameState == STATE_PLAYING);
-                        }
                         else
                             window.close();
                         break;
@@ -383,7 +374,6 @@ void Game::StartActualGame(sf::RenderWindow &window, std::string filename)
 {
     gameState = STATE_PLAYING;
     currLevel->LoadMap(filename, window);
-    //window.setMouseCursorVisible(false);
 }
 
 void Game::RemoveUnitWithTypeId(UnitTypeId typeId)
