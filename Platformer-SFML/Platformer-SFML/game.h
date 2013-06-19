@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include "shareddefines.h"
 
 class Player;
@@ -12,6 +13,7 @@ class SpecialTile;
 class Coin;
 class Unit;
 class MenuPlayer;
+class Sound;
 
 class Game
 {
@@ -24,6 +26,8 @@ class Game
         void StartActualGame(sf::RenderWindow &window, std::string filename);
 
         void DeleteContentMemory();
+
+        void LoadAllSounds();
 
         std::vector<sf::Sprite> &GetGameObjects() { return gameObjects; }
         std::vector<sf::Sprite> &GetGameObjectsCollidable() { return gameObjectsCollidable; }
@@ -58,6 +62,8 @@ class Game
         std::vector<Coin*> &GetCoins() { return allCoins; }
         void ClearCoins() { allCoins.clear(); }
         void AddCoin(Coin* coin) { allCoins.push_back(coin); }
+
+        static std::map<std::string /* filename */, Sound*> Sounds;
 
     private:
         bool isRunning, showDebugInfo;

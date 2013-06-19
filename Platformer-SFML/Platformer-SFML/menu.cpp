@@ -4,6 +4,7 @@
 #include "bullet.h"
 #include "game.h"
 #include "menu.h"
+#include "sound.h"
 
 Menu::Menu(Game* _game)
 {
@@ -329,6 +330,8 @@ void Menu::PressedEnterOrMouse(sf::RenderWindow &window)
 
 void Menu::UpdateSelection(bool moveNegative)
 {
+    Game::Sounds["Sounds/menu_rollover.wav"]->Play();
+
     if (moveNegative)//! arrow up
     {
         if ((currentMenu == MENU_LEVELS && selectedOption <= 1) || (currentMenu != MENU_LEVELS && selectedOption < 2))

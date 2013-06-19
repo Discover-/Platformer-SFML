@@ -26,6 +26,10 @@
 #include "bonustile.h"
 #include "coin.h"
 #include "menuplayer.h"
+#include <dirent.h>
+#include "sound.h"
+
+std::map<std::string /* filename */, Sound*> Game::Sounds;
 
 Game::Game()
 {
@@ -34,6 +38,7 @@ Game::Game()
     gameState = STATE_MAIN_MENU;
     player = NULL;
     menuPlayer = NULL;
+    LoadAllSounds();
 }
 
 Game::~Game()
@@ -55,6 +60,35 @@ void Game::DeleteContentMemory()
 
     for (std::vector<Coin*>::iterator itr = allCoins.begin(); itr != allCoins.end(); ++itr)
         delete *itr;
+
+    //for (std::map<std::string /* filename */, Sound*>::iterator itr = Sounds.begin(); itr != Sounds.end(); ++itr)
+    //    delete (*itr).second;
+}
+
+void Game::LoadAllSounds()
+{
+    DIR* dir;
+    struct dirent *ent;
+    std::stringstream ss;
+    Sound* sound = new Sound();
+
+    if ((dir = opendir("Sounds")) != NULL)
+    {
+        while ((ent = readdir(dir)) != NULL)
+        {
+            if (ent->d_name[0] != '.') //! These seem to be the only hidden invisible files in there and the dirent library doesn't offer detection for it, so this will work. :)
+            {
+                ss << "Sounds/" << ent->d_name;
+
+                if (sound->Load(ss.str().c_str()))
+                    Sounds[ss.str().c_str()] = sound;
+
+                ss.str(std::string());
+            }
+        }
+
+        closedir(dir);
+    }
 }
 
 int Game::Update()
@@ -346,6 +380,9 @@ int Game::Update()
             text2.setPosition(view.getCenter().x + 330.0f, view.getCenter().y + 225.0f);
             window.draw(text2);
         }
+
+        for (std::map<std::string /* filename */, Sound*>::iterator itr = Sounds.begin(); itr != Sounds.end(); ++itr)
+            (*itr).second->Update();
 
         window.display();
     }

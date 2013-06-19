@@ -60,8 +60,6 @@ void Level::LoadAllImages()
             closedir(dir);
         }
     }
-
-    return;
 }
 
 void Level::LoadMap(std::string filename, sf::RenderWindow &window, bool reload /* = false */)

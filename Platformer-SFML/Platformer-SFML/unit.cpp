@@ -7,6 +7,7 @@
 #include "movingtile.h"
 #include "bouncetile.h"
 #include "bonustile.h"
+#include "sound.h"
 
 Unit::Unit(Game* _game, sf::RenderWindow* _window, sf::Vector2f position, std::vector<std::pair<int, sf::Texture>> _spritesLeft, std::vector<std::pair<int, sf::Texture>> _spritesRight, UnitTypeId _typeId, int _life, int _totalMoveFrames, int _frameInterval, bool _canFly, sf::Texture _bulletTexture)
 {
@@ -310,6 +311,7 @@ bool Unit::DropLife()
      {
          case TYPEID_PLAYER:
          {
+             Game::Sounds["Sounds/ugh.wav"]->Play();
              std::vector<std::pair<int /* id */, bool /* full */>> &hearts = ((Player*)this)->GetHearts();
 
              for (std::vector<std::pair<int /* id */, bool /* full */>>::iterator itr = hearts.begin(); itr != hearts.end(); ++itr)
