@@ -15,6 +15,13 @@ class Sound
         void Update();
         void Play(bool loop = false);
         void Stop();
+        void SetVolume(float volume);
+        float GetVolume();
+        void SetLoop(bool val);
+        bool IsLooping();
+        sf::SoundSource::Status GetStatus();
+
+        sf::Sound* GetPlayingSound();
 
     private:
         sf::SoundBuffer soundBuffer;

@@ -315,6 +315,7 @@ void Menu::PressedEnterOrMouse(sf::RenderWindow &window)
                             {
                                 if ((*itr2).id == selectedOption)
                                 {
+                                    Game::Sounds["Sounds/menu_music.wav"]->Stop();
                                     Game::Sounds["Sounds/menu_selection.wav"]->Play();
                                     game->StartActualGame(window, (*itr2).textShape.getString());
                                     break;
