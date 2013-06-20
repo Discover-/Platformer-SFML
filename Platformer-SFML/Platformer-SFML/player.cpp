@@ -12,13 +12,14 @@
 #include <SFML/Network.hpp>
 #include <SFML/OpenGL.hpp>
 #include <SFML/Window.hpp>
+#include <math.h>
 #include "player.h"
 #include "shareddefines.h"
 #include "bullet.h"
 #include "enemy.h"
 #include "game.h"
 #include "coin.h"
-#include <math.h>
+#include "sound.h"
 
 Player::Player(Game* _game, sf::RenderWindow* _window, sf::Vector2f position, std::vector<std::pair<int, sf::Texture>> _spritesLeft, std::vector<std::pair<int, sf::Texture>> _spritesRight, sf::Texture _imageHeartEmpty, sf::Texture _imageHeartFull, sf::Texture _imageSmallCoin, sf::Texture _imageJumpSpriteLeft, sf::Texture _imageJumpSpriteRight, sf::Texture _bulletTexture, int _life, int _totalMoveFrames, int _frameInterval) :
 Unit(_game, _window, position, _spritesLeft, _spritesRight, TYPEID_PLAYER, _life, _totalMoveFrames, _frameInterval, false, _bulletTexture)
@@ -54,10 +55,6 @@ void Player::Update()
     {
         if (!CollidesWithGameobjects(GetPositionX() - GetMoveSpeed(), GetPositionY()))
         {
-            float posX = GetPositionX();
-            float posY = GetPositionY();
-            float speed = GetMoveSpeed();
-
             SetPosition(GetPositionX() - GetMoveSpeed(), GetPositionY());
             SetIsMovingToLeft(false);
             SetIsMoving(true);
@@ -115,6 +112,7 @@ void Player::Update()
 
             if (WillCollision(GetPositionX(), GetPositionY(), boundsPlayer.height, boundsPlayer.width, (*itr)->GetPositionX(), (*itr)->GetPositionY(), boundsCoin.height, boundsCoin.width))
             {
+                Game::Sounds["Sounds/picked-up-coin.wav"]->Play();
                 (*itr)->SetIsTaken(true);
                 coinAmount++;
                 break;
