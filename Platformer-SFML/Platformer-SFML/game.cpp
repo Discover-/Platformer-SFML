@@ -38,7 +38,6 @@ Game::Game()
     gameState = STATE_MAIN_MENU;
     player = NULL;
     menuPlayer = NULL;
-    LoadAllSounds();
 }
 
 Game::~Game()
@@ -81,18 +80,7 @@ void Game::LoadAllSounds()
                 ss << "Sounds/" << ent->d_name;
 
                 if (sound->Load(ss.str().c_str()))
-                {
                     Sounds[ss.str()] = sound;
-                    std::cout << "Loaded sound: " << ss << std::endl;
-                    std::cout << "Loaded sound: " << ss.str() << std::endl;
-                    std::cout << "Loaded sound: " << ss.str().c_str() << std::endl << std::endl;
-                }
-                else
-                {
-                    std::cout << "Unable to load sound: " << ss << std::endl;
-                    std::cout << "Unable to load sound: " << ss.str() << std::endl;
-                    std::cout << "Unable to load sound: " << ss.str().c_str() << std::endl << std::endl;
-                }
 
                 ss.str(std::string());
             }
@@ -115,6 +103,8 @@ int Game::Update()
 
     sf::View view(window.getDefaultView());
     sf::Clock clock, fpsClock;
+
+    LoadAllSounds();
 
     //! Level::Level calls Level::LoadMap which then initializes Game::Player so we can access the Player's class in order to get its sprites!
     currLevel = new Level(this, window);

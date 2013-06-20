@@ -13,7 +13,8 @@ class Sound
     public:
         bool Load(std::string filename);
         void Update();
-        void Play();
+        void Play(bool loop = false);
+        void Stop();
 
     private:
         sf::SoundBuffer soundBuffer;

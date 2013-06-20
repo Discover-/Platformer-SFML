@@ -5,7 +5,6 @@
   - Add more 'surprises' to the bonus block: plant growing out, star jumping out, mushroom ontop moves out, etc.
   - Only make the bonus block trigger when hit from the bottom
   - Store all 'surprises' in the class in a vector with pair id and texture and load these from Level class (Textures) (can only do this when we get more than one type of surprise)
-* Add sounds and music
 * Add mini menu in-game rather than just 'PAUSED'
 * Move all positions to Position struct or sf::Vector2f
 * When hitting an enemy, bounce away based on which side you hit it not on enemy's current direction
@@ -28,3 +27,7 @@
 * Make possible for player to fall inbetween two tiles (if one is missing, like a gap) for proper collision for special tiles like Spikes, Lava, Water and Quicksand
 * Threads for loading screen and music
 * Add mouse-over collision detection for menu's
+* Figure out why coins don't appear in left upper corner anymore
+* Increase width (perhaps in the code itself) of some of the decoration objects (rocks, fences, grass, bushes, etc.) to make it less of a level-editor feel (having them placed inbetween two tiles, rather than always ON a tile)
+* Sound management (volume, etc.)
+* Figure out why loading takes really long

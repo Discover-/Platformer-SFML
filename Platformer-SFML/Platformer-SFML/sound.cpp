@@ -17,8 +17,16 @@ void Sound::Update()
     }
 }
 
-void Sound::Play()
+void Sound::Play(bool loop /* = false */)
 {
     soundInstances.push_back(sf::Sound(soundBuffer));
     soundInstances.back().play();
+
+    if (loop)
+        soundInstances.back().setLoop(true);
+}
+
+void Sound::Stop()
+{
+    sf::Sound(soundBuffer).stop();
 }
