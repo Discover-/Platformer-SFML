@@ -5,9 +5,9 @@ bool Sound::Load(std::string filename)
     return soundBuffer.loadFromFile(filename);
 }
 
-void Sound::Update(void)
+void Sound::Update()
 {
-    for (int i = 0 ; i < soundInstances.size() ; ++i)
+    for (int i = 0; i < soundInstances.size(); ++i)
     {
         if (soundInstances[i].getStatus() == sf::Sound::Stopped)
         {
@@ -17,7 +17,7 @@ void Sound::Update(void)
     }
 }
 
-void Sound::Play(void)
+void Sound::Play()
 {
     soundInstances.push_back(sf::Sound(soundBuffer));
     soundInstances.back().play();

@@ -330,7 +330,9 @@ void Menu::PressedEnterOrMouse(sf::RenderWindow &window)
 
 void Menu::UpdateSelection(bool moveNegative)
 {
-    Game::Sounds["Sounds/menu_rollover.wav"]->Play();
+    Sound* snd = Game::Sounds["Sounds/menu_rollover.wav"];
+
+    snd->Play();
 
     if (moveNegative)//! arrow up
     {

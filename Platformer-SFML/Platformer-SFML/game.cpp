@@ -68,9 +68,8 @@ void Game::DeleteContentMemory()
 void Game::LoadAllSounds()
 {
     DIR* dir;
-    struct dirent *ent;
+    struct dirent* ent;
     std::stringstream ss;
-    Sound* sound = new Sound();
 
     if ((dir = opendir("Sounds")) != NULL)
     {
@@ -78,10 +77,22 @@ void Game::LoadAllSounds()
         {
             if (ent->d_name[0] != '.') //! These seem to be the only hidden invisible files in there and the dirent library doesn't offer detection for it, so this will work. :)
             {
+                Sound* sound = new Sound();
                 ss << "Sounds/" << ent->d_name;
 
                 if (sound->Load(ss.str().c_str()))
-                    Sounds[ss.str().c_str()] = sound;
+                {
+                    Sounds[ss.str()] = sound;
+                    std::cout << "Loaded sound: " << ss << std::endl;
+                    std::cout << "Loaded sound: " << ss.str() << std::endl;
+                    std::cout << "Loaded sound: " << ss.str().c_str() << std::endl << std::endl;
+                }
+                else
+                {
+                    std::cout << "Unable to load sound: " << ss << std::endl;
+                    std::cout << "Unable to load sound: " << ss.str() << std::endl;
+                    std::cout << "Unable to load sound: " << ss.str().c_str() << std::endl << std::endl;
+                }
 
                 ss.str(std::string());
             }
