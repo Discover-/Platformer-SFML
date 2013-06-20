@@ -186,7 +186,7 @@ void Level::LoadMap(std::string filename, sf::RenderWindow &window, bool reload 
                     }
                 }
 
-                game->SetPlayer(new Player(game, &window, mapPosition, spriteCharactersLeft, spriteCharactersRight, Textures["Graphics/Other/heart_empty.png"], Textures["Graphics/Other/heart_full.png"], Textures["Graphics/Other/coin_gold_small.png"], Textures["Graphics/Character/jump_l.png"], Textures["Graphics/Character/jump_r.png"], Textures["Graphics/Other/bullet.png"]));
+                game->SetPlayer(new Player(game, &window, mapPosition, spriteCharactersLeft, spriteCharactersRight, Textures["Graphics/Other/heart_empty.png"], Textures["Graphics/Other/heart_full.png"], Textures["Graphics/Tiles/coin_gold_small.png"], Textures["Graphics/Character/jump_l.png"], Textures["Graphics/Character/jump_r.png"], Textures["Graphics/Other/bullet.png"]));
                 continue;
             }
             else if (tilesInfoLayers[i][j] == "Z" || tilesInfoLayers[i][j] == "?")
