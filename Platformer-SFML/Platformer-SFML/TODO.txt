@@ -27,5 +27,4 @@
 * Make Game class singleton/static
 * Make possible for player to fall inbetween two tiles (if one is missing, like a gap) for proper collision for special tiles like Spikes, Lava, Water and Quicksand
 * Threads for loading screen and music
-* Clicking on the menu level selection shouldn't automatically fullfil the actions for the current selection
 * Add mouse-over collision detection for menu's

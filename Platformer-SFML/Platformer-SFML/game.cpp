@@ -117,6 +117,7 @@ int Game::Update()
     std::cout << "Time in milliseconds taken to load everything before entering while-loop: " << clockStart.restart().asMilliseconds() << std::endl;
 
     float playedTime = 0.0f;
+    bool justGainedFocus = false;
 
     while (window.isOpen())
     {
@@ -126,110 +127,125 @@ int Game::Update()
 
         while (window.pollEvent(_event))
         {
-            if (_event.type == sf::Event::Closed)
-                window.close();
-
-            if (_event.type == sf::Event::MouseButtonReleased && _event.mouseButton.button == sf::Mouse::Left && shiftPressed)
+            switch (_event.type)
             {
-                std::cout << "Mouse X: " << sf::Mouse::getPosition(window).x << std::endl;
-                std::cout << "Mouse Y: " << sf::Mouse::getPosition(window).y << std::endl;
-            }
+                case sf::Event::Closed:
+                    window.close();
+                    break;
+                case sf::Event::MouseButtonReleased:
+                    if (_event.mouseButton.button == sf::Mouse::Left && shiftPressed)
+                    {
+                        std::cout << "Mouse X: " << sf::Mouse::getPosition(window).x << std::endl;
+                        std::cout << "Mouse Y: " << sf::Mouse::getPosition(window).y << std::endl;
+                    }
+                    break;
+                case sf::Event::LostFocus:
+                    if (gameState == STATE_PLAYING)
+                        gameState = STATE_PAUSED_FOCUS;
+                    break;
+                case sf::Event::GainedFocus:
+                    justGainedFocus = true;
 
-            if (_event.type == sf::Event::LostFocus && gameState == STATE_PLAYING)
-                gameState = STATE_PAUSED_FOCUS;
-
-            if (_event.type == sf::Event::GainedFocus && gameState == STATE_PAUSED_FOCUS)
-                gameState = STATE_PLAYING;
-
-            if (_event.type == sf::Event::KeyReleased)
-            {
-                switch (_event.key.code)
+                    if (gameState == STATE_PAUSED_FOCUS)
+                        gameState = STATE_PLAYING;
+                    break;
+                case sf::Event::KeyReleased:
                 {
-                    //! Reload map
-                    case sf::Keyboard::F1:
+                    switch (_event.key.code)
                     {
-                        sf::Clock _clock; _clock.restart();
-                        std::stringstream ss; ss << currLevel->GetCurrentLevel();
-                        currLevel->LoadMap(ss.str(), window, true);
-                        break;
+                        //! Reload map
+                        case sf::Keyboard::F1:
+                        {
+                            sf::Clock _clock; _clock.restart();
+                            std::stringstream ss; ss << currLevel->GetCurrentLevel();
+                            currLevel->LoadMap(ss.str(), window, true);
+                            break;
+                        }
+                        //! Back to menu
+                        case sf::Keyboard::F2:
+                        {
+                            menu->SetCurrentMenu(MENU_MAIN);
+                            gameState = STATE_MAIN_MENU;
+                            currLevel->LoadMap("menu", window);
+                            menuPlayer->SetPosition(1200.0f, 285.0f);
+                            break;
+                        }
+                        //! Turn on/off debug information
+                        case sf::Keyboard::F3:
+                        {
+                            showDebugInfo = !showDebugInfo;
+                            break;
+                        }
+                        //! Pause or un-pause game based on current gamestate.
+                        case sf::Keyboard::Escape:
+                            if (gameState != STATE_MAIN_MENU)
+                                gameState = gameState == STATE_PLAYING ? STATE_PAUSED : STATE_PLAYING;
+                            else
+                                window.close();
+                            break;
+                        //! Move menu option selection up
+                        case sf::Keyboard::Up:
+                            if (gameState == STATE_MAIN_MENU)
+                                menu->UpdateSelection(true);
+                            break;
+                        //! Move menu option selection down
+                        case sf::Keyboard::Down:
+                            if (gameState == STATE_MAIN_MENU)
+                                menu->UpdateSelection(false);
+                            break;
+                        //! Move menu option selection to left
+                        case sf::Keyboard::Left:
+                            if (gameState == STATE_MAIN_MENU && menu->GetCurrentMenu() == MENU_LEVELS)
+                                menu->UpdateSelection(true);
+                            break;
+                        //! Move menu option selection to right
+                        case sf::Keyboard::Right:
+                            if (gameState == STATE_MAIN_MENU && menu->GetCurrentMenu() == MENU_LEVELS)
+                                menu->UpdateSelection(false);
+                            break;
+                        //! Select menu option
+                        case sf::Keyboard::Return:
+                            if (gameState == STATE_MAIN_MENU)
+                                menu->PressedEnterOrMouse(window);
+                            break;
+                        case sf::Keyboard::Space:
+                            if (gameState == STATE_PLAYING && player->CanShoot())
+                                player->Shoot();
+                            break;
+                        case sf::Keyboard::T:
+                            if (shiftPressed)
+                                for (std::vector<Enemy*>::iterator itr = allEnemies.begin(); itr != allEnemies.end(); ++itr)
+                                    if (!(*itr)->IsDead())
+                                        (*itr)->JustDied();
+                            break;
+                        default:
+                            break;
                     }
-                    //! Back to menu
-                    case sf::Keyboard::F2:
-                    {
-                        menu->SetCurrentMenu(MENU_MAIN);
-                        gameState = STATE_MAIN_MENU;
-                        currLevel->LoadMap("menu", window);
-                        menuPlayer->SetPosition(1200.0f, 285.0f);
-                        break;
-                    }
-                    //! Turn on/off debug information
-                    case sf::Keyboard::F3:
-                    {
-                        showDebugInfo = !showDebugInfo;
-                        break;
-                    }
-                    //! Pause or un-pause game based on current gamestate.
-                    case sf::Keyboard::Escape:
-                        if (gameState != STATE_MAIN_MENU)
-                            gameState = gameState == STATE_PLAYING ? STATE_PAUSED : STATE_PLAYING;
-                        else
-                            window.close();
-                        break;
-                    //! Move menu option selection up
-                    case sf::Keyboard::Up:
-                        if (gameState == STATE_MAIN_MENU)
-                            menu->UpdateSelection(true);
-                        break;
-                    //! Move menu option selection down
-                    case sf::Keyboard::Down:
-                        if (gameState == STATE_MAIN_MENU)
-                            menu->UpdateSelection(false);
-                        break;
-                    //! Move menu option selection to left
-                    case sf::Keyboard::Left:
-                        if (gameState == STATE_MAIN_MENU && menu->GetCurrentMenu() == MENU_LEVELS)
-                            menu->UpdateSelection(true);
-                        break;
-                    //! Move menu option selection to right
-                    case sf::Keyboard::Right:
-                        if (gameState == STATE_MAIN_MENU && menu->GetCurrentMenu() == MENU_LEVELS)
-                            menu->UpdateSelection(false);
-                        break;
-                    //! Select menu option
-                    case sf::Keyboard::Return:
-                        if (gameState == STATE_MAIN_MENU)
-                            menu->PressedEnterOrMouse(window);
-                        break;
-                    case sf::Keyboard::Space:
-                        if (gameState == STATE_PLAYING && player->CanShoot())
-                            player->Shoot();
-                        break;
-                    case sf::Keyboard::T:
-                        if (shiftPressed)
-                            for (std::vector<Enemy*>::iterator itr = allEnemies.begin(); itr != allEnemies.end(); ++itr)
-                                if (!(*itr)->IsDead())
-                                    (*itr)->JustDied();
-                        break;
-                    default:
-                        break;
+                    break;
                 }
-            }
-            else if (_event.type == sf::Event::MouseWheelMoved)
-            {
-                if (gameState == STATE_MAIN_MENU)
-                    menu->UpdateSelection(_event.mouseWheel.delta > 0);
-            }
-            else if (_event.type == sf::Event::MouseButtonPressed)
-            {
-                switch (_event.mouseButton.button)
+                case sf::Event::MouseWheelMoved:
+                    if (gameState == STATE_MAIN_MENU)
+                        menu->UpdateSelection(_event.mouseWheel.delta > 0);
+                    break;
+                case sf::Event::MouseButtonPressed:
                 {
-                    //! Select menu option
-                    case sf::Mouse::Left:
-                        if (gameState == STATE_MAIN_MENU)
-                            menu->PressedEnterOrMouse(window);
+                    if (justGainedFocus)
+                    {
+                        justGainedFocus = false;
                         break;
-                    case sf::Mouse::Right:
-                        break;
+                    }
+
+                    switch (_event.mouseButton.button)
+                    {
+                        //! Select menu option
+                        case sf::Mouse::Left:
+                            if (gameState == STATE_MAIN_MENU)
+                                menu->PressedEnterOrMouse(window);
+                            break;
+                        case sf::Mouse::Right:
+                            break;
+                    }
+                    break;
                 }
             }
         }
