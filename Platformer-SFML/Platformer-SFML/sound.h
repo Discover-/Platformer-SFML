@@ -8,9 +8,14 @@
 #include <iostream>
 #include <deque>
 
+class Game;
+
 class Sound
 {
     public:
+        Sound::Sound(Game* _game);
+        Sound::~Sound();
+
         bool Load(std::string filename);
         void Update();
         void Play(bool loop = false);
@@ -24,6 +29,7 @@ class Sound
         sf::Sound* GetPlayingSound();
 
     private:
+        Game* game;
         sf::SoundBuffer soundBuffer;
         std::deque<sf::Sound> soundInstances;
 };

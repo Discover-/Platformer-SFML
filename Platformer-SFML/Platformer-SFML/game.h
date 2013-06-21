@@ -63,6 +63,8 @@ class Game
         void ClearCoins() { allCoins.clear(); }
         void AddCoin(Coin* coin) { allCoins.push_back(coin); }
 
+        bool IsMusicMuted() { return mutedMusic; }
+
         static std::map<std::string /* filename */, Sound*> Sounds;
 
     private:

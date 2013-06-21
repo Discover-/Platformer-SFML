@@ -1,4 +1,15 @@
 #include "sound.h"
+#include "game.h"
+
+Sound::Sound(Game* _game)
+{
+    game = _game;
+}
+
+Sound::~Sound()
+{
+
+}
 
 bool Sound::Load(std::string filename)
 {
@@ -24,6 +35,9 @@ void Sound::Play(bool loop /* = false */)
 
     if (loop)
         soundInstances.back().setLoop(true);
+
+    if (game->IsMusicMuted())
+        soundInstances.back().setVolume(0.0f);
 }
 
 void Sound::Stop()

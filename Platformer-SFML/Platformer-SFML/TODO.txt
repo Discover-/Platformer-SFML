@@ -27,8 +27,8 @@
 * Make possible for player to fall inbetween two tiles (if one is missing, like a gap) for proper collision for special tiles like Spikes, Lava, Water and Quicksand
 * Add mouse-over collision detection for menu's
 * Increase width (perhaps in the code itself) of some of the decoration objects (rocks, fences, grass, bushes, etc.) to make it less of a level-editor feel (having them placed inbetween two tiles, rather than always ON a tile)
-* Sound management (volume, etc.)
 * Figure out why loading takes really long
-* Make small coins in upper left corner appear on now rows every 5th coin
+* Make small coins in upper left corner appear on new rows every 5th coin
 * Fix quicksand collision
 * Add logo (icon) to the game, a name, etc.
+* Make skybox reach a lot further (now that we enabled the camera to follow the exact center of the player, this is required)

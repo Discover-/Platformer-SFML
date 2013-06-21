@@ -77,7 +77,7 @@ void Game::LoadAllSounds()
         {
             if (ent->d_name[0] != '.') //! These seem to be the only hidden invisible files in there and the dirent library doesn't offer detection for it, so this will work. :)
             {
-                Sound* sound = new Sound();
+                Sound* sound = new Sound(this);
                 ss << "Sounds/" << ent->d_name;
 
                 if (sound->Load(ss.str().c_str()))
