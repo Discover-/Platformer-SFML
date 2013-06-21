@@ -152,15 +152,21 @@
     <ClCompile Include="bullet.cpp" />
     <ClCompile Include="coin.cpp" />
     <ClCompile Include="enemy.cpp" />
+    <ClCompile Include="floatingtile.cpp" />
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="lavatile.cpp" />
     <ClCompile Include="level.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="menu.cpp" />
     <ClCompile Include="menuplayer.cpp" />
     <ClCompile Include="movingtile.cpp" />
     <ClCompile Include="player.cpp" />
+    <ClCompile Include="quicksandtile.cpp" />
+    <ClCompile Include="sound.cpp" />
+    <ClCompile Include="spiketile.cpp" />
     <ClCompile Include="tile.cpp" />
     <ClCompile Include="unit.cpp" />
+    <ClCompile Include="watertile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bonustile.h" />
@@ -168,16 +174,22 @@
     <ClInclude Include="bullet.h" />
     <ClInclude Include="coin.h" />
     <ClInclude Include="enemy.h" />
+    <ClInclude Include="floatingtile.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="lavatile.h" />
     <ClInclude Include="level.h" />
     <ClInclude Include="menu.h" />
     <ClInclude Include="menuplayer.h" />
     <ClInclude Include="movingtile.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="position.h" />
+    <ClInclude Include="quicksandtile.h" />
     <ClInclude Include="shareddefines.h" />
+    <ClInclude Include="sound.h" />
+    <ClInclude Include="spiketile.h" />
     <ClInclude Include="tile.h" />
     <ClInclude Include="unit.h" />
+    <ClInclude Include="watertile.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

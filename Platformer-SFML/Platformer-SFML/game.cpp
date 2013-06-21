@@ -26,7 +26,7 @@
 #include "bonustile.h"
 #include "coin.h"
 #include "menuplayer.h"
-#include <dirent.h>
+#include "Library\Dirent\include\dirent.h"
 #include "sound.h"
 
 std::map<std::string /* filename */, Sound*> Game::Sounds;

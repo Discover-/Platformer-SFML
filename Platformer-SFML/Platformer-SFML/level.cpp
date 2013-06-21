@@ -17,7 +17,7 @@
 #include "lavatile.h"
 #include "quicksandtile.h"
 #include "spiketile.h"
-#include <dirent.h>
+#include "Library\Dirent\include\dirent.h"
 
 std::map<std::string /* filename */, sf::Texture> Level::Textures;
 
