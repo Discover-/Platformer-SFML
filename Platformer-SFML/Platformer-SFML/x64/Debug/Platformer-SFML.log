@@ -1,30 +1,13 @@
-﻿Build started 13-6-2013 13:31:44.
-     1>Project "C:\Development\Platformer-SFML\Platformer-SFML\Platformer-SFML\Platformer-SFML.vcxproj" on node 2 (build target(s)).
+﻿Build started 21-6-2013 21:26:43.
+     1>Project "D:\Gebruikers\Openbaar\Bureaublad\Development\Non-emulation\Repositories\Platformer-SFML\Platformer-SFML\Platformer-SFML\Platformer-SFML.vcxproj" on node 2 (Build target(s)).
      1>InitializeBuildStatus:
          Touching "x64\Debug\Platformer-SFML.unsuccessfulbuild".
        ClCompile:
-         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\x86_amd64\CL.exe /c /I"C:\SFML-2.0\include" /Zi /nologo /W3 /WX- /Od /D WIN32 /D _DEBUG /D _WINDOWS /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Debug\\" /Fd"x64\Debug\vc100.pdb" /Gd /TP /errorReport:prompt bonustile.cpp enemy.cpp game.cpp level.cpp main.cpp menu.cpp menuplayer.cpp tile.cpp unit.cpp
-         unit.cpp
-     1>c:\development\platformer-sfml\platformer-sfml\platformer-sfml\unit.h(11): fatal error C1083: Cannot open include file: 'SFML/Graphics.hpp': No such file or directory
-         tile.cpp
-     1>c:\development\platformer-sfml\platformer-sfml\platformer-sfml\tile.h(11): fatal error C1083: Cannot open include file: 'SFML/Graphics.hpp': No such file or directory
-         menuplayer.cpp
-     1>menuplayer.cpp(9): fatal error C1083: Cannot open include file: 'SFML/Graphics.hpp': No such file or directory
-         menu.cpp
-     1>c:\development\platformer-sfml\platformer-sfml\platformer-sfml\unit.h(11): fatal error C1083: Cannot open include file: 'SFML/Graphics.hpp': No such file or directory
-         main.cpp
-     1>c:\development\platformer-sfml\platformer-sfml\platformer-sfml\game.h(4): fatal error C1083: Cannot open include file: 'SFML/Graphics.hpp': No such file or directory
-         level.cpp
-     1>c:\development\platformer-sfml\platformer-sfml\platformer-sfml\level.h(5): fatal error C1083: Cannot open include file: 'SFML/Graphics.hpp': No such file or directory
+         D:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\x86_amd64\CL.exe /c /I"C:\SFML-2.0\include" /Zi /nologo /W3 /WX- /Od /D WIN32 /D _DEBUG /D _WINDOWS /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Debug\\" /Fd"x64\Debug\vc110.pdb" /Gd /TP /errorReport:prompt game.cpp
          game.cpp
-     1>game.cpp(11): fatal error C1083: Cannot open include file: 'SFML/Graphics.hpp': No such file or directory
-         enemy.cpp
-     1>enemy.cpp(9): fatal error C1083: Cannot open include file: 'SFML/Graphics.hpp': No such file or directory
-         bonustile.cpp
-     1>c:\development\platformer-sfml\platformer-sfml\platformer-sfml\bonustile.h(12): fatal error C1083: Cannot open include file: 'SFML/Graphics.hpp': No such file or directory
-         Generating Code...
-     1>Done Building Project "C:\Development\Platformer-SFML\Platformer-SFML\Platformer-SFML\Platformer-SFML.vcxproj" (build target(s)) -- FAILED.
+     1>game.cpp(122): error C2660: 'Game::LoadMap' : function does not take 1 arguments
+     1>Done Building Project "D:\Gebruikers\Openbaar\Bureaublad\Development\Non-emulation\Repositories\Platformer-SFML\Platformer-SFML\Platformer-SFML\Platformer-SFML.vcxproj" (Build target(s)) -- FAILED.
 
 Build FAILED.
 
-Time Elapsed 00:00:08.01
+Time Elapsed 00:00:01.31
