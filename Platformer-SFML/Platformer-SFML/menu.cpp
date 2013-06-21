@@ -240,7 +240,6 @@ void Menu::Draw(sf::RenderWindow &window)
                 sf::Text itrTextCopy = (*itr2).textShape;
                 itrTextCopy.setPosition(view.getCenter().x - itrTextCopy.getPosition().x, view.getCenter().y - itrTextCopy.getPosition().y);
 
-
                 if (selectedOption == (*itr2).id)
                     itrRectCopy.setFillColor(sf::Color::White);
 

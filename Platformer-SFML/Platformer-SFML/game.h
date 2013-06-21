@@ -66,7 +66,7 @@ class Game
         static std::map<std::string /* filename */, Sound*> Sounds;
 
     private:
-        bool isRunning, showDebugInfo;
+        bool isRunning, showDebugInfo, mutedMusic;
         Player* player;
         MenuPlayer* menuPlayer;
         std::vector<sf::Sprite> gameObjects;

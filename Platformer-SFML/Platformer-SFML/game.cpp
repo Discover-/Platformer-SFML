@@ -38,6 +38,7 @@ Game::Game()
     gameState = STATE_MAIN_MENU;
     player = NULL;
     menuPlayer = NULL;
+    mutedMusic = false;
 }
 
 Game::~Game()
@@ -123,6 +124,7 @@ int Game::Update()
     while (window.isOpen())
     {
         sf::Event _event;
+        sf::Vector2i currMousePos = sf::Mouse::getPosition(window);
 
         bool shiftPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::LShift);
 
@@ -240,7 +242,14 @@ int Game::Update()
                     {
                         //! Select menu option
                         case sf::Mouse::Left:
-                            if (gameState == STATE_MAIN_MENU)
+                            if (currMousePos.x < 60 && currMousePos.y > 545)
+                            {
+                                for (std::map<std::string /* filename */, Sound*>::iterator itr = Sounds.begin(); itr != Sounds.end(); ++itr)
+                                    (*itr).second->SetVolume((*itr).second->GetVolume() ? 0.0f : 100.0f);
+
+                                mutedMusic = !mutedMusic;
+                            }
+                            else if (gameState == STATE_MAIN_MENU)
                                 menu->PressedEnterOrMouse(window);
                             break;
                         case sf::Mouse::Right:
@@ -397,6 +406,14 @@ int Game::Update()
             text2.setPosition(view.getCenter().x + 330.0f, view.getCenter().y + 225.0f);
             window.draw(text2);
         }
+
+        sf::Sprite volume(Level::Textures["Graphics/Other/volume" + std::string(mutedMusic ? "_mute" : "") + ".png"]);
+        volume.setPosition(view.getCenter().x - 490.0f, view.getCenter().y + 245.0f);
+
+        if (!(currMousePos.x < 60 && currMousePos.y > 545))
+            volume.setColor(sf::Color(255, 255, 255, 128));
+
+        window.draw(volume);
 
         for (std::map<std::string /* filename */, Sound*>::iterator itr = Sounds.begin(); itr != Sounds.end(); ++itr)
             (*itr).second->Update();

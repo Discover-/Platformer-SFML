@@ -31,3 +31,4 @@
 * Figure out why loading takes really long
 * Make small coins in upper left corner appear on now rows every 5th coin
 * Fix quicksand collision
+* Add logo (icon) to the game, a name, etc.
