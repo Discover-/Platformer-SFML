@@ -10,7 +10,7 @@
 class Level
 {
     public:
-        Level(Game* _game, sf::RenderWindow &window);
+        Level(Game* _game);
         ~Level();
 
         void LoadAllImages();

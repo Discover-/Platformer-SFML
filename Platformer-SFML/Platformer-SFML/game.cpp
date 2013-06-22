@@ -107,9 +107,10 @@ int Game::Update()
 
     LoadAllSounds();
 
-    //! Level::Level calls Level::LoadMap which then initializes Game::Player so we can access the Player's class in order to get its sprites!
-    currLevel = new Level(this, window);
+    currLevel = new Level(this);
+    currLevel->LoadMap("menu", window);
 
+    //! Level::LoadMap initializes Game::player so we can access the Player's class in order to get its sprites! (player->GetSpritesLeft())
     menuPlayer = new MenuPlayer(this, &window, sf::Vector2f(165.0f, 285.0f), player->GetSpritesLeft(), sf::Texture());
     allUnits.push_back(menuPlayer);
 
@@ -124,7 +125,7 @@ int Game::Update()
     while (window.isOpen())
     {
         sf::Event _event;
-        sf::Vector2i currMousePos = sf::Mouse::getPosition(window);
+        sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 
         bool shiftPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::LShift);
 
@@ -242,7 +243,7 @@ int Game::Update()
                     {
                         //! Select menu option
                         case sf::Mouse::Left:
-                            if (currMousePos.x < 60 && currMousePos.y > 545)
+                            if (mousePos.x < 60 && mousePos.y > 545)
                             {
                                 for (std::map<std::string /* filename */, Sound*>::iterator itr = Sounds.begin(); itr != Sounds.end(); ++itr)
                                     (*itr).second->SetVolume((*itr).second->GetVolume() ? 0.0f : 100.0f);
@@ -380,8 +381,6 @@ int Game::Update()
             text.setPosition(view.getCenter().x + 375.0f, view.getCenter().y - 300.0f);
             window.draw(text);
 
-            sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-
             sf::Text text3("Mouse X: " + std::to_string(static_cast<long long>(mousePos.x)) + "\nMouse Y: " + std::to_string(static_cast<long long>(mousePos.y)), font, 15);
             text3.setColor(GAME_STATE_DRAW_GAME(gameState) || gameState == STATE_MAIN_MENU ? sf::Color::Black : sf::Color::White);
             text3.setPosition(view.getCenter().x + 375.0f, view.getCenter().y - 265.0f);
@@ -410,7 +409,7 @@ int Game::Update()
         sf::Sprite volume(Level::Textures["Graphics/Other/volume" + std::string(mutedMusic ? "_mute" : "") + ".png"]);
         volume.setPosition(view.getCenter().x - 490.0f, view.getCenter().y + 245.0f);
 
-        if (!(currMousePos.x < 60 && currMousePos.y > 545))
+        if (!(mousePos.x < 60 && mousePos.y > 545))
             volume.setColor(sf::Color(255, 255, 255, 128));
 
         window.draw(volume);

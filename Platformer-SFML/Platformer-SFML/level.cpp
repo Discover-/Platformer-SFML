@@ -21,11 +21,10 @@
 
 std::map<std::string /* filename */, sf::Texture> Level::Textures;
 
-Level::Level(Game* _game, sf::RenderWindow &window)
+Level::Level(Game* _game)
 {
     game = _game;
     LoadAllImages();
-    LoadMap("menu", window);
     currLevel = 0;
 }
 
