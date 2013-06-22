@@ -15,12 +15,12 @@
 *.a
 
 *.tlog
+*.log
 *.exe
 *.ilk
 *.pdb
 *.obj
 *.ipch
-*.log
 *.filters
 *.vcxproj
 *.suo
