@@ -1,13 +1,36 @@
-﻿Build started 21-6-2013 21:26:43.
+﻿Build started 23-6-2013 1:37:57.
      1>Project "D:\Gebruikers\Openbaar\Bureaublad\Development\Non-emulation\Repositories\Platformer-SFML\Platformer-SFML\Platformer-SFML\Platformer-SFML.vcxproj" on node 2 (Build target(s)).
      1>InitializeBuildStatus:
          Touching "x64\Debug\Platformer-SFML.unsuccessfulbuild".
        ClCompile:
-         D:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\x86_amd64\CL.exe /c /I"C:\SFML-2.0\include" /Zi /nologo /W3 /WX- /Od /D WIN32 /D _DEBUG /D _WINDOWS /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Debug\\" /Fd"x64\Debug\vc110.pdb" /Gd /TP /errorReport:prompt game.cpp
-         game.cpp
-     1>game.cpp(122): error C2660: 'Game::LoadMap' : function does not take 1 arguments
-     1>Done Building Project "D:\Gebruikers\Openbaar\Bureaublad\Development\Non-emulation\Repositories\Platformer-SFML\Platformer-SFML\Platformer-SFML\Platformer-SFML.vcxproj" (Build target(s)) -- FAILED.
+         All outputs are up-to-date.
+       Link:
+         D:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"D:\Gebruikers\Openbaar\Bureaublad\Development\Non-emulation\Repositories\Platformer-SFML\Platformer-SFML\x64\Debug\Platformer-SFML.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\SFML-2.0-C++11\lib" "sfml-graphics-d.lib" "sfml-audio-d.lib" "sfml-system-d.lib" "sfml-window-d.lib" "sfml-network-d.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\Gebruikers\Openbaar\Bureaublad\Development\Non-emulation\Repositories\Platformer-SFML\Platformer-SFML\x64\Debug\Platformer-SFML.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\Gebruikers\Openbaar\Bureaublad\Development\Non-emulation\Repositories\Platformer-SFML\Platformer-SFML\x64\Debug\Platformer-SFML.lib" /MACHINE:X64 x64\Debug\bonustile.obj
+         x64\Debug\bouncetile.obj
+         x64\Debug\bullet.obj
+         x64\Debug\coin.obj
+         x64\Debug\enemy.obj
+         x64\Debug\floatingtile.obj
+         x64\Debug\game.obj
+         x64\Debug\lavatile.obj
+         x64\Debug\level.obj
+         x64\Debug\main.obj
+         x64\Debug\menu.obj
+         x64\Debug\menuplayer.obj
+         x64\Debug\movingtile.obj
+         x64\Debug\player.obj
+         x64\Debug\quicksandtile.obj
+         x64\Debug\sound.obj
+         x64\Debug\spiketile.obj
+         x64\Debug\tile.obj
+         x64\Debug\unit.obj
+         x64\Debug\watertile.obj
+         Platformer-SFML.vcxproj -> D:\Gebruikers\Openbaar\Bureaublad\Development\Non-emulation\Repositories\Platformer-SFML\Platformer-SFML\x64\Debug\Platformer-SFML.exe
+       FinalizeBuildStatus:
+         Deleting file "x64\Debug\Platformer-SFML.unsuccessfulbuild".
+         Touching "x64\Debug\Platformer-SFML.lastbuildstate".
+     1>Done Building Project "D:\Gebruikers\Openbaar\Bureaublad\Development\Non-emulation\Repositories\Platformer-SFML\Platformer-SFML\Platformer-SFML\Platformer-SFML.vcxproj" (Build target(s)).
 
-Build FAILED.
+Build succeeded.
 
-Time Elapsed 00:00:01.31
+Time Elapsed 00:00:00.32
