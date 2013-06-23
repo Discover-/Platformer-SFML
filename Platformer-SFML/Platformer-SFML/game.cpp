@@ -36,11 +36,12 @@ Game::Game()
 {
     isRunning = true;
     showDebugInfo = true;
-    gameState = STATE_LOADING_MENU;
+    gameState = STATE_LOADING_LEVEL;
     player = NULL;
     menuPlayer = NULL;
     mutedMusic = true;
     loadedTiles = 0;
+    currentlyLoadingLvl = "";
 }
 
 Game::~Game()
@@ -100,11 +101,15 @@ class LevelMapLoader
 
         void operator()()
         {
+            window->setView(window->getDefaultView());
+
+            //! Level::LoadMap initializes Game::player so we can access the Player's class in order to get its sprites! (player->GetSpritesLeft())
             currLevel->LoadMap(filename, *window);
             MenuPlayer* menuPlayer = new MenuPlayer(game, window, sf::Vector2f(165.0f, 285.0f), game->GetPlayer()->GetSpritesLeft(), sf::Texture());
             game->SetMenuPlayer(menuPlayer);
             game->AddUnit(menuPlayer);
-            game->SetGameState(STATE_MAIN_MENU);
+            game->SetGameState(filename == "menu" ? STATE_MAIN_MENU : STATE_PLAYING);
+            game->SetCurrentlyLoadingLvl("");
         }
         
     private:
@@ -132,11 +137,9 @@ int Game::Update()
 
     currLevel = new Level(this);
 
+    currentlyLoadingLvl = "menu";
     std::thread threadLevelMapLoader(LevelMapLoader(this, currLevel, "menu", &window));
-
-    //! Level::LoadMap initializes Game::player so we can access the Player's class in order to get its sprites! (player->GetSpritesLeft())
-    //menuPlayer = new MenuPlayer(this, &window, sf::Vector2f(165.0f, 285.0f), player->GetSpritesLeft(), sf::Texture());
-    //allUnits.push_back(menuPlayer);
+    threadLevelMapLoader.detach();
 
     Menu* menu = new Menu(this);
     menu->Load();
@@ -148,10 +151,10 @@ int Game::Update()
 
     while (window.isOpen())
     {
-        if (gameState == STATE_LOADING_MENU)
+        if (gameState == STATE_LOADING_LEVEL)
         {
             window.clear(sf::Color(136, 247, 255));
-            int amountOfTiles = currLevel->GetAmountOfTiles("menu");
+            int amountOfTiles = currLevel->GetAmountOfTiles(currentlyLoadingLvl);
             float pct = floor(float(float(loadedTiles) / amountOfTiles) * 100);
 
             sf::RectangleShape loadingBarBackground;
@@ -222,17 +225,22 @@ int Game::Update()
                         //! Reload map
                         case sf::Keyboard::F1:
                         {
-                            sf::Clock _clock; _clock.restart();
-                            std::stringstream ss; ss << currLevel->GetCurrentLevel();
-                            currLevel->LoadMap(ss.str(), window, true);
+                            std::stringstream ss;
+                            ss << currLevel->GetCurrentLevel();
+                            currentlyLoadingLvl = ss.str();
+                            std::thread threadLevelMapLoader2(LevelMapLoader(this, currLevel, ss.str(), &window));
+                            threadLevelMapLoader2.detach();
+                            gameState = STATE_LOADING_LEVEL;
                             break;
                         }
                         //! Back to menu
                         case sf::Keyboard::F2:
                         {
+                            currentlyLoadingLvl = "menu";
                             menu->SetCurrentMenu(MENU_MAIN);
-                            gameState = STATE_MAIN_MENU;
-                            currLevel->LoadMap("menu", window);
+                            std::thread threadLevelMapLoader2(LevelMapLoader(this, currLevel, "menu", &window));
+                            threadLevelMapLoader2.detach();
+                            gameState = STATE_LOADING_LEVEL;
                             menuPlayer->SetPosition(1200.0f, 285.0f);
                             break;
                         }
@@ -502,8 +510,10 @@ void Game::HandleTimers(sf::Int32 diff_time)
 
 void Game::StartActualGame(sf::RenderWindow &window, std::string filename)
 {
-    gameState = STATE_PLAYING;
-    currLevel->LoadMap(filename, window);
+    gameState = STATE_LOADING_LEVEL;
+    currentlyLoadingLvl = filename;
+    std::thread threadLevelMapLoader4(LevelMapLoader(this, currLevel, filename, &window));
+    threadLevelMapLoader4.detach();
 }
 
 void Game::RemoveUnitWithTypeId(UnitTypeId typeId)

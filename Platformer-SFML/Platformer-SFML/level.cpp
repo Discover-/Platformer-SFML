@@ -61,7 +61,7 @@ void Level::LoadAllImages()
     }
 }
 
-int Level::GetAmountOfTiles(std::string filename)//std::vector<std::vector<std::string>> &tilesInfoLayers, std::vector<std::string> &tilesInfoBlocks)
+int Level::GetAmountOfTiles(std::string filename)
 {
     std::ifstream openfile("Levels/level" + filename + ".txt");
     int amountOfTiles = 0;

@@ -16,7 +16,7 @@ class Level
         void LoadAllImages();
         void LoadMap(std::string filename, sf::RenderWindow &window, bool reload = false);
         void DrawMap(sf::RenderWindow &window, bool menuLevel = false);
-        int GetAmountOfTiles(std::string filename);//std::vector<std::vector<std::string>> &tilesInfoLayers, std::vector<std::string> &tilesInfoBlocks);
+        int GetAmountOfTiles(std::string filename);
 
         int GetCurrentLevel() { return currLevel; }
 

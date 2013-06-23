@@ -7,7 +7,7 @@
 
 enum GameState
 {
-    STATE_LOADING_MENU  = 0,
+    STATE_LOADING_LEVEL  = 0,
     STATE_MAIN_MENU     = 1,
     STATE_PAUSED        = 2,
     STATE_PAUSED_FOCUS  = 3,
@@ -16,7 +16,7 @@ enum GameState
 
 #define GAME_STATE_DRAW_GAME(x) (x == STATE_PAUSED || x == STATE_PAUSED_FOCUS || x == STATE_PLAYING)
 #define GAME_STATE_PAUSED(x) (x == STATE_PAUSED || x == STATE_PAUSED_FOCUS)
-#define GAME_STATE_MENU(x) ( x == STATE_MAIN_MENU || x == STATE_LOADING_MENU)
+#define GAME_STATE_MENU(x) ( x == STATE_MAIN_MENU || x == STATE_LOADING_LEVEL)
 
 enum UnitTypeId
 {

@@ -34,3 +34,7 @@
 * Make skybox reach a lot further (now that we enabled the camera to follow the exact center of the player, this is required)
 * Make all headers .hpp files
 * Add (very short) cooldown to losing a life
+* Figure out why the menuplayer walks a lot faster than it should (or is it only the animation?)
+* Disable scrolling through options when menu is moving down/up
+* Add skybox to menu level
+* Set menuplayer's position closer to moving inside the screen

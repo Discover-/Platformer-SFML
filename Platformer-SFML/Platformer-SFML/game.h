@@ -71,6 +71,8 @@ class Game
         void LoadedAnotherTile() { loadedTiles++; }
         void SetLoadedTiles(int val) { loadedTiles = val; }
 
+        void SetCurrentlyLoadingLvl(std::string val) { currentlyLoadingLvl = val; }
+
         static std::map<std::string /* filename */, Sound*> Sounds;
 
     private:
@@ -87,4 +89,5 @@ class Game
         std::vector<SpecialTile*> allSpecialTiles;
         std::vector<Coin*> allCoins;
         int loadedTiles;
+        std::string currentlyLoadingLvl;
 };
