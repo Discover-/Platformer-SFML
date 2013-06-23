@@ -32,3 +32,5 @@
 * Fix quicksand collision
 * Add logo (icon) to the game, a name, etc.
 * Make skybox reach a lot further (now that we enabled the camera to follow the exact center of the player, this is required)
+* Make all headers .hpp files
+* Add (very short) cooldown to losing a life

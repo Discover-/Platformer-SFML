@@ -29,6 +29,9 @@ class Game
 
         void LoadAllSounds();
 
+        GameState GetGameState() { return gameState; }
+        void SetGameState(GameState state) { gameState = state; }
+
         std::vector<sf::Sprite> &GetGameObjects() { return gameObjects; }
         std::vector<sf::Sprite> &GetGameObjectsCollidable() { return gameObjectsCollidable; }
         void AddGameObject(sf::Sprite gameobject) { gameObjects.push_back(gameobject); }
@@ -38,20 +41,20 @@ class Game
 
         void HandleTimers(sf::Int32 diff_time);
 
+        void AddUnit(Unit* unit) { allUnits.push_back(unit); }
+
         Player* GetPlayer() { return player; }
         void SetPlayer(Player* _player) { player = _player; RemoveUnitWithTypeId(TYPEID_PLAYER); if (_player) allUnits.push_back((Unit*)_player); }
         MenuPlayer* GetMenuPlayer() { return menuPlayer; }
-
-        void AddBullet(Bullet* bullet) { allBullets.push_back(bullet); }
-        void RemoveBullet(Bullet* bullet);
-        std::vector<Bullet*> &GetBullets() { return allBullets; }
-
-        GameState GetGameState() { return gameState; }
-        void SetGameState(GameState state) { gameState = state; }
+        void SetMenuPlayer(MenuPlayer* _menuPlayer) { menuPlayer = _menuPlayer; RemoveUnitWithTypeId(TYPEID_MENU_PLAYER); if (_menuPlayer) allUnits.push_back((Unit*)_menuPlayer); }
 
         std::vector<Enemy*> &GetEnemies() { return allEnemies; }
         void ClearAllEnemies() { allEnemies.clear(); RemoveUnitWithTypeId(TYPEID_ENEMY); }
         void AddEnemy(Enemy* enemy) { allEnemies.push_back(enemy); allUnits.push_back((Unit*)enemy); }
+
+        void AddBullet(Bullet* bullet) { allBullets.push_back(bullet); }
+        void RemoveBullet(Bullet* bullet);
+        std::vector<Bullet*> &GetBullets() { return allBullets; }
 
         void RemoveUnitWithTypeId(UnitTypeId typeId);
 

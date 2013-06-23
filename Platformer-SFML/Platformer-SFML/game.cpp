@@ -28,6 +28,7 @@
 #include "menuplayer.h"
 #include "Library\Dirent\include\dirent.h"
 #include "sound.h"
+#include <thread>
 
 std::map<std::string /* filename */, Sound*> Game::Sounds;
 
@@ -35,7 +36,7 @@ Game::Game()
 {
     isRunning = true;
     showDebugInfo = true;
-    gameState = STATE_MAIN_MENU;
+    gameState = STATE_LOADING_MENU;
     player = NULL;
     menuPlayer = NULL;
     mutedMusic = false;
@@ -91,6 +92,27 @@ void Game::LoadAllSounds()
     }
 }
 
+class LevelMapLoader
+{
+    public:
+        explicit LevelMapLoader(Game* _game, Level* _currLevel, std::string _filename, sf::RenderWindow* _window) : game(_game), currLevel(_currLevel), filename(_filename), window(_window) { }
+
+        void operator()()
+        {
+            currLevel->LoadMap(filename, *window);
+            MenuPlayer* menuPlayer = new MenuPlayer(game, window, sf::Vector2f(165.0f, 285.0f), game->GetPlayer()->GetSpritesLeft(), sf::Texture());
+            game->SetMenuPlayer(menuPlayer);
+            game->AddUnit(menuPlayer);
+            game->SetGameState(STATE_MAIN_MENU);
+        }
+        
+    private:
+        Game* game;
+        Level* currLevel;
+        std::string filename;
+        sf::RenderWindow* window;
+};
+
 int Game::Update()
 {
     sf::Clock clockStart;
@@ -108,11 +130,14 @@ int Game::Update()
     LoadAllSounds();
 
     currLevel = new Level(this);
-    currLevel->LoadMap("menu", window);
+
+    std::thread threadLevelMapLoader(LevelMapLoader(this, currLevel, "menu", &window));
+
+    std::cout << "Finished loading menu map" << std::endl;
 
     //! Level::LoadMap initializes Game::player so we can access the Player's class in order to get its sprites! (player->GetSpritesLeft())
-    menuPlayer = new MenuPlayer(this, &window, sf::Vector2f(165.0f, 285.0f), player->GetSpritesLeft(), sf::Texture());
-    allUnits.push_back(menuPlayer);
+    //menuPlayer = new MenuPlayer(this, &window, sf::Vector2f(165.0f, 285.0f), player->GetSpritesLeft(), sf::Texture());
+    //allUnits.push_back(menuPlayer);
 
     Menu* menu = new Menu(this);
     menu->Load();
@@ -124,6 +149,33 @@ int Game::Update()
 
     while (window.isOpen())
     {
+        if (gameState == STATE_LOADING_MENU)
+        {
+            window.clear(sf::Color(136, 247, 255));
+            sf::Text text;//("Loading . . " + std::string(urand(0, 2) == 0 ? "." : ". ."), font, 15);
+
+            switch (urand(0, 2))
+            {
+                case 0:
+                    text.setString("Loading . . .");
+                    break;
+                case 1:
+                    text.setString("Loading . . . .");
+                    break;
+                case 2:
+                    text.setString("Loading . . . . .");
+                    break;
+            }
+
+            text.setFont(font);
+            text.setCharacterSize(60);
+            text.setColor(sf::Color::Black);
+            text.setPosition(500.0f, 300.0f);
+            window.draw(text);
+            window.display();
+            continue;
+        }
+
         sf::Event _event;
         sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 
@@ -182,7 +234,7 @@ int Game::Update()
                         }
                         //! Pause or un-pause game based on current gamestate.
                         case sf::Keyboard::Escape:
-                            if (gameState != STATE_MAIN_MENU)
+                            if (GAME_STATE_MENU(gameState))
                                 gameState = gameState == STATE_PLAYING ? STATE_PAUSED : STATE_PLAYING;
                             else
                                 window.close();
