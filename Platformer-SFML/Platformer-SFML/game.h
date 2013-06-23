@@ -68,6 +68,9 @@ class Game
 
         bool IsMusicMuted() { return mutedMusic; }
 
+        void LoadedAnotherTile() { loadedTiles++; }
+        void SetLoadedTiles(int val) { loadedTiles = val; }
+
         static std::map<std::string /* filename */, Sound*> Sounds;
 
     private:
@@ -83,4 +86,5 @@ class Game
         Level* currLevel;
         std::vector<SpecialTile*> allSpecialTiles;
         std::vector<Coin*> allCoins;
+        int loadedTiles;
 };

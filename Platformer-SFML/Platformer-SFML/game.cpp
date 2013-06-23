@@ -39,7 +39,8 @@ Game::Game()
     gameState = STATE_LOADING_MENU;
     player = NULL;
     menuPlayer = NULL;
-    mutedMusic = false;
+    mutedMusic = true;
+    loadedTiles = 0;
 }
 
 Game::~Game()
@@ -133,8 +134,6 @@ int Game::Update()
 
     std::thread threadLevelMapLoader(LevelMapLoader(this, currLevel, "menu", &window));
 
-    std::cout << "Finished loading menu map" << std::endl;
-
     //! Level::LoadMap initializes Game::player so we can access the Player's class in order to get its sprites! (player->GetSpritesLeft())
     //menuPlayer = new MenuPlayer(this, &window, sf::Vector2f(165.0f, 285.0f), player->GetSpritesLeft(), sf::Texture());
     //allUnits.push_back(menuPlayer);
@@ -152,26 +151,37 @@ int Game::Update()
         if (gameState == STATE_LOADING_MENU)
         {
             window.clear(sf::Color(136, 247, 255));
-            sf::Text text;//("Loading . . " + std::string(urand(0, 2) == 0 ? "." : ". ."), font, 15);
+            int amountOfTiles = currLevel->GetAmountOfTiles("menu");
+            float pct = floor(float(float(loadedTiles) / amountOfTiles) * 100);
 
-            switch (urand(0, 2))
-            {
-                case 0:
-                    text.setString("Loading . . .");
-                    break;
-                case 1:
-                    text.setString("Loading . . . .");
-                    break;
-                case 2:
-                    text.setString("Loading . . . . .");
-                    break;
-            }
+            sf::RectangleShape loadingBarBackground;
+            loadingBarBackground.setSize(sf::Vector2f(800.0f, 50.0f));
+            loadingBarBackground.setFillColor(sf::Color(136, 247, 255));
+            loadingBarBackground.setPosition(100.0f, 250.0f);
+            loadingBarBackground.setOutlineColor(sf::Color::Black);
+            loadingBarBackground.setOutlineThickness(2.0f);
+            window.draw(loadingBarBackground);
 
-            text.setFont(font);
-            text.setCharacterSize(60);
-            text.setColor(sf::Color::Black);
-            text.setPosition(500.0f, 300.0f);
-            window.draw(text);
+            sf::RectangleShape loadingBarProgress;
+            loadingBarProgress.setSize(sf::Vector2f(800.0f * (pct / 100.0f), 50.0f));
+            loadingBarProgress.setFillColor(sf::Color::Green);
+            loadingBarProgress.setPosition(100.0f, 250.0f);
+            window.draw(loadingBarProgress);
+
+            std::stringstream ssPct;
+            ssPct << "Percentage: " << pct;
+            sf::Text textPercentage(ssPct.str(), font, 25);
+            textPercentage.setColor(sf::Color::White);
+            textPercentage.setPosition(500.0f - (textPercentage.getLocalBounds().width / 2.0f), 270.0f - (textPercentage.getLocalBounds().height / 2.0f));
+            window.draw(textPercentage);
+
+            std::stringstream ssTiles;
+            ssTiles << loadedTiles << " / " << amountOfTiles;
+            sf::Text textTiles(ssTiles.str(), font, 15);
+            textTiles.setColor(sf::Color::White);
+            textTiles.setPosition(500.0f - (textTiles.getLocalBounds().width / 2.0f), 315.0f - (textTiles.getLocalBounds().height / 2.0f));
+            window.draw(textTiles);
+
             window.display();
             continue;
         }

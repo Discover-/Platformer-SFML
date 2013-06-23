@@ -61,6 +61,20 @@ void Level::LoadAllImages()
     }
 }
 
+int Level::GetAmountOfTiles(std::string filename)//std::vector<std::vector<std::string>> &tilesInfoLayers, std::vector<std::string> &tilesInfoBlocks)
+{
+    std::ifstream openfile("Levels/level" + filename + ".txt");
+    int amountOfTiles = 0;
+    std::string line;
+
+    while (std::getline(openfile, line))
+        for (int i = 0; i < line.length(); i++)
+            if (line[i] != ' ')
+                amountOfTiles++;
+
+    return amountOfTiles;
+}
+
 void Level::LoadMap(std::string filename, sf::RenderWindow &window, bool reload /* = false */)
 {
     sf::Clock _clock;
@@ -97,11 +111,12 @@ void Level::LoadMap(std::string filename, sf::RenderWindow &window, bool reload 
     game->ClearAllEnemies();
     game->SetPlayer(NULL);
 
-    //! Last used letter: 
     for (int i = 0; i < tilesInfoLayers.size(); i++)
     {
         for (int j = 0; j < tilesInfoLayers[i].size(); j++)
         {
+            game->LoadedAnotherTile();
+
             if (tilesInfoLayers[i][j] == "_")
                 continue;
 
@@ -299,6 +314,8 @@ void Level::LoadMap(std::string filename, sf::RenderWindow &window, bool reload 
 
     if (!foundPlayer)
         std::cout << "No player found in level " + filename + "." << std::endl;
+
+    game->SetLoadedTiles(0);
 }
 
 void Level::DrawMap(sf::RenderWindow &window, bool menuLevel /* = false */)
