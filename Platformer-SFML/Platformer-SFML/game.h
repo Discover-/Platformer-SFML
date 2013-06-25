@@ -13,7 +13,7 @@ class SpecialTile;
 class Coin;
 class Unit;
 class MenuPlayer;
-class Sound;
+class Audio;
 
 class Game
 {
@@ -27,7 +27,7 @@ class Game
 
         void DeleteContentMemory();
 
-        void LoadAllSounds();
+        void LoadAllAudio();
 
         GameState GetGameState() { return gameState; }
         void SetGameState(GameState state) { gameState = state; }
@@ -74,12 +74,13 @@ class Game
 
         void SetCurrentlyLoadingLvl(std::string val) { currentlyLoadingLvl = val; }
 
-        static std::map<std::string /* filename */, Sound*> Sounds;
+        Audio* GetAudio() { return audio; }
 
     private:
         bool isRunning, showDebugInfo, mutedMusic;
         Player* player;
         MenuPlayer* menuPlayer;
+        Audio* audio;
         std::vector<sf::Sprite> gameObjects;
         std::vector<sf::Sprite> gameObjectsCollidable;
         std::vector<Bullet*> allBullets;

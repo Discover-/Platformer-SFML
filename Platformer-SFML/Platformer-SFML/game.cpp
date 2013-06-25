@@ -27,10 +27,8 @@
 #include "coin.h"
 #include "menuplayer.h"
 #include "Library\Dirent\include\dirent.h"
-#include "sound.h"
+#include "audio.h"
 #include <thread>
-
-std::map<std::string /* filename */, Sound*> Game::Sounds;
 
 Game::Game()
 {
@@ -40,7 +38,7 @@ Game::Game()
     upcomingGameState = STATE_NONE;
     player = NULL;
     menuPlayer = NULL;
-    mutedMusic = true;
+    mutedMusic = false;
     loadedTiles = 0;
     currentlyLoadingLvl = "";
 }
@@ -48,6 +46,7 @@ Game::Game()
 Game::~Game()
 {
     DeleteContentMemory();
+    delete audio;
     delete currLevel;
 }
 
@@ -64,29 +63,23 @@ void Game::DeleteContentMemory()
 
     for (std::vector<Coin*>::iterator itr = allCoins.begin(); itr != allCoins.end(); ++itr)
         delete *itr;
-
-    //for (std::map<std::string /* filename */, Sound*>::iterator itr = Sounds.begin(); itr != Sounds.end(); ++itr)
-    //    delete (*itr).second;
 }
 
-void Game::LoadAllSounds()
+void Game::LoadAllAudio()
 {
     DIR* dir;
     struct dirent* ent;
     std::stringstream ss;
+    audio = new Audio(this);
 
-    if ((dir = opendir("Sounds")) != NULL)
+    if ((dir = opendir("Audio")) != NULL)
     {
         while ((ent = readdir(dir)) != NULL)
         {
             if (ent->d_name[0] != '.') //! These seem to be the only hidden invisible files in there and the dirent library doesn't offer detection for it, so this will work. :)
             {
-                Sound* sound = new Sound(this);
-                ss << "Sounds/" << ent->d_name;
-
-                if (sound->Load(ss.str().c_str()))
-                    Sounds[ss.str()] = sound;
-
+                ss << "Audio/" << ent->d_name;
+                audio->Load(ss.str().c_str());
                 ss.str(std::string());
             }
         }
@@ -134,7 +127,7 @@ int Game::Update()
     sf::View view(window.getDefaultView());
     sf::Clock clock, fpsClock;
 
-    LoadAllSounds();
+    LoadAllAudio();
 
     currLevel = new Level(this);
 
@@ -327,9 +320,7 @@ int Game::Update()
                         case sf::Mouse::Left:
                             if (mousePos.x < 60 && mousePos.y > 545)
                             {
-                                for (std::map<std::string /* filename */, Sound*>::iterator itr = Sounds.begin(); itr != Sounds.end(); ++itr)
-                                    (*itr).second->SetVolume((*itr).second->GetVolume() ? 0.0f : 100.0f);
-
+                                audio->SetVolume("all", mutedMusic ? 100.0f : 0.0f);
                                 mutedMusic = !mutedMusic;
                             }
                             else if (gameState == STATE_MAIN_MENU)
@@ -491,9 +482,6 @@ int Game::Update()
             volume.setColor(sf::Color(255, 255, 255, 128));
 
         window.draw(volume);
-
-        for (std::map<std::string /* filename */, Sound*>::iterator itr = Sounds.begin(); itr != Sounds.end(); ++itr)
-            (*itr).second->Update();
 
         window.display();
     }

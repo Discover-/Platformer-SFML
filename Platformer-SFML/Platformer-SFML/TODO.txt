@@ -40,3 +40,4 @@
 * Set menuplayer's position closer to moving inside the screen
 * Use sf::Music for background music (rename Sound class to Audio?)
 * Re-write Sound class logic
+* Make Sound class singleton/static

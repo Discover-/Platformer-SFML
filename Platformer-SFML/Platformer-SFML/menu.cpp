@@ -4,7 +4,7 @@
 #include "bullet.h"
 #include "game.h"
 #include "menu.h"
-#include "sound.h"
+#include "audio.h"
 
 Menu::Menu(Game* _game)
 {
@@ -14,7 +14,7 @@ Menu::Menu(Game* _game)
     newMenu = MENU_NONE;
     movingCurrMenuOut = false;
     movingNewMenuIn = false;
-    Game::Sounds["Sounds/menu_music.wav"]->Play(true);
+    game->GetAudio()->Play("Audio/menu_music.wav", true);
 }
 
 Menu::~Menu()
@@ -276,7 +276,7 @@ void Menu::PressedEnterOrMouse(sf::RenderWindow &window)
             break;
         case MENU_MAIN:
         {
-            Game::Sounds["Sounds/menu_selection.wav"]->Play();
+            game->GetAudio()->Play("Audio/menu_selection.wav");
 
             switch (selectedOption)
             {
@@ -314,8 +314,8 @@ void Menu::PressedEnterOrMouse(sf::RenderWindow &window)
                             {
                                 if ((*itr2).id == selectedOption)
                                 {
-                                    Game::Sounds["Sounds/menu_music.wav"]->Stop();
-                                    Game::Sounds["Sounds/menu_selection.wav"]->Play();
+                                    game->GetAudio()->Stop("Sounds/menu_music.wav");
+                                    game->GetAudio()->Play("Audio/menu_selection.wav");
                                     game->StartActualGame(window, (*itr2).textShape.getString());
                                     break;
                                 }
@@ -334,7 +334,7 @@ void Menu::PressedEnterOrMouse(sf::RenderWindow &window)
 
 void Menu::UpdateSelection(bool moveNegative)
 {
-    Game::Sounds["Sounds/menu_rollover.wav"]->Play();
+    game->GetAudio()->Play("Audio/menu_rollover.wav");
 
     if (moveNegative)//! arrow up
     {
