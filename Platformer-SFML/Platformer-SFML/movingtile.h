@@ -19,12 +19,10 @@
 #include "position.h"
 #include "tile.h"
 
-class Game;
-
 class MovingTile : public SpecialTile
 {
     public:
-        MovingTile(Game* _game, sf::RenderWindow* _window, sf::Texture _image, int _velocity, sf::Vector2f startPosition, sf::Vector2f _destination, bool _movesVertical);
+        MovingTile(sf::RenderWindow* _window, sf::Texture _image, int _velocity, sf::Vector2f startPosition, sf::Vector2f _destination, bool _movesVertical);
         ~MovingTile();
 
         void Update();

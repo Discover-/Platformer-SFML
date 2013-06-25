@@ -10,7 +10,7 @@
 class Level
 {
     public:
-        Level(Game* _game);
+        Level();
         ~Level();
 
         void LoadAllImages();
@@ -23,7 +23,6 @@ class Level
         static std::map<std::string /* filename */, sf::Texture> Textures;
 
     private:
-        Game* game;
         std::vector<SpriteInfo> sprites;
         int currLevel;
 };

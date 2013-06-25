@@ -18,8 +18,11 @@ class Audio;
 class Game
 {
     public:
-        Game();
-        ~Game();
+        static Game& instance()
+        {
+            static Game game;
+            return game;
+        }
 
         int Update();
         bool IsRunning() { return isRunning; }
@@ -77,6 +80,9 @@ class Game
         Audio* GetAudio() { return audio; }
 
     private:
+        Game();
+        ~Game();
+
         bool isRunning, showDebugInfo, mutedMusic;
         Player* player;
         MenuPlayer* menuPlayer;
@@ -93,3 +99,5 @@ class Game
         int loadedTiles;
         std::string currentlyLoadingLvl;
 };
+
+#define sGame Game::instance()

@@ -19,12 +19,10 @@
 #include "position.h"
 #include "tile.h"
 
-class Game;
-
 class SpikeTile : public SpecialTile
 {
     public:
-        SpikeTile(Game* _game, sf::RenderWindow* _window, sf::Texture _image, sf::Vector2f startPosition);
+        SpikeTile(sf::RenderWindow* _window, sf::Texture _image, sf::Vector2f startPosition);
         ~SpikeTile();
 
         void Update();

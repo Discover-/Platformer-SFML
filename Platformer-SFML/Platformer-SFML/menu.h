@@ -9,7 +9,7 @@
 class Menu
 {
     public:
-        Menu(Game* _game);
+        Menu();
         ~Menu();
 
         void Load();
@@ -27,7 +27,6 @@ class Menu
         MenuInfo GetCurrentMenuInfo() { return menus[currentMenu].first; }
 
     private:
-        Game* game;
         sf::Font font;
         std::vector<std::pair<MenuInfo /* menuId, bool draw */, std::vector<MenuButtonInfo> /* menuInfo */>> menus;
         int selectedOption;

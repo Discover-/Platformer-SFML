@@ -3,8 +3,8 @@
 #include "game.h"
 #include "player.h"
 
-SpikeTile::SpikeTile(Game* _game, sf::RenderWindow* _window, sf::Texture _image, sf::Vector2f _startPosition) :
-SpecialTile(_game, _window, _image, _startPosition, TYPEID_LAVA_TILE)
+SpikeTile::SpikeTile(sf::RenderWindow* _window, sf::Texture _image, sf::Vector2f _startPosition) :
+SpecialTile(_window, _image, _startPosition, TYPEID_LAVA_TILE)
 {
     SetPosition(_startPosition.x, _startPosition.y);
 }

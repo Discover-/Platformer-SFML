@@ -18,8 +18,8 @@
 #include "bullet.h"
 #include "unit.h"
 
-Enemy::Enemy(Game* _game, sf::RenderWindow* _window, sf::Vector2f position, std::vector<std::pair<int, sf::Texture>> _spritesLeft, std::vector<std::pair<int, sf::Texture>> _spritesRight, sf::Texture _imageDead, sf::Texture _bulletTexture, int _life, int _totalMoveFrames, int _frameInterval, bool _canFly) :
-Unit(_game, _window, position, _spritesLeft, _spritesRight, TYPEID_ENEMY, _life, _totalMoveFrames, _frameInterval, _canFly, _bulletTexture)
+Enemy::Enemy(sf::RenderWindow* _window, sf::Vector2f position, std::vector<std::pair<int, sf::Texture>> _spritesLeft, std::vector<std::pair<int, sf::Texture>> _spritesRight, sf::Texture _imageDead, sf::Texture _bulletTexture, int _life, int _totalMoveFrames, int _frameInterval, bool _canFly) :
+Unit(_window, position, _spritesLeft, _spritesRight, TYPEID_ENEMY, _life, _totalMoveFrames, _frameInterval, _canFly, _bulletTexture)
 {
     SetPosition(position.x, position.y);
     destinationX1 = position.x;
@@ -54,7 +54,7 @@ void Enemy::Update()
         return;
     }
 
-    if (GAME_STATE_PAUSED(GetGame()->GetGameState()) || IsDead())
+    if (GAME_STATE_PAUSED(sGame.GetGameState()) || IsDead())
         return;
 
     if (CollidesWithGameobjects(GetPositionX() + GetMoveSpeed(), GetPositionY()))
@@ -79,7 +79,7 @@ void Enemy::Update()
 
 void Enemy::HandleTimers(sf::Int32 diff_time)
 {
-    if (GetGame()->GetGameState() != STATE_PLAYING)
+    if (sGame.GetGameState() != STATE_PLAYING)
         return;
 
     Unit::HandleTimers(diff_time);

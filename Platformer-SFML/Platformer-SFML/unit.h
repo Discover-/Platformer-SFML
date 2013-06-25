@@ -17,20 +17,17 @@
 #include "position.h"
 #include "shareddefines.h"
 
-class Game;
-
 class Unit : public Position
 {
     public:
-        Unit(Game* _game, sf::RenderWindow* _window, sf::Vector2f position, std::vector<std::pair<int, sf::Texture>> _spritesLeft, std::vector<std::pair<int, sf::Texture>> _spritesRight, UnitTypeId _typeId, int _life, int _totalMoveFrames, int _frameInterval, bool _canFly, sf::Texture _bulletTexture);
+        Unit(sf::RenderWindow* _window, sf::Vector2f position, std::vector<std::pair<int, sf::Texture>> _spritesLeft, std::vector<std::pair<int, sf::Texture>> _spritesRight, UnitTypeId _typeId, int _life, int _totalMoveFrames, int _frameInterval, bool _canFly, sf::Texture _bulletTexture);
+        
         virtual ~Unit();
         virtual void Update();
         virtual void HandleTimers(sf::Int32 diff_time);
         virtual sf::Sprite GetSpriteBody();
 
         void Draw(sf::Sprite* _spriteBody = NULL, bool updatePos = false);
-
-        Game* &GetGame() { return game; }
 
         UnitTypeId GetTypeId() { return typeId; }
 
@@ -85,7 +82,6 @@ class Unit : public Position
         bool CanFly() { return canFly; }
 
     private:
-        Game* game;
         UnitTypeId typeId;
         bool isAlive;
         std::vector<std::pair<int, sf::Texture>> spriteBodiesLeft;

@@ -19,12 +19,10 @@
 #include "position.h"
 #include "tile.h"
 
-class Game;
-
 class QuickSandTile : public SpecialTile
 {
     public:
-        QuickSandTile(Game* _game, sf::RenderWindow* _window, sf::Texture _image, sf::Vector2f startPosition);
+        QuickSandTile(sf::RenderWindow* _window, sf::Texture _image, sf::Vector2f startPosition);
         ~QuickSandTile();
 
         void Update();

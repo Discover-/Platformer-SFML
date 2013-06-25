@@ -3,8 +3,8 @@
 #include "game.h"
 #include "coin.h"
 
-BonusTile::BonusTile(Game* _game, sf::RenderWindow* _window, sf::Texture _image, sf::Texture _imageUsed, sf::Vector2f _startPosition) :
-SpecialTile(_game, _window, _image, _startPosition, TYPEID_BONUS_TILE)
+BonusTile::BonusTile(sf::RenderWindow* _window, sf::Texture _image, sf::Texture _imageUsed, sf::Vector2f _startPosition) :
+SpecialTile(_window, _image, _startPosition, TYPEID_BONUS_TILE)
 {
     window = _window;
     isUsed = false;
@@ -26,7 +26,7 @@ void BonusTile::Update()
     if (IsRemoved())
         return;
 
-    if (GAME_STATE_PAUSED(GetGame()->GetGameState()))
+    if (GAME_STATE_PAUSED(sGame.GetGameState()))
     {
         Draw(animationFinished ? &imageUsed : NULL, true);
         return;
@@ -61,10 +61,10 @@ void BonusTile::Update()
                 switch (urand(0, 1))
                 {
                     case 0:
-                        GetGame()->AddCoin(new Coin(GetGame(), window, sf::Vector2f(GetPositionX(), GetPositionY() - 70.0f), imageCoin));
+                        sGame.AddCoin(new Coin(window, sf::Vector2f(GetPositionX(), GetPositionY() - 70.0f), imageCoin));
                         break;
                     case 1:
-                        GetGame()->AddCoin(new Coin(GetGame(), window, sf::Vector2f(GetPositionX(), GetPositionY() - 70.0f), imageCoin));
+                        sGame.AddCoin(new Coin(window, sf::Vector2f(GetPositionX(), GetPositionY() - 70.0f), imageCoin));
                         break;
                     default:
                         std::cout << "Typo in BonusTile::Update switch (urand)" << std::endl;

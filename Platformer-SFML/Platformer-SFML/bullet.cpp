@@ -4,12 +4,8 @@
 #include "shareddefines.h"
 #include "enemy.h"
 
-Bullet::Bullet(Game* _game, sf::RenderWindow* _window, float _x, float _y, sf::Texture _imageBullet, bool _movingToLeft, float _velocity /* = 5 */)
+Bullet::Bullet(sf::RenderWindow* _window, float _x, float _y, sf::Texture _imageBullet, bool _movingToLeft, float _velocity /* = 5 */)
 {
-    if (!_game)
-        return;
-
-    game = _game;
     velocity = _velocity;
     isRemoved = false;
     SetPosition(_x, _y);
@@ -25,14 +21,14 @@ Bullet::~Bullet()
 
 void Bullet::Update()
 {
-    if (isRemoved || !game || !game->IsRunning())
+    if (isRemoved)
         return;
 
-    Player* player = game->GetPlayer();
+    Player* player = sGame.GetPlayer();
     if (!player)
         return;
 
-    bool isPaused = GAME_STATE_PAUSED(game->GetGameState());
+    bool isPaused = GAME_STATE_PAUSED(sGame.GetGameState());
 
     if (!isPaused)
         SetPositionX(movingToLeft ? GetPositionX() + velocity : GetPositionX() - velocity);
@@ -55,7 +51,7 @@ void Bullet::Update()
         }
         else
         {
-            std::vector<Enemy*> enemies = game->GetEnemies();
+            std::vector<Enemy*> enemies = sGame.GetEnemies();
 
             for (std::vector<Enemy*>::iterator itr = enemies.begin(); itr != enemies.end(); ++itr)
             {
@@ -80,7 +76,7 @@ void Bullet::Update()
                 }
             }
 
-            std::vector<sf::Sprite> gameObjects = game->GetGameObjectsCollidable();
+            std::vector<sf::Sprite> gameObjects = sGame.GetGameObjectsCollidable();
 
             for (std::vector<sf::Sprite>::iterator itr = gameObjects.begin(); itr != gameObjects.end(); ++itr)
             {
@@ -111,7 +107,7 @@ void Bullet::Draw(sf::Sprite* spriteBullet /* = NULL */, bool updatePos /* = fal
         return;
 
     sf::Vector2f position = GetPosition();
-    sf::Vector2f positionPlr = game->GetPlayer()->GetPosition();
+    sf::Vector2f positionPlr = sGame.GetPlayer()->GetPosition();
 
     if (!IsInRange(position.x, positionPlr.x, position.y, positionPlr.y, 1000.0f))
         return;
@@ -119,7 +115,7 @@ void Bullet::Draw(sf::Sprite* spriteBullet /* = NULL */, bool updatePos /* = fal
     if (updatePos)
         spriteBullet->setPosition(position);
 
-    if (GAME_STATE_PAUSED(game->GetGameState()))
+    if (GAME_STATE_PAUSED(sGame.GetGameState()))
         spriteBullet->setColor(sf::Color(255, 255, 255, 128));
 
     window->draw(*spriteBullet);
@@ -128,5 +124,5 @@ void Bullet::Draw(sf::Sprite* spriteBullet /* = NULL */, bool updatePos /* = fal
 void Bullet::Explode()
 {
     isRemoved = true;
-    game->RemoveBullet(this);
+    sGame.RemoveBullet(this);
 }

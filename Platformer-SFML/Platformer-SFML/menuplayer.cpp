@@ -20,8 +20,8 @@
 #include "coin.h"
 #include <math.h>
 
-MenuPlayer::MenuPlayer(Game* _game, sf::RenderWindow* _window, sf::Vector2f position, std::vector<std::pair<int, sf::Texture>> _spritesRight, sf::Texture _bulletTexture, int _totalMoveFrames, int _frameInterval) :
-Unit(_game, _window, position, _spritesRight, _spritesRight, TYPEID_MENU_PLAYER, 1, _totalMoveFrames, _frameInterval, false, _bulletTexture)
+MenuPlayer::MenuPlayer(sf::RenderWindow* _window, sf::Vector2f position, std::vector<std::pair<int, sf::Texture>> _spritesRight, sf::Texture _bulletTexture, int _totalMoveFrames, int _frameInterval) :
+Unit(_window, position, _spritesRight, _spritesRight, TYPEID_MENU_PLAYER, 1, _totalMoveFrames, _frameInterval, false, _bulletTexture)
 {
 
 }
@@ -33,7 +33,7 @@ MenuPlayer::~MenuPlayer()
 
 void MenuPlayer::Update()
 {
-    if (GetGame()->GetGameState() != STATE_MAIN_MENU)
+    if (sGame.GetGameState() != STATE_MAIN_MENU)
         return;
 
     Unit::Update();
@@ -48,7 +48,7 @@ void MenuPlayer::Update()
 
 void MenuPlayer::HandleTimers(sf::Int32 diff_time)
 {
-    if (GetGame()->GetGameState() != STATE_MAIN_MENU)
+    if (sGame.GetGameState() != STATE_MAIN_MENU)
         return;
 
     Unit::HandleTimers(diff_time);

@@ -3,8 +3,8 @@
 #include "game.h"
 #include "player.h"
 
-QuickSandTile::QuickSandTile(Game* _game, sf::RenderWindow* _window, sf::Texture _image, sf::Vector2f _startPosition) :
-SpecialTile(_game, _window, _image, _startPosition, TYPEID_QUICK_SAND_TILE)
+QuickSandTile::QuickSandTile(sf::RenderWindow* _window, sf::Texture _image, sf::Vector2f _startPosition) :
+SpecialTile(_window, _image, _startPosition, TYPEID_QUICK_SAND_TILE)
 {
     SetPosition(_startPosition.x, _startPosition.y);
 }

@@ -3,8 +3,8 @@
 #include "game.h"
 #include "player.h"
 
-LavaTile::LavaTile(Game* _game, sf::RenderWindow* _window, sf::Texture _image, sf::Vector2f _startPosition) :
-SpecialTile(_game, _window, _image, _startPosition, TYPEID_LAVA_TILE)
+LavaTile::LavaTile(sf::RenderWindow* _window, sf::Texture _image, sf::Vector2f _startPosition) :
+SpecialTile(_window, _image, _startPosition, TYPEID_LAVA_TILE)
 {
     SetPosition(_startPosition.x, _startPosition.y);
 }

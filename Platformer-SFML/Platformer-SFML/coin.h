@@ -18,12 +18,10 @@
 #include "position.h"
 #include "floatingtile.h"
 
-class Game;
-
 class Coin : public FloatingTile
 {
     public:
-        Coin(Game* _game, sf::RenderWindow* _window, sf::Vector2f _startPosition, sf::Texture _image);
+        Coin(sf::RenderWindow* _window, sf::Vector2f _startPosition, sf::Texture _image);
         ~Coin();
 
         void Update();
@@ -35,7 +33,6 @@ class Coin : public FloatingTile
         void SetIsTaken(bool val) { isTaken = val; }
 
     private:
-        Game* game;
         bool isTaken;
         sf::Texture image;
         sf::RenderWindow* window;

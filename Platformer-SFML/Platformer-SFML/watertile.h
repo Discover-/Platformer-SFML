@@ -19,12 +19,10 @@
 #include "position.h"
 #include "tile.h"
 
-class Game;
-
 class WaterTile : public SpecialTile
 {
     public:
-        WaterTile(Game* _game, sf::RenderWindow* _window, sf::Texture _image, sf::Vector2f startPosition);
+        WaterTile(sf::RenderWindow* _window, sf::Texture _image, sf::Vector2f startPosition);
         ~WaterTile();
 
         void Update();

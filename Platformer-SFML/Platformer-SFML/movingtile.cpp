@@ -3,8 +3,8 @@
 #include "game.h"
 #include "player.h"
 
-MovingTile::MovingTile(Game* _game, sf::RenderWindow* _window, sf::Texture _image, int _velocity, sf::Vector2f _startPosition, sf::Vector2f _destination, bool _movesVertical) :
-SpecialTile(_game, _window, _image, _startPosition, TYPEID_MOVING_TILE)
+MovingTile::MovingTile(sf::RenderWindow* _window, sf::Texture _image, int _velocity, sf::Vector2f _startPosition, sf::Vector2f _destination, bool _movesVertical) :
+SpecialTile(_window, _image, _startPosition, TYPEID_MOVING_TILE)
 {
     velocity = _velocity;
     movingToActualDest = true;
@@ -23,7 +23,7 @@ void MovingTile::Update()
 {
     SpecialTile::Update();
 
-    if (GAME_STATE_PAUSED(GetGame()->GetGameState()))
+    if (GAME_STATE_PAUSED(sGame.GetGameState()))
         return;
     
     for (std::list<Unit*>::iterator itr = passengers.begin(); itr != passengers.end();)
@@ -117,7 +117,7 @@ bool MovingTile::HasPassenger(Unit* unit)
 
 bool MovingTile::OnCollision(Unit* unit /* = NULL */)
 {
-    if (Unit* unitToTarget = unit ? unit : GetGame()->GetPlayer())
+    if (Unit* unitToTarget = unit ? unit : sGame.GetPlayer())
         if (!HasPassenger(unitToTarget))
             AddPassenger(unitToTarget);
 

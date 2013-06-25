@@ -4,8 +4,8 @@
 #include "player.h"
 #include "audio.h"
 
-BounceTile::BounceTile(Game* _game, sf::RenderWindow* _window, sf::Texture _image, sf::Texture _imageUsed, sf::Vector2f _startPosition, std::string color) :
-SpecialTile(_game, _window, _image, _startPosition, TYPEID_BOUNCE_TILE)
+BounceTile::BounceTile(sf::RenderWindow* _window, sf::Texture _image, sf::Texture _imageUsed, sf::Vector2f _startPosition, std::string color) :
+SpecialTile(_window, _image, _startPosition, TYPEID_BOUNCE_TILE)
 {
     isUsed = false;
     startPosition = _startPosition;
@@ -22,7 +22,7 @@ void BounceTile::Update()
 {
     SpecialTile::Update();
 
-    if (GAME_STATE_PAUSED(GetGame()->GetGameState()))
+    if (GAME_STATE_PAUSED(sGame.GetGameState()))
     {
         Draw(isUsed ? &imageUsed : NULL, true);
         return;
@@ -45,7 +45,7 @@ bool BounceTile::OnCollision(Unit* unit /* = NULL */)
     {
         isUsed = true;
         unit->Jump(30);
-        GetGame()->GetAudio()->Play("Audio/trampoline_shot.wav");
+        sGame.GetAudio()->Play("Audio/trampoline_shot.wav");
     }
 
     return false;

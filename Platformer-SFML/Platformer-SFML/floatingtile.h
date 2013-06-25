@@ -17,8 +17,6 @@
 #include "unit.h"
 #include "position.h"
 
-class Game;
-
 class FloatingTile : public Position
 {
     public:

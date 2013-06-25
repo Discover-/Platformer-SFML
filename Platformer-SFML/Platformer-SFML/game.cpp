@@ -70,7 +70,7 @@ void Game::LoadAllAudio()
     DIR* dir;
     struct dirent* ent;
     std::stringstream ss;
-    audio = new Audio(this);
+    audio = new Audio();
 
     if ((dir = opendir("Audio")) != NULL)
     {
@@ -91,7 +91,7 @@ void Game::LoadAllAudio()
 class LevelMapLoader
 {
     public:
-        explicit LevelMapLoader(Game* _game, Level* _currLevel, std::string _filename, sf::RenderWindow* _window) : game(_game), currLevel(_currLevel), filename(_filename), window(_window) { }
+        explicit LevelMapLoader(Level* _currLevel, std::string _filename, sf::RenderWindow* _window) : currLevel(_currLevel), filename(_filename), window(_window) { }
 
         void operator()()
         {
@@ -99,15 +99,14 @@ class LevelMapLoader
 
             //! Level::LoadMap initializes Game::player so we can access the Player's class in order to get its sprites! (player->GetSpritesLeft())
             currLevel->LoadMap(filename, *window);
-            MenuPlayer* menuPlayer = new MenuPlayer(game, window, sf::Vector2f(165.0f, 285.0f), game->GetPlayer()->GetSpritesLeft(), sf::Texture());
-            game->SetMenuPlayer(menuPlayer);
-            game->AddUnit(menuPlayer);
-            game->SetUpcomingGameState(filename == "menu" ? STATE_MAIN_MENU : STATE_PLAYING);
-            game->SetCurrentlyLoadingLvl("");
+            MenuPlayer* menuPlayer = new MenuPlayer(window, sf::Vector2f(165.0f, 285.0f), sGame.GetPlayer()->GetSpritesLeft(), sf::Texture());
+            sGame.SetMenuPlayer(menuPlayer);
+            sGame.AddUnit(menuPlayer);
+            sGame.SetUpcomingGameState(filename == "menu" ? STATE_MAIN_MENU : STATE_PLAYING);
+            sGame.SetCurrentlyLoadingLvl("");
         }
         
     private:
-        Game* game;
         Level* currLevel;
         std::string filename;
         sf::RenderWindow* window;
@@ -129,13 +128,13 @@ int Game::Update()
 
     LoadAllAudio();
 
-    currLevel = new Level(this);
+    currLevel = new Level();
 
     currentlyLoadingLvl = "menu";
-    std::thread threadLevelMapLoader(LevelMapLoader(this, currLevel, "menu", &window));
+    std::thread threadLevelMapLoader(LevelMapLoader(currLevel, "menu", &window));
     threadLevelMapLoader.detach();
 
-    Menu* menu = new Menu(this);
+    Menu* menu = new Menu();
     menu->Load();
 
     std::cout << "Time in milliseconds taken to load everything before entering while-loop: " << clockStart.restart().asMilliseconds() << std::endl;
@@ -233,7 +232,7 @@ int Game::Update()
                             std::stringstream ss;
                             ss << currLevel->GetCurrentLevel();
                             currentlyLoadingLvl = ss.str();
-                            std::thread threadLevelMapLoader2(LevelMapLoader(this, currLevel, ss.str(), &window));
+                            std::thread threadLevelMapLoader2(LevelMapLoader(currLevel, ss.str(), &window));
                             threadLevelMapLoader2.detach();
                             gameState = STATE_LOADING_LEVEL;
                             break;
@@ -243,7 +242,7 @@ int Game::Update()
                         {
                             currentlyLoadingLvl = "menu";
                             menu->SetCurrentMenu(MENU_MAIN);
-                            std::thread threadLevelMapLoader2(LevelMapLoader(this, currLevel, "menu", &window));
+                            std::thread threadLevelMapLoader2(LevelMapLoader(currLevel, "menu", &window));
                             threadLevelMapLoader2.detach();
                             gameState = STATE_LOADING_LEVEL;
                             menuPlayer->SetPosition(1200.0f, 285.0f);
@@ -508,7 +507,7 @@ void Game::StartActualGame(sf::RenderWindow &window, std::string filename)
 {
     gameState = STATE_LOADING_LEVEL;
     currentlyLoadingLvl = filename;
-    std::thread threadLevelMapLoader(LevelMapLoader(this, currLevel, filename, &window));
+    std::thread threadLevelMapLoader(LevelMapLoader(currLevel, filename, &window));
     threadLevelMapLoader.detach();
 }
 

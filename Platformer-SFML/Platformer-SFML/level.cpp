@@ -21,9 +21,8 @@
 
 std::map<std::string /* filename */, sf::Texture> Level::Textures;
 
-Level::Level(Game* _game)
+Level::Level()
 {
-    game = _game;
     LoadAllImages();
     currLevel = 0;
 }
@@ -104,18 +103,18 @@ void Level::LoadMap(std::string filename, sf::RenderWindow &window, bool reload 
     }
 
     sprites.clear();
-    game->ClearGameObjects();
-    game->ClearGameObjectCollidables();
-    game->ClearCoins();
-    game->ClearAllSpecialTiles();
-    game->ClearAllEnemies();
-    game->SetPlayer(NULL);
+    sGame.ClearGameObjects();
+    sGame.ClearGameObjectCollidables();
+    sGame.ClearCoins();
+    sGame.ClearAllSpecialTiles();
+    sGame.ClearAllEnemies();
+    sGame.SetPlayer(NULL);
 
     for (int i = 0; i < tilesInfoLayers.size(); i++)
     {
         for (int j = 0; j < tilesInfoLayers[i].size(); j++)
         {
-            game->LoadedAnotherTile();
+            sGame.LoadedAnotherTile();
 
             if (tilesInfoLayers[i][j] == "_")
                 continue;
@@ -124,7 +123,7 @@ void Level::LoadMap(std::string filename, sf::RenderWindow &window, bool reload 
 
             if (tilesInfoLayers[i][j] == "A")
             {
-                game->AddCoin(new Coin(game, &window, sf::Vector2f(j * 50.0f, i * 50.0f - 20.0f + float(urand(0, 9))), Textures["Graphics/Tiles/coin_gold.png"]));
+                sGame.AddCoin(new Coin(&window, sf::Vector2f(j * 50.0f, i * 50.0f - 20.0f + float(urand(0, 9))), Textures["Graphics/Tiles/coin_gold.png"]));
                 continue;
             }
             else if (tilesInfoLayers[i][j] == "B" || tilesInfoLayers[i][j] == "C")
@@ -140,48 +139,48 @@ void Level::LoadMap(std::string filename, sf::RenderWindow &window, bool reload 
                     destiPos.y -= 200.0f;
                 }
 
-                game->AddSpecialTile(new MovingTile(game, &window, Textures["Graphics/Tiles/plank.png"], 3, startPos, destiPos, tilesInfoLayers[i][j] == "B"));
+                sGame.AddSpecialTile(new MovingTile(&window, Textures["Graphics/Tiles/plank.png"], 3, startPos, destiPos, tilesInfoLayers[i][j] == "B"));
                 continue;
             }
             else if (tilesInfoLayers[i][j] == "D")
             {
-                game->AddSpecialTile(new BonusTile(game, &window, Textures["Graphics/Tiles/bonus.png"], Textures["Graphics/Tiles/bonus_used.png"], mapPosition));
+                sGame.AddSpecialTile(new BonusTile(&window, Textures["Graphics/Tiles/bonus.png"], Textures["Graphics/Tiles/bonus_used.png"], mapPosition));
                 continue;
             }
             else if (tilesInfoLayers[i][j] == "Y")
             {
-                game->AddSpecialTile(new QuickSandTile(game, &window, Textures["Graphics/Tiles/ground_sand.png"], mapPosition));
+                sGame.AddSpecialTile(new QuickSandTile(&window, Textures["Graphics/Tiles/ground_sand.png"], mapPosition));
                 continue;
             }
             else if (tilesInfoLayers[i][j] == "S")
             {
                 mapPosition.y += 25.0f;
-                game->AddSpecialTile(new WaterTile(game, &window, Textures["Graphics/Tiles/water.png"], mapPosition));
+                sGame.AddSpecialTile(new WaterTile(&window, Textures["Graphics/Tiles/water.png"], mapPosition));
                 continue;
             }
             else if (tilesInfoLayers[i][j] == "R")
             {
                 mapPosition.y += 25.0f;
-                game->AddSpecialTile(new LavaTile(game, &window, Textures["Graphics/Tiles/lava.png"], mapPosition));
+                sGame.AddSpecialTile(new LavaTile(&window, Textures["Graphics/Tiles/lava.png"], mapPosition));
                 continue;
             }
             else if (tilesInfoLayers[i][j] == "E" || tilesInfoLayers[i][j] == "F")
             {
                 std::string tileColor = tilesInfoLayers[i][j] == "E" ? "blue" : "red";
-                game->AddSpecialTile(new BounceTile(game, &window, Textures["Graphics/Tiles/switch_" + tileColor + "_on.png"], Textures["Graphics/Tiles/switch_" + tileColor + "_off.png"], mapPosition, tileColor));
+                sGame.AddSpecialTile(new BounceTile(&window, Textures["Graphics/Tiles/switch_" + tileColor + "_on.png"], Textures["Graphics/Tiles/switch_" + tileColor + "_off.png"], mapPosition, tileColor));
                 continue;
             }
             else if (tilesInfoLayers[i][j] == "G")
             {
                 mapPosition.y += 25.0f;
-                game->AddSpecialTile(new SpikeTile(game, &window, Textures["Graphics/Tiles/spikes.png"], mapPosition));
+                sGame.AddSpecialTile(new SpikeTile(&window, Textures["Graphics/Tiles/spikes.png"], mapPosition));
                 continue;
             }
             else if (tilesInfoLayers[i][j] == "!")
             {
                 foundPlayer = true;
 
-                if (!reload && game->GetPlayer())
+                if (!reload && sGame.GetPlayer())
                 {
                     std::cout << "There is already a player defined in level " + filename + "." << std::endl;
                     continue;
@@ -200,7 +199,7 @@ void Level::LoadMap(std::string filename, sf::RenderWindow &window, bool reload 
                     }
                 }
 
-                game->SetPlayer(new Player(game, &window, mapPosition, spriteCharactersLeft, spriteCharactersRight, Textures["Graphics/Other/heart_empty.png"], Textures["Graphics/Other/heart_full.png"], Textures["Graphics/Tiles/coin_gold_small.png"], Textures["Graphics/Character/jump_l.png"], Textures["Graphics/Character/jump_r.png"], Textures["Graphics/Other/bullet.png"]));
+                sGame.SetPlayer(new Player(&window, mapPosition, spriteCharactersLeft, spriteCharactersRight, Textures["Graphics/Other/heart_empty.png"], Textures["Graphics/Other/heart_full.png"], Textures["Graphics/Tiles/coin_gold_small.png"], Textures["Graphics/Character/jump_l.png"], Textures["Graphics/Character/jump_r.png"], Textures["Graphics/Other/bullet.png"]));
                 continue;
             }
             else if (tilesInfoLayers[i][j] == "Z" || tilesInfoLayers[i][j] == "?")
@@ -226,7 +225,7 @@ void Level::LoadMap(std::string filename, sf::RenderWindow &window, bool reload 
                     }
                 }
 
-                game->AddEnemy(new Enemy(game, &window, mapPosition, spriteEnemiesLeft, spriteEnemiesRight, Textures["Graphics/Enemies/" + std::string(!slime ? "fly_dead" : "slime_dead") + ".png"], Textures["Graphics/Other/bullet.png"], 3, 1, 80, !slime));
+                sGame.AddEnemy(new Enemy(&window, mapPosition, spriteEnemiesLeft, spriteEnemiesRight, Textures["Graphics/Enemies/" + std::string(!slime ? "fly_dead" : "slime_dead") + ".png"], Textures["Graphics/Other/bullet.png"], 3, 1, 80, !slime));
                 continue;
             }
 
@@ -304,9 +303,9 @@ void Level::LoadMap(std::string filename, sf::RenderWindow &window, bool reload 
             tmpSprite.setPosition(mapPosition);
 
             if (isCollidable)
-                game->AddGameObjectCollidable(tmpSprite);
+                sGame.AddGameObjectCollidable(tmpSprite);
 
-            game->AddGameObject(tmpSprite);
+            sGame.AddGameObject(tmpSprite);
         }
     }
 
@@ -315,12 +314,12 @@ void Level::LoadMap(std::string filename, sf::RenderWindow &window, bool reload 
     if (!foundPlayer)
         std::cout << "No player found in level " + filename + "." << std::endl;
 
-    game->SetLoadedTiles(0);
+    sGame.SetLoadedTiles(0);
 }
 
 void Level::DrawMap(sf::RenderWindow &window, bool menuLevel /* = false */)
 {
-    sf::Vector2f cameraPos = menuLevel ? game->GetMenuPlayer()->GetPosition() : game->GetPlayer()->GetPosition();
+    sf::Vector2f cameraPos = menuLevel ? sGame.GetMenuPlayer()->GetPosition() : sGame.GetPlayer()->GetPosition();
     float distToCamera = menuLevel ? 1600.0f : 1000.0f;
 
     for (std::vector<SpriteInfo>::iterator itr = sprites.begin(); itr != sprites.end(); ++itr)
@@ -331,7 +330,7 @@ void Level::DrawMap(sf::RenderWindow &window, bool menuLevel /* = false */)
             sf::Sprite sprite((*itr).image);
             sprite.setPosition((*itr).posX, (*itr).posY);
 
-            if (GAME_STATE_PAUSED(game->GetGameState()))
+            if (GAME_STATE_PAUSED(sGame.GetGameState()))
                 sprite.setColor(sf::Color(255, 255, 255, 128));
 
             window.draw(sprite);

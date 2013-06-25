@@ -20,7 +20,7 @@
 class Bullet : public Position
 {
     public:
-        Bullet(Game* _game, sf::RenderWindow* _window, float _x, float _y, sf::Texture _imageBullet, bool _movingToLeft, float _velocity = 5);
+        Bullet(sf::RenderWindow* _window, float _x, float _y, sf::Texture _imageBullet, bool _movingToLeft, float _velocity = 5);
         ~Bullet();
 
         void Update();
@@ -33,7 +33,6 @@ class Bullet : public Position
         void Draw(sf::Sprite* _spriteBullet = NULL, bool updatePos = false);
 
     private:
-        Game* game;
         bool isRemoved;
         float velocity;
         bool movingToLeft;

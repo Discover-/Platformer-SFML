@@ -18,12 +18,10 @@
 #include "shareddefines.h"
 #include "unit.h"
 
-class Game;
-
 class SpecialTile : public Position
 {
     public:
-        SpecialTile(Game* _game, sf::RenderWindow* _window, sf::Texture _image, sf::Vector2f position, TileTypeId _typeId);
+        SpecialTile(sf::RenderWindow* _window, sf::Texture _image, sf::Vector2f position, TileTypeId _typeId);
         //~SpecialTile();
 
         virtual void Update();
@@ -36,10 +34,8 @@ class SpecialTile : public Position
 
         TileTypeId GetTypeId() { return typeId; }
         sf::Sprite GetSpriteTile();
-        Game* &GetGame() { return game; }
 
     private:
-        Game* game;
         TileTypeId typeId;
         bool isRemoved;
         sf::Texture image;

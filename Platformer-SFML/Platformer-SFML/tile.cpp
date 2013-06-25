@@ -5,25 +5,24 @@
 #include "bullet.h"
 #include "game.h"
 
-SpecialTile::SpecialTile(Game* _game, sf::RenderWindow* _window, sf::Texture _image, sf::Vector2f position, TileTypeId _typeId)
+SpecialTile::SpecialTile(sf::RenderWindow* _window, sf::Texture _image, sf::Vector2f position, TileTypeId _typeId)
 {
     window = _window;
     SetPosition(position.x, position.y);
     image = _image;
-    game = _game;
     typeId = _typeId;
     isRemoved = false;
 }
 
 void SpecialTile::Update()
 {
-    if (GAME_STATE_PAUSED(game->GetGameState()) && !isRemoved)
+    if (GAME_STATE_PAUSED(sGame.GetGameState()) && !isRemoved)
     {
         Draw();
         return;
     }
 
-    if (game->GetGameState() == STATE_MAIN_MENU)
+    if (sGame.GetGameState() == STATE_MAIN_MENU)
         return;
 
     //Draw(NULL, true);
@@ -32,7 +31,7 @@ void SpecialTile::Update()
 void SpecialTile::Draw(sf::Texture* _textureTile /* = NULL */, bool updatePos /* = false */)
 {
     sf::Vector2f position = GetPosition();
-    sf::Vector2f positionPlr = game->GetPlayer()->GetPosition();
+    sf::Vector2f positionPlr = sGame.GetPlayer()->GetPosition();
 
     if (!IsInRange(position.x, positionPlr.x, position.y, positionPlr.y, 1000.0f))
         return;
@@ -47,7 +46,7 @@ void SpecialTile::Draw(sf::Texture* _textureTile /* = NULL */, bool updatePos /*
     if (updatePos)
         spriteToDraw.setPosition(GetPositionX(), GetPositionY());
 
-    if (GAME_STATE_PAUSED(game->GetGameState()))
+    if (GAME_STATE_PAUSED(sGame.GetGameState()))
         spriteToDraw.setColor(sf::Color(255, 255, 255, 128));
 
     window->draw(spriteToDraw);

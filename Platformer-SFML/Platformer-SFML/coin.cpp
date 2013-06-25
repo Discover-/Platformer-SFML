@@ -3,10 +3,9 @@
 #include "game.h"
 #include "player.h"
 
-Coin::Coin(Game* _game, sf::RenderWindow* _window, sf::Vector2f _startPosition, sf::Texture _image) :
+Coin::Coin(sf::RenderWindow* _window, sf::Vector2f _startPosition, sf::Texture _image) :
 FloatingTile(_startPosition)
 {
-    game = _game;
     image = _image;
     window = _window;
     SetPosition(_startPosition.x, _startPosition.y);
@@ -20,7 +19,7 @@ Coin::~Coin()
 
 void Coin::Update()
 {
-    if (!GAME_STATE_PAUSED(game->GetGameState()))
+    if (!GAME_STATE_PAUSED(sGame.GetGameState()))
         FloatingTile::Update();
 
     sf::Sprite spriteCoin(image);
@@ -30,7 +29,7 @@ void Coin::Update()
 void Coin::Draw(sf::Sprite spriteCoin, bool updatePos /* = false */)
 {
     sf::Vector2f position = GetPosition();
-    sf::Vector2f positionPlr = game->GetPlayer()->GetPosition();
+    sf::Vector2f positionPlr = sGame.GetPlayer()->GetPosition();
 
     if (!IsInRange(position.x, positionPlr.x, position.y, positionPlr.y, 1000.0f))
         return;
@@ -38,7 +37,7 @@ void Coin::Draw(sf::Sprite spriteCoin, bool updatePos /* = false */)
     if (updatePos)
         spriteCoin.setPosition(GetPositionX(), GetPositionY());
 
-    if (GAME_STATE_PAUSED(game->GetGameState()))
+    if (GAME_STATE_PAUSED(sGame.GetGameState()))
         spriteCoin.setColor(sf::Color(255, 255, 255, 128));
 
     window->draw(spriteCoin);

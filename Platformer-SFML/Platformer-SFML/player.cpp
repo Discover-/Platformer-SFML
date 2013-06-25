@@ -21,8 +21,8 @@
 #include "coin.h"
 #include "audio.h"
 
-Player::Player(Game* _game, sf::RenderWindow* _window, sf::Vector2f position, std::vector<std::pair<int, sf::Texture>> _spritesLeft, std::vector<std::pair<int, sf::Texture>> _spritesRight, sf::Texture _imageHeartEmpty, sf::Texture _imageHeartFull, sf::Texture _imageSmallCoin, sf::Texture _imageJumpSpriteLeft, sf::Texture _imageJumpSpriteRight, sf::Texture _bulletTexture, int _life, int _totalMoveFrames, int _frameInterval) :
-Unit(_game, _window, position, _spritesLeft, _spritesRight, TYPEID_PLAYER, _life, _totalMoveFrames, _frameInterval, false, _bulletTexture)
+Player::Player(sf::RenderWindow* _window, sf::Vector2f position, std::vector<std::pair<int, sf::Texture>> _spritesLeft, std::vector<std::pair<int, sf::Texture>> _spritesRight, sf::Texture _imageHeartEmpty, sf::Texture _imageHeartFull, sf::Texture _imageSmallCoin, sf::Texture _imageJumpSpriteLeft, sf::Texture _imageJumpSpriteRight, sf::Texture _bulletTexture, int _life, int _totalMoveFrames, int _frameInterval) :
+Unit(_window, position, _spritesLeft, _spritesRight, TYPEID_PLAYER, _life, _totalMoveFrames, _frameInterval, false, _bulletTexture)
 {
     SetPosition(position.x, position.y);
     spritesLeft = _spritesLeft;
@@ -46,7 +46,7 @@ void Player::Update()
 {
     Unit::Update();
 
-    if (GAME_STATE_PAUSED(GetGame()->GetGameState()))
+    if (GAME_STATE_PAUSED(sGame.GetGameState()))
         return;
 
     SetIsMoving(false);
@@ -75,7 +75,7 @@ void Player::Update()
         if (!IsJumping() && !IsBouncing() && !IsFalling())
             Jump();
 
-    std::vector<Enemy*> enemies = GetGame()->GetEnemies();
+    std::vector<Enemy*> enemies = sGame.GetEnemies();
 
     for (std::vector<Enemy*>::iterator itr = enemies.begin(); itr != enemies.end(); ++itr)
     {
@@ -98,7 +98,7 @@ void Player::Update()
         }
     }
 
-    std::vector<Coin*> coins = GetGame()->GetCoins();
+    std::vector<Coin*> coins = sGame.GetCoins();
 
     for (std::vector<Coin*>::iterator itr = coins.begin(); itr != coins.end(); ++itr)
     {
@@ -112,7 +112,7 @@ void Player::Update()
 
             if (WillCollision(GetPositionX(), GetPositionY(), boundsPlayer.height, boundsPlayer.width, (*itr)->GetPositionX(), (*itr)->GetPositionY(), boundsCoin.height, boundsCoin.width))
             {
-                GetGame()->GetAudio()->Play("Audio/picked-up-coin.wav");
+                sGame.GetAudio()->Play("Audio/picked-up-coin.wav");
                 (*itr)->SetIsTaken(true);
                 coinAmount++;
                 break;
@@ -123,7 +123,7 @@ void Player::Update()
 
 void Player::HandleTimers(sf::Int32 diff_time)
 {
-    if (GetGame()->GetGameState() != STATE_PLAYING)
+    if (sGame.GetGameState() != STATE_PLAYING)
         return;
 
     Unit::HandleTimers(diff_time);
@@ -137,7 +137,7 @@ void Player::DrawAccessoires(sf::RenderWindow &window, sf::View &view)
         sf::Sprite spriteHeart(imageHeart);
         spriteHeart.setPosition(view.getCenter().x - 420.0f - ((*itr).first * 18.0f), view.getCenter().y - 295.0f);
 
-        if (GAME_STATE_PAUSED(GetGame()->GetGameState()))
+        if (GAME_STATE_PAUSED(sGame.GetGameState()))
             spriteHeart.setColor(sf::Color(255, 255, 255, 128));
 
         window.draw(spriteHeart);
@@ -151,7 +151,7 @@ void Player::DrawAccessoires(sf::RenderWindow &window, sf::View &view)
         {
             spriteSmallCoin.setPosition(view.getCenter().x - 492.0f + (i * 18.0f), view.getCenter().y - 272.0f);
 
-            if (GAME_STATE_PAUSED(GetGame()->GetGameState()))
+            if (GAME_STATE_PAUSED(sGame.GetGameState()))
                 spriteSmallCoin.setColor(sf::Color(255, 255, 255, 128));
 
             window.draw(spriteSmallCoin);

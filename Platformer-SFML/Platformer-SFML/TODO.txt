@@ -23,7 +23,6 @@
   - Add several types of bullets or upgrades
 * Improve animations
 * Loading screen (seperate thread?)
-* Make Game class singleton/static
 * Make possible for player to fall inbetween two tiles (if one is missing, like a gap) for proper collision for special tiles like Spikes, Lava, Water and Quicksand
 * Add mouse-over collision detection for menu's
 * Increase width (perhaps in the code itself) of some of the decoration objects (rocks, fences, grass, bushes, etc.) to make it less of a level-editor feel (having them placed inbetween two tiles, rather than always ON a tile)

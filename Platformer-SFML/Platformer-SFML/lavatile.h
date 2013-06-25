@@ -19,12 +19,10 @@
 #include "position.h"
 #include "tile.h"
 
-class Game;
-
 class LavaTile : public SpecialTile
 {
     public:
-        LavaTile(Game* _game, sf::RenderWindow* _window, sf::Texture _image, sf::Vector2f startPosition);
+        LavaTile(sf::RenderWindow* _window, sf::Texture _image, sf::Vector2f startPosition);
         ~LavaTile();
 
         void Update();
