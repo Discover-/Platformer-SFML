@@ -31,6 +31,7 @@ class Game
 
         GameState GetGameState() { return gameState; }
         void SetGameState(GameState state) { gameState = state; }
+        void SetUpcomingGameState(GameState state) { upcomingGameState = state; }
 
         std::vector<sf::Sprite> &GetGameObjects() { return gameObjects; }
         std::vector<sf::Sprite> &GetGameObjectsCollidable() { return gameObjectsCollidable; }
@@ -84,7 +85,7 @@ class Game
         std::vector<Bullet*> allBullets;
         std::vector<Enemy*> allEnemies;
         std::vector<Unit*> allUnits;
-        GameState gameState;
+        GameState gameState, upcomingGameState;
         Level* currLevel;
         std::vector<SpecialTile*> allSpecialTiles;
         std::vector<Coin*> allCoins;

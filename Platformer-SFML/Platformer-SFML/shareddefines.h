@@ -7,11 +7,12 @@
 
 enum GameState
 {
-    STATE_LOADING_LEVEL  = 0,
-    STATE_MAIN_MENU     = 1,
-    STATE_PAUSED        = 2,
-    STATE_PAUSED_FOCUS  = 3,
-    STATE_PLAYING       = 4,
+    STATE_NONE          = 0,
+    STATE_LOADING_LEVEL = 1,
+    STATE_MAIN_MENU     = 2,
+    STATE_PAUSED        = 3,
+    STATE_PAUSED_FOCUS  = 4,
+    STATE_PLAYING       = 5,
 };
 
 #define GAME_STATE_DRAW_GAME(x) (x == STATE_PAUSED || x == STATE_PAUSED_FOCUS || x == STATE_PLAYING)

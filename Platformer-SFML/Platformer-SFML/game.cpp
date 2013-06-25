@@ -37,6 +37,7 @@ Game::Game()
     isRunning = true;
     showDebugInfo = true;
     gameState = STATE_LOADING_LEVEL;
+    upcomingGameState = STATE_NONE;
     player = NULL;
     menuPlayer = NULL;
     mutedMusic = true;
@@ -108,7 +109,7 @@ class LevelMapLoader
             MenuPlayer* menuPlayer = new MenuPlayer(game, window, sf::Vector2f(165.0f, 285.0f), game->GetPlayer()->GetSpritesLeft(), sf::Texture());
             game->SetMenuPlayer(menuPlayer);
             game->AddUnit(menuPlayer);
-            game->SetGameState(filename == "menu" ? STATE_MAIN_MENU : STATE_PLAYING);
+            game->SetUpcomingGameState(filename == "menu" ? STATE_MAIN_MENU : STATE_PLAYING);
             game->SetCurrentlyLoadingLvl("");
         }
         
@@ -151,9 +152,16 @@ int Game::Update()
 
     while (window.isOpen())
     {
+        window.clear(sf::Color(136, 247, 255));
+
+        if (upcomingGameState != STATE_NONE && upcomingGameState != gameState)
+        {
+            gameState = upcomingGameState;
+            upcomingGameState = STATE_NONE;
+        }
+
         if (gameState == STATE_LOADING_LEVEL)
         {
-            window.clear(sf::Color(136, 247, 255));
             int amountOfTiles = currLevel->GetAmountOfTiles(currentlyLoadingLvl);
             float pct = floor(float(float(loadedTiles) / amountOfTiles) * 100);
 
@@ -191,6 +199,10 @@ int Game::Update()
 
         sf::Event _event;
         sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+
+        float timer = clock.restart().asSeconds();
+        HandleTimers(sf::Int32(timer * 1000));
+        fpsClock.restart();
 
         bool shiftPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::LShift);
 
@@ -331,10 +343,6 @@ int Game::Update()
             }
         }
 
-        float timer = clock.restart().asSeconds();
-        HandleTimers(sf::Int32(timer * 1000));
-        fpsClock.restart();
-        window.clear(sf::Color(136, 247, 255));
         currLevel->DrawMap(window, gameState == STATE_MAIN_MENU);
 
         //! Temporarily commented out because it brings weird behavior to objects with SpecialTile class
@@ -512,8 +520,8 @@ void Game::StartActualGame(sf::RenderWindow &window, std::string filename)
 {
     gameState = STATE_LOADING_LEVEL;
     currentlyLoadingLvl = filename;
-    std::thread threadLevelMapLoader4(LevelMapLoader(this, currLevel, filename, &window));
-    threadLevelMapLoader4.detach();
+    std::thread threadLevelMapLoader(LevelMapLoader(this, currLevel, filename, &window));
+    threadLevelMapLoader.detach();
 }
 
 void Game::RemoveUnitWithTypeId(UnitTypeId typeId)

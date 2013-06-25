@@ -13,8 +13,8 @@ class Game;
 class Sound
 {
     public:
-        Sound::Sound(Game* _game);
-        Sound::~Sound();
+        Sound(Game* _game);
+        ~Sound();
 
         bool Load(std::string filename);
         void Update();

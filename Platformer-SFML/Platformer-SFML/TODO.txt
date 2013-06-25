@@ -38,3 +38,5 @@
 * Disable scrolling through options when menu is moving down/up
 * Add skybox to menu level
 * Set menuplayer's position closer to moving inside the screen
+* Use sf::Music for background music (rename Sound class to Audio?)
+* Re-write Sound class logic
