@@ -2,7 +2,7 @@
 #include "shareddefines.h"
 #include "game.h"
 #include "player.h"
-#include "audio.h"
+//#include "audio.h"
 
 BounceTile::BounceTile(sf::RenderWindow* _window, sf::Texture _image, sf::Texture _imageUsed, sf::Vector2f _startPosition, std::string color) :
 SpecialTile(_window, _image, _startPosition, TYPEID_BOUNCE_TILE)
@@ -45,7 +45,7 @@ bool BounceTile::OnCollision(Unit* unit /* = NULL */)
     {
         isUsed = true;
         unit->Jump(30);
-        sGame.GetAudio()->Play("Audio/trampoline_shot.wav");
+        //sGame.GetAudio()->Play("Audio/trampoline_shot.wav");
     }
 
     return false;

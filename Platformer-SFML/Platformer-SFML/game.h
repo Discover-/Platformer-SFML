@@ -13,7 +13,7 @@ class SpecialTile;
 class Coin;
 class Unit;
 class MenuPlayer;
-class Audio;
+//class Audio;
 
 class Game
 {
@@ -77,7 +77,7 @@ class Game
 
         void SetCurrentlyLoadingLvl(std::string val) { currentlyLoadingLvl = val; }
 
-        Audio* GetAudio() { return audio; }
+        //Audio* GetAudio() { return audio; }
 
     private:
         Game();
@@ -86,7 +86,7 @@ class Game
         bool isRunning, showDebugInfo, mutedMusic;
         Player* player;
         MenuPlayer* menuPlayer;
-        Audio* audio;
+        //Audio* audio;
         std::vector<sf::Sprite> gameObjects;
         std::vector<sf::Sprite> gameObjectsCollidable;
         std::vector<Bullet*> allBullets;

@@ -27,7 +27,7 @@
 #include "coin.h"
 #include "menuplayer.h"
 #include "Library\Dirent\include\dirent.h"
-#include "audio.h"
+//#include "audio.h"
 #include <thread>
 
 Game::Game()
@@ -46,7 +46,7 @@ Game::Game()
 Game::~Game()
 {
     DeleteContentMemory();
-    delete audio;
+    //delete audio;
     delete currLevel;
 }
 
@@ -70,7 +70,7 @@ void Game::LoadAllAudio()
     DIR* dir;
     struct dirent* ent;
     std::stringstream ss;
-    audio = new Audio();
+    //audio = new Audio();
 
     if ((dir = opendir("Audio")) != NULL)
     {
@@ -79,7 +79,7 @@ void Game::LoadAllAudio()
             if (ent->d_name[0] != '.') //! These seem to be the only hidden invisible files in there and the dirent library doesn't offer detection for it, so this will work. :)
             {
                 ss << "Audio/" << ent->d_name;
-                audio->Load(ss.str().c_str());
+                //audio->Load(ss.str().c_str());
                 ss.str(std::string());
             }
         }
@@ -319,7 +319,7 @@ int Game::Update()
                         case sf::Mouse::Left:
                             if (mousePos.x < 60 && mousePos.y > 545)
                             {
-                                audio->SetVolume("all", mutedMusic ? 100.0f : 0.0f);
+                                //audio->SetVolume("all", mutedMusic ? 100.0f : 0.0f);
                                 mutedMusic = !mutedMusic;
                             }
                             else if (gameState == STATE_MAIN_MENU)
