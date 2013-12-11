@@ -174,14 +174,14 @@ int Game::Update()
             std::stringstream ssPct;
             ssPct << "Percentage: " << pct;
             sf::Text textPercentage(ssPct.str(), font, 25);
-            textPercentage.setColor(sf::Color::White);
+            textPercentage.setColor(sf::Color::Black);
             textPercentage.setPosition(500.0f - (textPercentage.getLocalBounds().width / 2.0f), 270.0f - (textPercentage.getLocalBounds().height / 2.0f));
             window.draw(textPercentage);
 
             std::stringstream ssTiles;
             ssTiles << loadedTiles << " / " << amountOfTiles;
             sf::Text textTiles(ssTiles.str(), font, 15);
-            textTiles.setColor(sf::Color::White);
+            textTiles.setColor(sf::Color::Black);
             textTiles.setPosition(500.0f - (textTiles.getLocalBounds().width / 2.0f), 315.0f - (textTiles.getLocalBounds().height / 2.0f));
             window.draw(textTiles);
 
